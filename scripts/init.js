@@ -1,6 +1,6 @@
 const moduleName = 'macro-manager';
 import { mm } from './api.js'
-
+/*
 Hooks.on("renderSettingsConfig", (app, [html]) => {
   const setting = "macro-manager.01macros";
   const input = html.querySelector(`[name='${setting}']`);
@@ -20,7 +20,7 @@ Hooks.on("renderSettingsConfig", (app, [html]) => {
   textarea3.name = setting3;
   input3?.replaceWith(textarea3);  
 });
-
+*/
 Hooks.once('init', function() {
   // --------------------------------------------------
   // Load API
