@@ -3,7 +3,7 @@
   "title": "Macro Manager",
   "description": "Open a dialog with your favorite macros.",   
   "author": "Mestre Digital",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "minimumCoreVersion": "9",
   "compatibleCoreVersion":"10",
   

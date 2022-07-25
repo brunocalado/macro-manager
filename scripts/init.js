@@ -1,14 +1,26 @@
 const moduleName = 'macro-manager';
 import { mm } from './api.js'
-/*
+
 Hooks.on("renderSettingsConfig", (app, [html]) => {
   const setting = "macro-manager.01macros";
   const input = html.querySelector(`[name='${setting}']`);
   const textarea = document.createElement("textarea");
   textarea.name = setting;
-  input.replaceWIth(textarea);
+  input?.replaceWith(textarea);
+  
+  const setting2 = "macro-manager.02macros";
+  const input2 = html.querySelector(`[name='${setting}']`);
+  const textarea2 = document.createElement("textarea");
+  textarea2.name = setting2;
+  input2?.replaceWith(textarea2);
+
+  const setting3 = "macro-manager.03macros";
+  const input3 = html.querySelector(`[name='${setting}']`);
+  const textarea3 = document.createElement("textarea");
+  textarea3.name = setting3;
+  input3?.replaceWith(textarea3);  
 });
-*/
+
 Hooks.once('init', function() {
   // --------------------------------------------------
   // Load API
@@ -127,14 +139,38 @@ Hooks.once('init', function() {
   game.keybindings.register(moduleName, "mm01", {
     name: 'Macro Manager 01',
     hint: 'This will trigger the Macro Manager 01.',
-    editable: [{ key: "Num1", modifiers: [KeyboardManager.MODIFIER_KEYS.ALT]}],
+    editable: [{ key: "Digit1", modifiers: [KeyboardManager.MODIFIER_KEYS.ALT]}],
     onDown: () => {
-      let chatData = {
-        speaker: null,
-        content: `
-        test
-        `};
-      ChatMessage.create(chatData, {});      
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.openMacroManager( 1 );      
+    },
+    onUp: () => {},
+    restricted: false,  // Restrict this Keybinding to gamemaster only?
+    reservedModifiers: [],
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(moduleName, "mm02", {
+    name: 'Macro Manager 02',
+    hint: 'This will trigger the Macro Manager 02.',
+    editable: [{ key: "Digit2", modifiers: [KeyboardManager.MODIFIER_KEYS.ALT]}],
+    onDown: () => {
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.openMacroManager( 2 );      
+    },
+    onUp: () => {},
+    restricted: false,  // Restrict this Keybinding to gamemaster only?
+    reservedModifiers: [],
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+
+  game.keybindings.register(moduleName, "mm03", {
+    name: 'Macro Manager 03',
+    hint: 'This will trigger the Macro Manager 03.',
+    editable: [{ key: "Digit3", modifiers: [KeyboardManager.MODIFIER_KEYS.ALT]}],
+    onDown: () => {
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.openMacroManager( 3 );      
     },
     onUp: () => {},
     restricted: false,  // Restrict this Keybinding to gamemaster only?
