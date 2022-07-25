@@ -1,20 +1,59 @@
 # Macro Manager
+This module let you open a dialog with your favorite macros (image bellow). This let one hotbar space be used for lots of macros.
 
-This module let you open a dialog with your favorite macros (image bellow). This let on hotbar space be used for lots of macros.
-
-imagine a image here
+<p align="center">
+  <img width="1000" src="docs/doc01.webp">
+</p>
 
 # Features
-
 Check the module settings to configure Macro Manager.
 
 - You can use up to three Macro Managers. 
 - You can set them to be persistent, they will not close until you click the **Close Button**.
 - You can change the font size.
 
-# Instalation
+# How To
+You have to configure each macro manager. You do this in the module settings. 
+You just have to settings. Then, add to Macro List field the names of the macros in your world.
+The name of the macro in your world MUST be igual to the name you put in these fields.
+After each macro name add **;**. 
 
+<p align="center">
+  <img width="1000" src="docs/doc01.webp">
+</p>
+
+## Macro
+To trigger the dialog you can create a macro with the following code. You can switch between the macro manager replacing the number 1 by 2 or 3.
+```js
+const mm = game.modules.get('macro-manager')?.api.mm;
+mm.openMacroManager( 1 )
+```
+
+## Keybindings
+You can used keybindings to trigger too. 
+Use **Alt+1, Alt+2** and **Alt+3**.
+You can change these keybindings in **controls settings**.
+
+# Instalation
 You can install this module using the manifest: https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json
 
+# Localization
+WIP
 
+# TODO
+- Add localization
+- Add another interface for the macros dialog
+- Turn the text box for macro list into multiline.
  
+# Community
+- Do you have something to improve this module? [Share it!](https://github.com/brunocalado/macro-manager/issues)
+- Do you find out a bug? [Report it!](https://github.com/brunocalado/macro-manager/issues)
+
+# Changes
+You can see changes at [CHANGELOG](CHANGELOG.md).
+
+# Acknowledgements
+- @arcanist#4317 
+
+# License
+Code license at [LICENSE](LICENSE).
