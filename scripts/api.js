@@ -3,10 +3,12 @@ export class mm {
   static async openMacroManager( managerID ) {
     const persistent = game.settings.get("macro-manager", `0${managerID}persistent`);
     const title = game.settings.get("macro-manager", `0${managerID}title`);
+    // Split and clean macros.
     const macros = game.settings.get("macro-manager", `0${managerID}macros`).split(';'); 
     const macroList = macros.map(element => {
       return element.trim();
     });    
+    
     const fontSize = game.settings.get("macro-manager", "fontsize");
     const fontSizeStyled = `font-size: ${fontSize}px;`;   
     

@@ -7,35 +7,35 @@ Hooks.on("renderSettingsConfig", (app, [html]) => {
   const textarea = document.createElement("textarea");
   textarea.name = setting;
   input?.replaceWith(textarea);
-  textarea.textContent = game.settings.get("macro-manager", "01macros")
+  textarea.textContent = game.settings.get("macro-manager", "01macros"); // load the saved data into the field
   
   const setting2 = "macro-manager.02macros";
   const input2 = html.querySelector(`[name='${setting2}']`);
   const textarea2 = document.createElement("textarea");
   textarea2.name = setting2;
   input2?.replaceWith(textarea2);
-  textarea2.textContent = game.settings.get("macro-manager", "02macros")
+  textarea2.textContent = game.settings.get("macro-manager", "02macros"); // load the saved data into the field
 
   const setting3 = "macro-manager.03macros";
   const input3 = html.querySelector(`[name='${setting3}']`);
   const textarea3 = document.createElement("textarea");
   textarea3.name = setting3;
   input3?.replaceWith(textarea3);  
-  textarea3.textContent = game.settings.get("macro-manager", "03macros")
+  textarea3.textContent = game.settings.get("macro-manager", "03macros"); // load the saved data into the field
 
   const setting4 = "macro-manager.04macros";
   const input4 = html.querySelector(`[name='${setting4}']`);
   const textarea4 = document.createElement("textarea");
   textarea4.name = setting4;
   input4?.replaceWith(textarea4);  
-  textarea4.textContent = game.settings.get("macro-manager", "04macros")
+  textarea4.textContent = game.settings.get("macro-manager", "04macros"); // load the saved data into the field
 
   const setting5 = "macro-manager.05macros";
   const input5 = html.querySelector(`[name='${setting5}']`);
   const textarea5 = document.createElement("textarea");
   textarea5.name = setting5;
   input5?.replaceWith(textarea5);  
-  textarea5.textContent = game.settings.get("macro-manager", "05macros")  
+  textarea5.textContent = game.settings.get("macro-manager", "05macros"); // load the saved data into the field  
 });
 
 Hooks.once('init', function() {
