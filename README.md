@@ -57,7 +57,7 @@ You can trigger the Summary with **Shift+0**.
 You can change these keybindings in **controls settings**.
 
 <p align="center">
-  <img width="1000" src="docs/doc2.webp">
+  <img width="1000" src="docs/doc02.webp">
 </p>
 
 # Instalation
@@ -70,7 +70,6 @@ WIP
 - Add localization
 - Add another interface for the macros dialog
 - improve menu
-- gm only
  
 # Community
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/macro-manager/issues)
