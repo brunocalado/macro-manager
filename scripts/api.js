@@ -3,6 +3,7 @@ export class mm {
   static async openMacroManager( managerID ) {
     const persistent = game.settings.get("macro-manager", `0${managerID}persistent`);
     const title = game.settings.get("macro-manager", `0${managerID}title`);
+    
     // Split and clean macros.
     const macros = game.settings.get("macro-manager", `0${managerID}macros`).split(';'); 
     const macroList = macros.map(element => {
@@ -36,5 +37,44 @@ export class mm {
     })();
 
   } // END openMacroManager   
+
+  static showSummary() {
+    let titleContent = `<h2><img style="border: 0;vertical-align:middle;" src="icons/sundries/documents/document-sealed-signatures-red.webp" width="28" height="28"> Macro Manager Summary</h2>`;
+    let message = ``;
   
+    let numbers = ['01', '02', '03', '04', '05', '06', '07', '08', '09'];
+    for ( const currentNumber of numbers ) {
+      const title = game.settings.get("macro-manager", currentNumber + `title`);
+      const macroList = this.cleanMacroList(game.settings.get("macro-manager", currentNumber + `macros`));
+      if ( game.settings.get("macro-manager", currentNumber + `macros`).length>0 ) {        
+        message += `<details>`;            
+        message += `<summary>${title} (click to expand)</summary>`;      
+
+        message += `<ul>`;      
+        for ( const item of macroList ) {
+          message += `<li>${item}</li>`;
+        }      
+        message += `</ul>`;      
+        
+        message += `</details>`;
+      } // END IF
+    }
+
+    let chatData = {
+      speaker: null,
+      whisper : ChatMessage.getWhisperRecipients("GM"),
+      content: `
+      ${titleContent}
+      ${message}
+      `};
+    ChatMessage.create(chatData, {});    
+  }
+  
+  static cleanMacroList(macroListParam) {
+    const macros = macroListParam.split(';'); 
+    const macroList = macros.map(element => {
+      return element.trim();
+    });        
+    return macroList;
+  }
 } // END CLASS

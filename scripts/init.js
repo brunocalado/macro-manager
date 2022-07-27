@@ -36,6 +36,34 @@ Hooks.on("renderSettingsConfig", (app, [html]) => {
   textarea5.name = setting5;
   input5?.replaceWith(textarea5);  
   textarea5.textContent = game.settings.get("macro-manager", "05macros"); // load the saved data into the field  
+
+  const setting6 = "macro-manager.06macros";
+  const input6 = html.querySelector(`[name='${setting6}']`);
+  const textarea6 = document.createElement("textarea");
+  textarea6.name = setting6;
+  input6?.replaceWith(textarea6);  
+  textarea6.textContent = game.settings.get("macro-manager", "06macros"); // load the saved data into the field  
+
+  const setting7 = "macro-manager.07macros";
+  const input7 = html.querySelector(`[name='${setting7}']`);
+  const textarea7 = document.createElement("textarea");
+  textarea7.name = setting7;
+  input7?.replaceWith(textarea7);  
+  textarea7.textContent = game.settings.get("macro-manager", "07macros"); // load the saved data into the field  
+
+  const setting8 = "macro-manager.08macros";
+  const input8 = html.querySelector(`[name='${setting8}']`);
+  const textarea8 = document.createElement("textarea");
+  textarea8.name = setting8;
+  input8?.replaceWith(textarea8);  
+  textarea8.textContent = game.settings.get("macro-manager", "08macros"); // load the saved data into the field  
+
+  const setting9 = "macro-manager.09macros";
+  const input9 = html.querySelector(`[name='${setting9}']`);
+  const textarea9 = document.createElement("textarea");
+  textarea9.name = setting9;
+  input9?.replaceWith(textarea9);  
+  textarea9.textContent = game.settings.get("macro-manager", "09macros"); // load the saved data into the field    
 });
 
 Hooks.once('init', function() {
@@ -45,30 +73,33 @@ Hooks.once('init', function() {
 
   // --------------------------------------------------
   // Module Options
+  let currentNumber;
+    
   // 1 --------------------------------------------------------------
   // call this with: game.settings.get("macro-manager", "01title")
-  game.settings.register(moduleName, '01title', {
-    name: 'Title for Macro Manager 01',
-    hint: 'This is the title of the macro dialog 01.',
+  currentNumber = '01';
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
+    hint: 'This is the title of the macro dialog',
     scope: 'world',
     config: true,
-    default: 'Macro Manager 01',
+    default: 'Macro Manager ' + currentNumber,
     type: String
   });
 
   // call this with: game.settings.get("macro-manager", "01macros")
-  game.settings.register(moduleName, '01macros', {
-    name: 'Macro List for Macro Manager 01',
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macro List for Macro Manager ' + currentNumber,
     hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
     scope: 'world',
     config: true,
-    default: 'Macro Manager 01',
+    default: '',
     type: String
   });
 
   // call this with: game.settings.get("macro-manager", "01persistent")
-  game.settings.register(moduleName, '01persistent', {
-    name: 'Persistent Macro Manager 01',
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
     hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
     scope: 'world',
     config: true,
@@ -78,18 +109,19 @@ Hooks.once('init', function() {
   
   // 2 --------------------------------------------------------------
   // call this with: game.settings.get("macro-manager", "02title")
-  game.settings.register(moduleName, '02title', {
-    name: 'Title for Macro Manager 02',
+  currentNumber = '02';
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
     hint: 'This is the title of the macro dialog.',
     scope: 'world',
     config: true,
-    default: 'Macro Manager 02',
+    default: 'Macro Manager ' + currentNumber,
     type: String
   });
   
   // call this with: game.settings.get("macro-manager", "02macros")
-  game.settings.register(moduleName, '02macros', {
-    name: 'Macros for Macro Manager 02',
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
     hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
     scope: 'world',
     config: true,
@@ -98,8 +130,8 @@ Hooks.once('init', function() {
   });
 
   // call this with: game.settings.get("macro-manager", "02persistent")
-  game.settings.register(moduleName, '02persistent', {
-    name: 'Persistent Macro Manager 02',
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
     hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
     scope: 'world',
     config: true,
@@ -109,18 +141,19 @@ Hooks.once('init', function() {
   
   // 3 --------------------------------------------------------------
   // call this with: game.settings.get("macro-manager", "03title")
-  game.settings.register(moduleName, '03title', {
-    name: 'Title for Macro Manager 03',
+  currentNumber = '03';
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
     hint: 'This is the title of the macro dialog.',
     scope: 'world',
     config: true,
-    default: 'Macro Manager 03',
+    default: 'Macro Manager ' + currentNumber,
     type: String
   });
   
   // call this with: game.settings.get("macro-manager", "03macros")
-  game.settings.register(moduleName, '03macros', {
-    name: 'Macros for Macro Manager 03',
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
     hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
     scope: 'world',
     config: true,
@@ -129,8 +162,8 @@ Hooks.once('init', function() {
   });
 
   // call this with: game.settings.get("macro-manager", "03persistent")
-  game.settings.register(moduleName, '03persistent', {
-    name: 'Persistent Macro Manager 03',
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
     hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
     scope: 'world',
     config: true,
@@ -140,18 +173,19 @@ Hooks.once('init', function() {
   
   // 4 --------------------------------------------------------------
   // call this with: game.settings.get("macro-manager", "04title")
-  game.settings.register(moduleName, '04title', {
-    name: 'Title for Macro Manager 04',
+  currentNumber = '04';
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
     hint: 'This is the title of the macro dialog.',
     scope: 'world',
     config: true,
-    default: 'Macro Manager 04',
+    default: 'Macro Manager ' + currentNumber,
     type: String
   });
   
   // call this with: game.settings.get("macro-manager", "04macros")
-  game.settings.register(moduleName, '04macros', {
-    name: 'Macros for Macro Manager 04',
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
     hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
     scope: 'world',
     config: true,
@@ -160,8 +194,8 @@ Hooks.once('init', function() {
   });
 
   // call this with: game.settings.get("macro-manager", "04persistent")
-  game.settings.register(moduleName, '04persistent', {
-    name: 'Persistent Macro Manager 04',
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
     hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
     scope: 'world',
     config: true,
@@ -171,18 +205,19 @@ Hooks.once('init', function() {
 
   // 5 --------------------------------------------------------------
   // call this with: game.settings.get("macro-manager", "05title")
-  game.settings.register(moduleName, '05title', {
-    name: 'Title for Macro Manager 05',
+  currentNumber = '05';
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
     hint: 'This is the title of the macro dialog.',
     scope: 'world',
     config: true,
-    default: 'Macro Manager 05',
+    default: 'Macro Manager ' + currentNumber,
     type: String
   });
   
   // call this with: game.settings.get("macro-manager", "05macros")
-  game.settings.register(moduleName, '05macros', {
-    name: 'Macros for Macro Manager 05',
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
     hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
     scope: 'world',
     config: true,
@@ -191,8 +226,136 @@ Hooks.once('init', function() {
   });
 
   // call this with: game.settings.get("macro-manager", "05persistent")
-  game.settings.register(moduleName, '05persistent', {
-    name: 'Persistent Macro Manager 05',
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
+    hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean
+  });
+  
+  // 6 --------------------------------------------------------------
+  // call this with: game.settings.get("macro-manager", "06title")
+  currentNumber = '06';
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
+    hint: 'This is the title of the macro dialog.',
+    scope: 'world',
+    config: true,
+    default: 'Macro Manager ' + currentNumber,
+    type: String
+  });
+  
+  // call this with: game.settings.get("macro-manager", "06macros")
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
+    hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String
+  });
+
+  // call this with: game.settings.get("macro-manager", "06persistent")
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
+    hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // 7 --------------------------------------------------------------
+  // call this with: game.settings.get("macro-manager", "07title")
+  currentNumber = '07'; 
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
+    hint: 'This is the title of the macro dialog.',
+    scope: 'world',
+    config: true,
+    default: 'Macro Manager ' + currentNumber,
+    type: String
+  });
+  
+  // call this with: game.settings.get("macro-manager", "07macros")
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
+    hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String
+  });
+
+  // call this with: game.settings.get("macro-manager", "07persistent")
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
+    hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // 8 --------------------------------------------------------------
+  // call this with: game.settings.get("macro-manager", "08title")
+  currentNumber = '08'; 
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
+    hint: 'This is the title of the macro dialog.',
+    scope: 'world',
+    config: true,
+    default: 'Macro Manager ' + currentNumber,
+    type: String
+  });
+  
+  // call this with: game.settings.get("macro-manager", "08macros")
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
+    hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String
+  });
+
+  // call this with: game.settings.get("macro-manager", "08persistent")
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
+    hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // 9 --------------------------------------------------------------
+  // call this with: game.settings.get("macro-manager", "09title")
+  currentNumber = '09'; 
+  game.settings.register(moduleName, currentNumber + 'title', {
+    name: 'Title for Macro Manager ' + currentNumber,
+    hint: 'This is the title of the macro dialog.',
+    scope: 'world',
+    config: true,
+    default: 'Macro Manager ' + currentNumber,
+    type: String
+  });
+  
+  // call this with: game.settings.get("macro-manager", "09macros")
+  game.settings.register(moduleName, currentNumber + 'macros', {
+    name: 'Macros for Macro Manager ' + currentNumber,
+    hint: 'Add the names of the macros you want to show on this dialog. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world.',
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String
+  });
+
+  // call this with: game.settings.get("macro-manager", "09persistent")
+  game.settings.register(moduleName, currentNumber + 'persistent', {
+    name: 'Persistent Macro Manager ' + currentNumber,
     hint: 'Check this to keep the Macro Dialog in the screen after click in one macro.',
     scope: 'world',
     config: true,
@@ -228,7 +391,7 @@ Hooks.once('init', function() {
       mm.openMacroManager( 1 );      
     },
     onUp: () => {},
-    restricted: false,  // Restrict this Keybinding to gamemaster only?
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
@@ -242,7 +405,7 @@ Hooks.once('init', function() {
       mm.openMacroManager( 2 );      
     },
     onUp: () => {},
-    restricted: false,  // Restrict this Keybinding to gamemaster only?
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
@@ -256,7 +419,7 @@ Hooks.once('init', function() {
       mm.openMacroManager( 3 );      
     },
     onUp: () => {},
-    restricted: false,  // Restrict this Keybinding to gamemaster only?
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
@@ -270,11 +433,11 @@ Hooks.once('init', function() {
       mm.openMacroManager( 4 );      
     },
     onUp: () => {},
-    restricted: false,  // Restrict this Keybinding to gamemaster only?
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
-
+  //currentNumber
   game.keybindings.register(moduleName, "mm05", {
     name: 'Macro Manager 05',
     hint: 'This will trigger the Macro Manager 05.',
@@ -284,10 +447,85 @@ Hooks.once('init', function() {
       mm.openMacroManager( 5 );      
     },
     onUp: () => {},
-    restricted: false,  // Restrict this Keybinding to gamemaster only?
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
+
+  currentNumber = 6;
+  game.keybindings.register(moduleName, "mm0" + currentNumber, {
+    name: 'Macro Manager 0' + currentNumber,
+    hint: 'This will trigger the Macro Manager 0' + currentNumber,
+    editable: [{ key: "Digit6", modifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]}],
+    onDown: () => {
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.openMacroManager( 6 );      
+    },
+    onUp: () => {},
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    reservedModifiers: [],
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });  
+
+  currentNumber = 7;
+  game.keybindings.register(moduleName, "mm0" + currentNumber, {
+    name: 'Macro Manager 0' + currentNumber,
+    hint: 'This will trigger the Macro Manager 0' + currentNumber,
+    editable: [{ key: "Digit7", modifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]}],
+    onDown: () => {
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.openMacroManager( 7 );      
+    },
+    onUp: () => {},
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    reservedModifiers: [],
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });  
+
+  currentNumber = 8;
+  game.keybindings.register(moduleName, "mm0" + currentNumber, {
+    name: 'Macro Manager 0' + currentNumber,
+    hint: 'This will trigger the Macro Manager 0' + currentNumber,
+    editable: [{ key: "Digit8", modifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]}],
+    onDown: () => {
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.openMacroManager( 8 );      
+    },
+    onUp: () => {},
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    reservedModifiers: [],
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });    
+
+  currentNumber = 9;
+  game.keybindings.register(moduleName, "mm0" + currentNumber, {
+    name: 'Macro Manager 0' + currentNumber,
+    hint: 'This will trigger the Macro Manager 0' + currentNumber,
+    editable: [{ key: "Digit9", modifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]}],
+    onDown: () => {
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.openMacroManager( 9 );      
+    },
+    onUp: () => {},
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    reservedModifiers: [],
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });  
+
+  currentNumber = 0;
+  game.keybindings.register(moduleName, "mm0" + currentNumber, {
+    name: 'Macro Manager 0' + currentNumber,
+    hint: 'This will trigger the Macro Manager 0' + currentNumber,
+    editable: [{ key: "Digit0", modifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]}],
+    onDown: () => {
+      const mm = game.modules.get(moduleName)?.api.mm;
+      mm.showSummary();      
+    },
+    onUp: () => {},
+    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    reservedModifiers: [],
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });  
   
 }); // END HOOKS
 
