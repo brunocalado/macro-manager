@@ -10,6 +10,7 @@ This let one hotbar space be used for lots of macros or you can just use a keybo
 
 - Heavy macro users 
 - It's alternate way to call your macros or anything that you would use in the hotbar
+- You can create a macro set and your players can use them with one call.
 
 # Features
 Check the module settings to configure Macro Manager.
@@ -18,6 +19,7 @@ Check the module settings to configure Macro Manager.
 - You can set them to be persistent, they will not close until you click the **Close Button**.
 - You can call Summary to know how your macros are organized.
 - You can change the font size.
+- You can enable keyboard shortcut for players. This will let you create a macro set and let your players call it.
 
 **Summary**
 <p align="center">
@@ -64,12 +66,29 @@ You can change these keybindings in **controls settings**.
 You can install this module using the manifest: https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json
 
 # Localization
-WIP
+If you want to translate this module [DOWNLOAD THIS FILE](https://raw.githubusercontent.com/brunocalado/macro-manager/main/lang/en.json) and translate it. After that open an [issue](https://github.com/brunocalado/macro-manager/issues) sharing your translation. 
+
+You also need to share with me the default name convention for your language. This is very easy to get. 
+- Find a system or module which is translated to your language. 
+- Open the **module.json** or **system.json** file.
+- You should find something like the code above. It's under **languages**. Share with me **lang, name and path** for your language.
+```json
+{
+  "lang": "en",
+  "name": "English",
+  "path": "lang/en.json"
+},
+{
+    "lang": "fr",
+    "name": "Français",
+    "path": "lang/fr.json"
+}  
+```
 
 # TODO
-- Add localization
 - Add another interface for the macros dialog
 - improve menu
+- macro params to create it on with anything you want
  
 # Community
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/macro-manager/issues)

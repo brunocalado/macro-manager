@@ -1,3 +1,7 @@
+0.0.9
+- option for enable keyboard shortcut for players
+- localization
+
 0.0.8
 - fix text controls
 

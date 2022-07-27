@@ -3,7 +3,7 @@
   "title": "Macro Manager",
   "description": "Open a dialog with your favorite macros.",   
   "author": "Mestre Digital",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "minimumCoreVersion": "9",
   "compatibleCoreVersion":"10",
   
@@ -13,6 +13,14 @@
   "packs": [],
 
   "styles": [],
+
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }       
+  ],
   
   "url": "https://github.com/brunocalado/macro-manager",
   "manifest": "https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json",  

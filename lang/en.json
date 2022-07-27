@@ -1,0 +1,36 @@
+{
+  
+	"macro-manager": {
+    
+		"settings": {
+			"title": {
+        "name": "Title for Macro Manager: {number}",
+				"hint": "This is the title of the Macro Manager: {number}."
+			},
+			"macros": {
+        "name": "Macro List for Macro Manager: {number}",
+				"hint": "Add the names of the macros you want to show on this field. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world."
+			},
+			"persistent": {
+        "name": "Persistent for Macro Manager: {number}",
+				"hint": "Check this to keep the Macro Dialog in the screen after click in one macro."
+			},
+			"player": {
+        "name": "Enable Player Shortcut: {number}",
+				"hint": "This will let your players trigger the shortcuts."
+			},
+			"fontsize": {
+        "name": "Font Size",
+				"hint": "This will change the font size for the macro label."
+			}       
+    },
+    
+		"keybindings": {
+      "name": "Macro Manager: {message}",
+      "hint": "This will trigger the Macro Manager: {message}.",
+      "summaryname": "Summary",
+      "summaryhint": "This will trigger the Summary"
+    }   
+  }
+  
+}
