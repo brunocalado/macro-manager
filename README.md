@@ -3,7 +3,7 @@ This module let you open a dialog with your favorite macros (image bellow).
 This let one hotbar space be used for lots of macros or you can just use a keyboard shortcut without the hotbar.
 
 <p align="center">
-  <img width="1000" src="docs/doc01.webp">
+  <img width="1000" src="docs/doc04.webp">
 </p>
 
 ## Applications
@@ -21,7 +21,7 @@ Check the module settings to configure Macro Manager.
 
 **Summary**
 <p align="center">
-  <img width="1000" src="docs/doc03.webp">
+  <img width="800" src="docs/doc03.webp">
 </p>
 
 # How To
@@ -31,7 +31,7 @@ The name of the macro in your world MUST be igual to the name you put in these f
 After each macro name add **;**. 
 
 <p align="center">
-  <img width="1000" src="docs/doc01.webp">
+  <img width="1000" src="docs/doc04.webp">
 </p>
 
 ## Macro
@@ -57,7 +57,7 @@ You can trigger the Summary with **Shift+0**.
 You can change these keybindings in **controls settings**.
 
 <p align="center">
-  <img width="1000" src="docs/doc02.webp">
+  <img width="400" src="docs/doc02.webp">
 </p>
 
 # Instalation
