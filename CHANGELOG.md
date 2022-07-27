@@ -1,3 +1,6 @@
+0.1.0
+- create custom macro, no need for settings
+
 0.0.9
 - option for enable keyboard shortcut for players
 - localization

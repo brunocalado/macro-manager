@@ -11,6 +11,7 @@ This let one hotbar space be used for lots of macros or you can just use a keybo
 - Heavy macro users 
 - It's alternate way to call your macros or anything that you would use in the hotbar
 - You can create a macro set and your players can use them with one call.
+- You can create the macro dialog without need to settings. Check **Custom Macro Manager**.
 
 # Features
 Check the module settings to configure Macro Manager.
@@ -20,6 +21,7 @@ Check the module settings to configure Macro Manager.
 - You can call Summary to know how your macros are organized.
 - You can change the font size.
 - You can enable keyboard shortcut for players. This will let you create a macro set and let your players call it.
+- Nine Macro Managers aren't enough? Create more with **Custom Macro Manager**.
 
 **Summary**
 <p align="center">
@@ -28,15 +30,21 @@ Check the module settings to configure Macro Manager.
 
 # How To
 You have to configure each macro manager. You do this in the module settings. 
-You just have to settings. Then, add to Macro List field the names of the macros in your world.
-The name of the macro in your world MUST be igual to the name you put in these fields.
-After each macro name add **;**. 
+- You just have to settings. 
+- Then, add to Macro List field the names of the macros in your world.
+- The name of the macro in your world MUST be igual to the name you put in these fields.
+- After each macro name add **;**. 
+
+**Example**
+```
+Macro Name 1; Macro Name 15; Weird Macro Name 11; Macro Name 3;
+```
 
 <p align="center">
   <img width="1000" src="docs/doc04.webp">
 </p>
 
-## Macro
+## Macros
 To trigger the dialog you can create a macro with the following code. You can switch between the macro manager `replacing the number 1 by 2, 3, 4, 6, 7, 8 or 9`.
 
 ```js
@@ -48,6 +56,20 @@ You can call the summary with:
 ```js
 const mm = game.modules.get('macro-manager')?.api.mm;
 mm.showSummary();
+```
+
+### Custom Macro Manager
+You can create a Macro Manager directly from code, without need to configure anything in settings.
+
+**Example**
+```js
+const mm = game.modules.get('macro-manager')?.api.mm;
+
+const title = 'mytitle';
+const macroList = "New Macro 1; New Macro 2; New Macro 3; New Macro 4";
+const persistent = true; // default is false
+
+mm.openCustomMacroManager( macroList, title );
 ```
 
 ## Keybindings
@@ -86,9 +108,8 @@ You also need to share with me the default name convention for your language. Th
 ```
 
 # TODO
-- Add another interface for the macros dialog
-- improve menu
-- macro params to create it on with anything you want
+- improve settings menu
+- improve macro dialog
  
 # Community
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/macro-manager/issues)
