@@ -11,7 +11,7 @@ This let one hotbar space be used for lots of macros or you can just use a keybo
 - Heavy macro users 
 - It's alternate way to call your macros or anything that you would use in the hotbar
 - You can create a macro set and your players can use them with one call.
-- You can create the macro dialog without need to settings. Check **Custom Macro Manager**.
+- You can create the macro dialog without need to change settings. Check **Custom Macro Manager**.
 
 # Features
 Check the module settings to configure Macro Manager.
