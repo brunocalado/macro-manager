@@ -512,10 +512,9 @@ Hooks.once('init', function() {
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });  
 
-  currentNumber = 0;
-  game.keybindings.register(moduleName, "mm0" + currentNumber, {
-    name: 'Macro Manager 0' + currentNumber,
-    hint: 'This will trigger the Macro Manager 0' + currentNumber,
+  game.keybindings.register(moduleName, "mm00", {
+    name: 'Summary',
+    hint: 'This will trigger the Summary',
     editable: [{ key: "Digit0", modifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]}],
     onDown: () => {
       const mm = game.modules.get(moduleName)?.api.mm;
