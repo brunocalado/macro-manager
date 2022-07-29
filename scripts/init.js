@@ -77,8 +77,20 @@ Hooks.once('i18nInit', () => {
   let currentNumber;
 
   // 1 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "01title")
   currentNumber = '01';
+
+  // call this with: game.settings.get("macro-manager", "01sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  });
+  
+  // call this with: game.settings.get("macro-manager", "01title")
   game.settings.register(moduleName, `${currentNumber}title`, {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -121,8 +133,20 @@ Hooks.once('i18nInit', () => {
   });
   
   // 2 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "02title")
   currentNumber = '02';
+  
+  // call this with: game.settings.get("macro-manager", "02sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  });
+  
+  // call this with: game.settings.get("macro-manager", "02title")
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -164,9 +188,21 @@ Hooks.once('i18nInit', () => {
     onChange: debouncedReload
   });
   
-  // 3 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "03title")
+  // 3 --------------------------------------------------------------  
   currentNumber = '03';
+  
+  // call this with: game.settings.get("macro-manager", "03sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  });  
+  
+  // call this with: game.settings.get("macro-manager", "03title")
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -209,8 +245,20 @@ Hooks.once('i18nInit', () => {
   });
   
   // 4 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "04title")
   currentNumber = '04';
+
+  // call this with: game.settings.get("macro-manager", "04sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  }); 
+  
+  // call this with: game.settings.get("macro-manager", "04title")
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -253,8 +301,20 @@ Hooks.once('i18nInit', () => {
   });
 
   // 5 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "05title")
   currentNumber = '05';
+  
+  // call this with: game.settings.get("macro-manager", "05sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  }); 
+  
+  // call this with: game.settings.get("macro-manager", "05title")  
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -297,8 +357,20 @@ Hooks.once('i18nInit', () => {
   });
   
   // 6 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "06title")
   currentNumber = '06';
+  
+  // call this with: game.settings.get("macro-manager", "06sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  }); 
+  
+  // call this with: game.settings.get("macro-manager", "06title")
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -341,8 +413,20 @@ Hooks.once('i18nInit', () => {
   });
 
   // 7 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "07title")
   currentNumber = '07'; 
+
+  // call this with: game.settings.get("macro-manager", "07sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  }); 
+  
+  // call this with: game.settings.get("macro-manager", "07title")
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -385,8 +469,20 @@ Hooks.once('i18nInit', () => {
   });
 
   // 8 --------------------------------------------------------------
+  currentNumber = '08';
+
+  // call this with: game.settings.get("macro-manager", "08sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  });   
+  
   // call this with: game.settings.get("macro-manager", "08title")
-  currentNumber = '08'; 
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),
@@ -429,8 +525,20 @@ Hooks.once('i18nInit', () => {
   });
 
   // 9 --------------------------------------------------------------
-  // call this with: game.settings.get("macro-manager", "09title")
   currentNumber = '09'; 
+  
+  // call this with: game.settings.get("macro-manager", "08sourcelist")
+  game.settings.register(moduleName, `${currentNumber}sourcelist`, {
+    name: game.i18n.format(`${moduleName}.settings.sourcelist.name`, { number: currentNumber }),
+    hint: game.i18n.format(`${moduleName}.settings.sourcelist.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: '',
+    type: String,
+    onChange: debouncedReload
+  });   
+  
+  // call this with: game.settings.get("macro-manager", "09title")  
   game.settings.register(moduleName, currentNumber + 'title', {
     name: game.i18n.format(`${moduleName}.settings.title.name`, { number: currentNumber }),
     hint: game.i18n.format(`${moduleName}.settings.title.hint`, { number: currentNumber }),

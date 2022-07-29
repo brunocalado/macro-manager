@@ -3,6 +3,10 @@
 	"macro-manager": {
     
 		"settings": {
+			"sourcelist": {
+        "name": "Compendium List: {number}",
+				"hint": "If you add the label of a compendium this Macro Manager will search the compendium instead the world. You must add ; after each label. Leave it blank to search macros in the world."
+			},      
 			"title": {
         "name": "Title for Macro Manager: {number}",
 				"hint": "This is the title of the Macro Manager: {number}."

@@ -3,14 +3,23 @@
   "title": "Macro Manager",
   "description": "Open a dialog with your favorite macros.",   
   "author": "Mestre Digital",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minimumCoreVersion": "9",
   "compatibleCoreVersion":"10",
   
   "scripts": [],  
 	"esmodules": ["./scripts/init.js"],
 
-  "packs": [],
+  "packs": [
+    {
+      "label": "Macro Manager",
+      "type": "Macro",
+      "name": "macro-manager",
+      "path": "packs/macro-manager.db",
+      "entity": "Macro",
+      "private": false
+    }  
+  ],
 
   "styles": [],
 

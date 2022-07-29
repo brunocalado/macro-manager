@@ -3,25 +3,27 @@ This module let you open a dialog with your favorite macros (image bellow).
 This let one hotbar space be used for lots of macros or you can just use a keyboard shortcut without the hotbar.
 
 <p align="center">
-  <img width="1000" src="docs/doc04.webp">
+  <img width="1000" src="docs/doc01.webp">
 </p>
 
 ## Applications
 
 - Heavy macro users 
-- It's alternate way to call your macros or anything that you would use in the hotbar
-- You can create a macro set and your players can use them with one call.
+- It's alternate way to call your macros or anything that you would use in the hotbar. This can free a lot of hotbar slots.
+- You can create share a group of macros with your players.
 - You can create the macro dialog without need to change settings. Check **Custom Macro Manager**.
+- You can read macros from your compendiums. This avoid populate your world with macros. Useful if you use a macro compendium from one module which got updated, you just read the macro from there, you don't need to import again.
 
 # Features
 Check the module settings to configure Macro Manager.
 
 - You can use up to nine Macro Managers. 
+- Nine Macro Managers aren't enough? Create more with **Custom Macro Manager**.
 - You can set them to be persistent, they will not close until you click the **Close Button**.
 - You can call Summary to know how your macros are organized.
 - You can change the font size.
 - You can enable keyboard shortcut for players. This will let you create a macro set and let your players call it.
-- Nine Macro Managers aren't enough? Create more with **Custom Macro Manager**.
+- You can read macros from a compendium.
 
 **Summary**
 <p align="center">
@@ -31,17 +33,27 @@ Check the module settings to configure Macro Manager.
 # How To
 You have to configure each macro manager. You do this in the module settings. 
 - Go to this module settings. 
-- Then, add to the Macro List field the names of the macros in your world.
-- The name of the macro in your world MUST be igual to the name you put in these fields.
+- Then, add to the Macro List field the names of the macros. If these macros are in your world leave the **Compendium List** field in blank. If these macros are in one or more compendiums add the labels of these compendiums to **Compendium List**, separate each one with **;**.
+- The name of the macro MUST be igual to the name you put in these fields.
 - After each macro name add **;**. 
 
-**Example**
+**Example for Macros in your World**
 ```
+Macro List 01:
+Macro Name 1; Macro Name 15; Weird Macro Name 11; Macro Name 3;
+```
+
+**Example for Macros in Compendiums**
+```
+Compendium List
+My Compendium with Macros; Weird Module Macros;
+
+Macro List 01:
 Macro Name 1; Macro Name 15; Weird Macro Name 11; Macro Name 3;
 ```
 
 <p align="center">
-  <img width="1000" src="docs/doc04.webp">
+  <img width="1000" src="docs/doc01.webp">
 </p>
 
 ## Macros
@@ -61,15 +73,35 @@ mm.showSummary();
 ### Custom Macro Manager
 You can create a Macro Manager directly from code, without need to configure anything in settings.
 
-**Example**
+**Example: World Macros**
 ```js
 const mm = game.modules.get('macro-manager')?.api.mm;
 
-const title = 'mytitle';
-const macroList = "New Macro 1; New Macro 2; New Macro 3; New Macro 4";
-const persistent = true; // default is false
+const data = {
+  "macroList": "Macro Manager 1; Macro Manager 2; Macro Manager 3",
+  "title": "my title",
+  "persistent": false
+}
 
-mm.openCustomMacroManager( macroList, title );
+mm.openCustomMacroManager( data );
+```
+
+**Example: Compendium Macros**
+```js
+const macroList = "Macro Manager 1; Macro Manager 2;Patch All Actors (Savage Pathfinder); Macro Manager 3";
+const compendiumList = "Macro Manager; Savage Pathfinder Macros";
+
+// --------------------
+const mm = game.modules.get('macro-manager')?.api.mm;
+
+const data = {
+  "macroList": macroList,
+  "title": "my title",
+  "persistent": false,
+  "compendiumList" : compendiumList
+}
+
+mm.openCompendiumMacroManager( data );
 ```
 
 ## Keybindings
@@ -113,8 +145,7 @@ You also need to share with me the default name convention for your language. Th
 - Subheaders: create a way to expand or open a submenu
 - send mm macros to hotbar
 - send macros in mm to hotbar 
-- Read compendium
- 
+
 # Community
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/macro-manager/issues)
 - Do you find out a bug? [Report it!](https://github.com/brunocalado/macro-manager/issues)
@@ -125,5 +156,6 @@ You can see changes at [CHANGELOG](CHANGELOG.md).
 # Acknowledgements
 - @arcanist#4317 
 
-# License
-Code license at [LICENSE](LICENSE).
+# License and Assets
+- Code license at [LICENSE](LICENSE).
+- Icons: https://game-icons.net/
