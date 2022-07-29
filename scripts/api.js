@@ -42,30 +42,35 @@ export class mm {
     const fontSize = game.settings.get("macro-manager", "fontsize");
     const fontSizeStyled = `font-size: ${fontSize}px;`;   
 
-    const macros = macroList;
+    let macros = macroList;
     let buttons = {}, dialog, content = `<div sytle="width:100%; text-align:center;><h2>Choose Macro</h2></div>`;
     
-    macros.forEach((str)=> {
+    if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort();
+    
+    macros.forEach((macroLabel)=> {
       let macro;
       if (args.macros!==undefined) {
-        macro = args.macros.find(p=>p.name==str);
-        console.log(macro)
+        macro = args.macros.find(p=>p.name==macroLabel);
       } else {
-        macro = game.macros.getName(str);
+        macro = game.macros.getName(macroLabel);
       }
       if(!macro) return;
 
-      buttons[str] = {
+      buttons[macroLabel] = {
         label : `
           <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;width">
-            <div style="display:flex;justify-content:left;flex-grow:1;"><img src="${macro.data.img}" width="25" height="25" style="background-color:#5c5c5c;"/></div>
-            <div style="display:flex;justify-content:left;flex-grow:4"><label style="${fontSizeStyled}">${str}</label></div>
+            <div style="display:flex;justify-content:left;flex-grow:1;">
+              <img src="${macro.data.img}" width="25" height="25" style="background-color:#5c5c5c;"/>
+            </div>
+            <div style="display:flex;justify-content:left;flex-grow:4">
+              <label style="${fontSizeStyled}">${macroLabel}</label>
+            </div>
           </div>`,
         callback : () => {
-          if (args.macros===undefined) {
+          if (args.macros!==undefined) {
             this.macroRun(macro);
           } else {
-            game.macros.getName(str).execute();
+            game.macros.getName(macroLabel).execute();
           }
           if (args.persistent) dialog.render(true);
         }
@@ -103,7 +108,9 @@ export class mm {
     this.openCustomMacroManager(data);    
     
   } // END openMacroManager   
-
+  
+  // ---------------------------------------------------------------
+  // Tools
   static showSummary() {
     let titleContent = `<h2><img style="border: 0;vertical-align:middle;" src="icons/sundries/documents/document-sealed-signatures-red.webp" width="28" height="28"> Macro Manager Summary</h2>`;
     let message = ``;
@@ -134,6 +141,80 @@ export class mm {
       ${message}
       `};
     ChatMessage.create(chatData, {});    
+  }
+  
+  static async getAllMacroLabelsFromCompendium() {
+    const compendiums = await game.packs.filter(p=>p.metadata.type=='Macro');
+    let compendiumsList = '';
+    for (const compendium of compendiums) {
+      compendiumsList += `<option value="${compendium.metadata.name}">${compendium.metadata.label}</option>`
+    }    
+
+    let template = `  
+      <h2 style="font-align: center;">Get All Macros Labels!</h2>
+      <div>
+        <b>Compendium (Choose):</b> 
+        <select id="compendium" type="text">
+          ${compendiumsList}
+        </select>  
+      </div>
+      </br>
+    `;
+    new Dialog({
+      title: "Get All Macros Names",
+      content: template,
+      buttons: {
+        ok: {
+          label: "Generate",
+          callback: async (html) => {
+            console.log('---------------------------');
+            let compendium = html.find("#compendium")[0].value;
+            const allMacros = await game.packs.find(p=>p.metadata.name==compendium).getDocuments();
+            const macros = allMacros.filter(p=>p.data.type=='script');
+            let template = '';
+            for (const macro of macros) {
+              template += `${macro.name};`
+            }               
+
+            /* view */
+            let form = `
+              <label>Copy this to Settings</label>
+              <textarea id="moduleTextArea" rows="5" cols="33">${template}</textarea>
+            `;
+
+            let dialog = new Dialog({
+              title: "Macros",
+              content: form,
+              buttons: {
+                use: {
+                  label: "Copy to Clipboard",
+                  callback: () => {
+                    let copyText = document.getElementById("moduleTextArea"); /* Get the text field */  
+                    copyText.select(); /* Select the text field */  
+                    document.execCommand("copy"); /* Copy the text inside the text field */  
+                    ui.notifications.notify(`Saved on Clipboard`); /* Alert the copied text */
+                  }
+                }
+              }
+            }).render(true); 
+      
+          } // END CALLBACK
+        }
+      }
+    }).render(true);    
+
+  }
+  
+  static tools(stringList) {
+    const macroList = "Summary; Get All Macro Names From Compendium;";
+    const compendiumList = "Macro Manager";
+    const data = {
+      "macroList": macroList,
+      "title": "Tools for Macro Manager",
+      "persistent": false,
+      "compendiumList" : compendiumList
+    }
+    this.openCompendiumMacroManager( data );  
   }
   
   // ---------------------------------------------------------------

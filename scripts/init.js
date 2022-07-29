@@ -596,6 +596,16 @@ Hooks.once('i18nInit', () => {
     type: Number
   }); 
 
+  // call this with: game.settings.get("macro-manager", "sortmacros")
+  game.settings.register(moduleName, 'sortmacros', {
+    name: game.i18n.format(`${moduleName}.settings.sortmacros.name`, {}),
+    hint: game.i18n.format(`${moduleName}.settings.sortmacros.hint`, {}),
+    scope: 'world',
+    config: true,
+    default: true,
+    type: Boolean
+  }); 
+  
   // --------------------------------------------------
   // Keybinding
   game.keybindings.register(moduleName, "mm01", {
@@ -730,7 +740,7 @@ Hooks.once('i18nInit', () => {
     editable: [{ key: "Digit0", modifiers: [KeyboardManager.MODIFIER_KEYS.SHIFT]}],
     onDown: () => {
       const mm = game.modules.get(moduleName)?.api.mm;
-      mm.showSummary();      
+      mm.tools();      
     },
     onUp: () => {},
     restricted: true,  // Restrict this Keybinding to gamemaster only?

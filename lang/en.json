@@ -26,7 +26,11 @@
 			"fontsize": {
         "name": "Font Size",
 				"hint": "This will change the font size for the macro label."
-			}       
+			},
+			"sortmacros": {
+        "name": "Sort Macros",
+				"hint": "This will sort the macros."
+			}           
     },
     
 		"keybindings": {

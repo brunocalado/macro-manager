@@ -24,6 +24,7 @@ Check the module settings to configure Macro Manager.
 - You can change the font size.
 - You can enable keyboard shortcut for players. This will let you create a macro set and let your players call it.
 - You can read macros from a compendium.
+- You can sort the list. There is an option in settings.
 
 **Summary**
 <p align="center">
@@ -108,13 +109,13 @@ mm.openCompendiumMacroManager( data );
 You can used keybindings to trigger too. 
 Use **Shift+1, Shift+2, Shift+3, Shift+4, Shift+5 Shift+6, Shift+7, Shift+8, and Shift+9**.
 
-You can trigger the Summary with **Shift+0**.
-
-You can change these keybindings in **controls settings**.
+You can trigger the Tools with **Shift+0**. There is useful options like **Summary**.
 
 <p align="center">
   <img width="400" src="docs/doc02.webp">
 </p>
+
+You can change these keybindings in **controls settings**.
 
 # Instalation
 You can install this module using the manifest: https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json

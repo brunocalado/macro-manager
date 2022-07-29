@@ -1,3 +1,9 @@
+0.1.2
+- Tool: Get all macro names from compendium
+- summary replaced by tools. It's inside tools
+- sort names option
+- fix bug: macros in compendium run now
+
 0.1.1
 - compendium with demo macros
 - you can use macros inside compendium
