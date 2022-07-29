@@ -30,8 +30,8 @@ Check the module settings to configure Macro Manager.
 
 # How To
 You have to configure each macro manager. You do this in the module settings. 
-- You just have to settings. 
-- Then, add to Macro List field the names of the macros in your world.
+- Go to this module settings. 
+- Then, add to the Macro List field the names of the macros in your world.
 - The name of the macro in your world MUST be igual to the name you put in these fields.
 - After each macro name add **;**. 
 
@@ -109,7 +109,11 @@ You also need to share with me the default name convention for your language. Th
 
 # TODO
 - improve settings menu
-- improve macro dialog
+- improve macro dialog, size change, columns
+- Subheaders: create a way to expand or open a submenu
+- send mm macros to hotbar
+- send macros in mm to hotbar 
+- Read compendium
  
 # Community
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/macro-manager/issues)
