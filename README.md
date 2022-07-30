@@ -25,6 +25,7 @@ Check the module settings to configure Macro Manager.
 - You can enable keyboard shortcut for players. This will let you create a macro set and let your players call it.
 - You can read macros from a compendium.
 - You can sort the list. There is an option in settings.
+- You can add headers to organize the macros.
 
 **Summary**
 <p align="center">
@@ -37,11 +38,12 @@ You have to configure each macro manager. You do this in the module settings.
 - Then, add to the Macro List field the names of the macros. If these macros are in your world leave the **Compendium List** field in blank. If these macros are in one or more compendiums add the labels of these compendiums to **Compendium List**, separate each one with **;**.
 - The name of the macro MUST be igual to the name you put in these fields.
 - After each macro name add **;**. 
+- You can add ##MY HEADER## to organize your macros.
 
 **Example for Macros in your World**
 ```
 Macro List 01:
-Macro Name 1; Macro Name 15; Weird Macro Name 11; Macro Name 3;
+Macro Name 1; Macro Name 15; ##MY HEADER##; Weird Macro Name 11; Macro Name 3;
 ```
 
 **Example for Macros in Compendiums**

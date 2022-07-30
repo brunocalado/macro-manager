@@ -1,3 +1,7 @@
+0.1.3
+- header
+- tools: documentation link
+
 0.1.2
 - Tool: Get all macro names from compendium
 - summary replaced by tools. It's inside tools

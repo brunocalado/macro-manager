@@ -14,7 +14,6 @@ export class mm {
         "persistent": persistent,
         "compendiumList": compendiumList
       };        
-      console.log(data)
       this.openCompendiumMacroManager( data );
     } else {
       const data = {
@@ -48,33 +47,54 @@ export class mm {
     if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort();
     
     macros.forEach((macroLabel)=> {
+      const headerFrag = macroLabel.includes("##");
+      
       let macro;
       if (args.macros!==undefined) {
         macro = args.macros.find(p=>p.name==macroLabel);
       } else {
         macro = game.macros.getName(macroLabel);
       }
-      if(!macro) return;
-
-      buttons[macroLabel] = {
-        label : `
-          <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;width">
-            <div style="display:flex;justify-content:left;flex-grow:1;">
-              <img src="${macro.data.img}" width="25" height="25" style="background-color:#5c5c5c;"/>
-            </div>
-            <div style="display:flex;justify-content:left;flex-grow:4">
-              <label style="${fontSizeStyled}">${macroLabel}</label>
-            </div>
-          </div>`,
-        callback : () => {
-          if (args.macros!==undefined) {
-            this.macroRun(macro);
-          } else {
-            game.macros.getName(macroLabel).execute();
+      if(!macro && !headerFrag ) return;
+      
+      if (headerFrag) {
+        const headerImage = 'modules/macro-manager/assets/icons/settings.svg';
+        const headerText = macroLabel.replace('##', '').replace('##', '');
+        buttons[macroLabel] = {
+          label : `
+            <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+              <div style="display:flex;justify-content:left;flex-grow:1;">
+                <img src="${headerImage}" width="25" height="25" style="background-color:#5c5c5c;"/>
+              </div>
+              <div style="display:flex;justify-content:left;flex-grow:4">
+                <label style="${fontSizeStyled}"><b>${headerText}</b></label>
+              </div>
+            </div>`,
+          callback : () => {
+            if (args.persistent) dialog.render(true);
           }
-          if (args.persistent) dialog.render(true);
-        }
-      };
+        }; // END BUTTONS
+      } else {
+        buttons[macroLabel] = {
+          label : `
+            <div style="display:flex;flex-direction:row; justify-content:center; align-items:center;">
+              <div style="display:flex;justify-content:left;flex-grow:1;">
+                <img src="${macro.data.img}" width="25" height="25" style="background-color:#5c5c5c;"/>
+              </div>
+              <div style="display:flex;justify-content:left;flex-grow:4">
+                <label style="${fontSizeStyled}">${macroLabel}</label>
+              </div>
+            </div>`,
+          callback : () => {
+            if (args.macros!==undefined) {
+              this.macroRun(macro);
+            } else {
+              game.macros.getName(macroLabel).execute();
+            }
+            if (args.persistent) dialog.render(true);
+          }
+        }; // END BUTTONS        
+      }
     });
     dialog = new Dialog({title : `${args.title}`, content, buttons}).render(true);
   } // END openMacroManager   
@@ -167,7 +187,6 @@ export class mm {
         ok: {
           label: "Generate",
           callback: async (html) => {
-            console.log('---------------------------');
             let compendium = html.find("#compendium")[0].value;
             const allMacros = await game.packs.find(p=>p.metadata.name==compendium).getDocuments();
             const macros = allMacros.filter(p=>p.data.type=='script');
@@ -206,7 +225,7 @@ export class mm {
   }
   
   static tools(stringList) {
-    const macroList = "Summary; Get All Macro Names From Compendium;";
+    const macroList = "Summary; Get All Macro Names From Compendium;Documentation";
     const compendiumList = "Macro Manager";
     const data = {
       "macroList": macroList,
