@@ -25,8 +25,6 @@ export class mm {
     }
   } // END openMacroManager   
 
-  //static async openCustomMacroManager( args macroListParam=[], title='Title', persistent=false ) {
-
 /*  
     const data = {
       "macroList": "macro 1; macro 2",
@@ -35,18 +33,28 @@ export class mm {
       "macros": "[]",
     }   
 */ 
-  static async openCustomMacroManager( args ) {        
+  static async openCustomMacroManager( args ) {  
+    const dialogWidth =  game.settings.get("macro-manager", "dialogwidth");
+    const maxButtonSize = dialogWidth - 40;
+    const myDialogOptions = {}; // Dialog Options
+    myDialogOptions['width'] = dialogWidth;
+    //myDialogOptions['resizable'] = true;
+
+    const templateName = game.settings.get("macro-manager", "theme");
+    //const templateName = 'button_cyberpunk';
+    
+    
     const macroList = this.stringListToArray( args.macroList );
 
     const fontSize = game.settings.get("macro-manager", "fontsize");
-    const fontSizeStyled = `font-size: ${fontSize}px;`;   
 
     let macros = macroList;
-    let buttons = {}, dialog, content = `<div sytle="width:100%; text-align:center;><h2>Choose Macro</h2></div>`;
+    let buttons = {}, dialog, content = `<div sytle="width:100%;></div>`;
     
-    if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort();
-    
-    macros.forEach((macroLabel)=> {
+    if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort(); // SORT
+
+    for (const macroLabel of macros) {
+      let templateData;
       const headerFrag = macroLabel.includes("##");
       
       let macro;
@@ -58,33 +66,22 @@ export class mm {
       if(!macro && !headerFrag ) return;
       
       if (headerFrag) {
-        const headerImage = 'modules/macro-manager/assets/icons/settings.svg';
+        const headerImage = 'icons/sundries/books/book-red-exclamation.webp';
         const headerText = macroLabel.replace('##', '').replace('##', '');
+        templateData = { icon: headerImage, labelText: headerText, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize }; 
+        const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );                
         buttons[macroLabel] = {
-          label : `
-            <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
-              <div style="display:flex;justify-content:left;flex-grow:1;">
-                <img src="${headerImage}" width="25" height="25" style="background-color:#5c5c5c;"/>
-              </div>
-              <div style="display:flex;justify-content:left;flex-grow:4">
-                <label style="${fontSizeStyled}"><b>${headerText}</b></label>
-              </div>
-            </div>`,
+          label : buttonTemplate,
           callback : () => {
             if (args.persistent) dialog.render(true);
           }
         }; // END BUTTONS
       } else {
+        templateData = { icon: macro.data.img, labelText: macroLabel, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize}; 
+        const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );        
+
         buttons[macroLabel] = {
-          label : `
-            <div style="display:flex;flex-direction:row; justify-content:center; align-items:center;">
-              <div style="display:flex;justify-content:left;flex-grow:1;">
-                <img src="${macro.data.img}" width="25" height="25" style="background-color:#5c5c5c;"/>
-              </div>
-              <div style="display:flex;justify-content:left;flex-grow:4">
-                <label style="${fontSizeStyled}">${macroLabel}</label>
-              </div>
-            </div>`,
+          label : buttonTemplate,
           callback : () => {
             if (args.macros!==undefined) {
               this.macroRun(macro);
@@ -95,8 +92,8 @@ export class mm {
           }
         }; // END BUTTONS        
       }
-    });
-    dialog = new Dialog({title : `${args.title}`, content, buttons}).render(true);
+    }; // END FOR OF
+    dialog = new Dialog({title : `${args.title}`, content, buttons}, myDialogOptions).render(true);
   } // END openMacroManager   
 
 /*  
@@ -112,13 +109,16 @@ export class mm {
     const compendiums = this.stringListToArray(args.compendiumList);
     let macros = [];
     // Get all macros from all compendiums
-    for (const compendiumLabel of compendiums) {
-      const compendiumMacros = await game.packs.find(p=>p.metadata.label==compendiumLabel).getDocuments();
+    for (const compendiumLabel of compendiums) {      
+      const compendium = game.packs.find(p=>p.metadata.label==compendiumLabel);
+      //if (!compendium) { ui.notifications.error("Macro Manager: (" + compendiumLabel + "): couldn't be found."); return; }
+      if (!compendium) { ui.notifications.error(game.i18n.format(`macro-manager.messages.compendiumNotFound`, { message: compendiumLabel })); return; }
+      const compendiumMacros = await compendium.getDocuments();
       for (const compendiumMacro of compendiumMacros) {
         macros.push(compendiumMacro); // get it with:  macros.find(p=>p.name=='Macro Manager 1')
       }
     }    
-    
+    //game.i18n.format(`${moduleName}.messages.compendiumNotFound`, { message: compendiumLabel })
     const data = {
       "macroList": args.macroList,
       "title": args.title,
@@ -243,12 +243,17 @@ export class mm {
     const arrayList = stringList.map(element => {
       return element.trim();
     });        
-    return arrayList;
+    return arrayList.filter(n => n.length>0); // remove empty
   }
-  
+
   // ---------------------------------------------------------------
   // Macros
   static async macroRun(macro) {  
+    /* CHECK
+      const pack = game.packs.get("mymodule.mypack");
+      const macro = pack.getDocument(documentId);
+      await macro.execute();
+    */
     // Get the data from the macro in the compendium in a JS object form
     let macro_data = macro.toObject();
     let temp_macro = new Macro(macro_data);

@@ -585,7 +585,7 @@ Hooks.once('i18nInit', () => {
   game.settings.register(moduleName, 'fontsize', {
     name: game.i18n.format(`${moduleName}.settings.fontsize.name`, {}),
     hint: game.i18n.format(`${moduleName}.settings.fontsize.hint`, {}),
-    scope: 'world',
+    scope: 'client',
     config: true,
     default: 14,
     range: {
@@ -596,15 +596,46 @@ Hooks.once('i18nInit', () => {
     type: Number
   }); 
 
+  // call this with: game.settings.get("macro-manager", "dialogwidth")
+  game.settings.register(moduleName, 'dialogwidth', {
+    name: game.i18n.format(`${moduleName}.settings.dialogwidth.name`, {}),
+    hint: game.i18n.format(`${moduleName}.settings.dialogwidth.hint`, {}),
+    scope: 'client',
+    config: true,
+    default: 400,
+    range: {
+      min: 200,
+      max: 800,
+      step: 10
+    },    
+    type: Number
+  });
+
   // call this with: game.settings.get("macro-manager", "sortmacros")
   game.settings.register(moduleName, 'sortmacros', {
     name: game.i18n.format(`${moduleName}.settings.sortmacros.name`, {}),
     hint: game.i18n.format(`${moduleName}.settings.sortmacros.hint`, {}),
-    scope: 'world',
+    scope: 'client',
     config: true,
     default: true,
     type: Boolean
   }); 
+  
+  // call this with: game.settings.get("macro-manager", "theme")
+  game.settings.register(moduleName, 'theme', {
+    name: game.i18n.localize("macro-manager.settings.theme.name"), 
+    hint: game.i18n.localize("macro-manager.settings.theme.hint"),
+    scope: "client",
+    type: String,
+    choices: {
+      'button_standard': game.i18n.localize("macro-manager.settings.theme.standard"),
+      'button_cyberpunk': game.i18n.localize("macro-manager.settings.theme.cyberpunk"),
+      'button_rainbow': game.i18n.localize("macro-manager.settings.theme.rainbow")      
+    },
+    default: "button_standard",
+    config: true,
+    onChange: debouncedReload
+  });  
   
   // --------------------------------------------------
   // Keybinding

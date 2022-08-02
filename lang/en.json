@@ -27,18 +27,34 @@
         "name": "Font Size",
 				"hint": "This will change the font size for the macro label."
 			},
+			"dialogwidth": {
+        "name": "Dialog Width",
+				"hint": "This will change the Dialog Width. The Foundry VTT default is 400."
+			},
 			"sortmacros": {
         "name": "Sort Macros",
 				"hint": "This will sort the macros."
-			}           
+			},
+			"theme": {
+        "name": "Button Theme",
+				"hint": "Choose a theme for the button.",
+        "standard": "Standard",
+				"rainbow": "Rainbow",        
+        "cyberpunk": "Cyberpunk"        
+			}             
     },
     
 		"keybindings": {
       "name": "Macro Manager: {message}",
       "hint": "This will trigger the Macro Manager: {message}.",
-      "summaryname": "Summary",
-      "summaryhint": "This will trigger the Summary"
-    }   
+      "summaryname": "Tools",
+      "summaryhint": "This will trigger the Tools with offers Multiple useful functions."
+    },
+
+		"messages": {
+      "compendiumNotFound": "Macro Manager: ( {message} ): couldn't be found."
+    }  
+    
   }
   
 }

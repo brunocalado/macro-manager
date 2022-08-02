@@ -1,3 +1,10 @@
+0.1.4
+- minor fixes
+- improved dialog, add template for easier manipulation
+- stringListToArray removes empty, prevent not working with extra ;;;
+- error handling for compendium
+- themes
+
 0.1.3
 - header
 - tools: documentation link

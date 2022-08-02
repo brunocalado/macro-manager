@@ -1,0 +1,134 @@
+<style>   
+  .flexbox-container {
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:left;    
+  }
+  .flexbox-item {
+    display: flex;
+    align-items: center;
+    margin:auto;
+    gap: 10px;
+  }
+  .flexbox-header {
+    font-size: {{this.labelFontSize}}px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }    
+  .flexbox-macro {
+    font-size: {{this.labelFontSize}}px;
+  }    
+
+.button-49,
+.button-49:after {
+
+  font-size: {{this.labelFontSize}}px;
+  font-family: 'Bebas Neue', sans-serif;
+  background: linear-gradient(45deg, transparent 5%, #000 5%);
+  border: 0;
+  color: #56ff00;
+  letter-spacing: 3px;
+  box-shadow: 6px 0px 0px #ff00f5;
+  outline: transparent;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-49:after {
+  --slice-0: inset(50% 50% 50% 50%);
+  --slice-1: inset(80% -6px 0 0);
+  --slice-2: inset(50% -6px 30% 0);
+  --slice-3: inset(10% -6px 85% 0);
+  --slice-4: inset(40% -6px 43% 0);
+  --slice-5: inset(80% -6px 5% 0);
+  
+  content: 'EXECUTE!!!';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #ff00f5 5%);
+  text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
+  clip-path: var(--slice-0);
+}
+
+.button-49:hover:after {
+  animation: 1s glitch;
+  animation-timing-function: steps(2, end);
+}
+
+@keyframes glitch {
+  0% {
+    clip-path: var(--slice-1);
+    transform: translate(-20px, -10px);
+  }
+  10% {
+    clip-path: var(--slice-3);
+    transform: translate(10px, 10px);
+  }
+  20% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 10px);
+  }
+  30% {
+    clip-path: var(--slice-3);
+    transform: translate(0px, 5px);
+  }
+  40% {
+    clip-path: var(--slice-2);
+    transform: translate(-5px, 0px);
+  }
+  50% {
+    clip-path: var(--slice-3);
+    transform: translate(5px, 0px);
+  }
+  60% {
+    clip-path: var(--slice-4);
+    transform: translate(5px, 10px);
+  }
+  70% {
+    clip-path: var(--slice-2);
+    transform: translate(-10px, 10px);
+  }
+  80% {
+    clip-path: var(--slice-5);
+    transform: translate(20px, -10px);
+  }
+  90% {
+    clip-path: var(--slice-1);
+    transform: translate(-10px, 0px);
+  }
+  100% {
+    clip-path: var(--slice-1);
+    transform: translate(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .button-49,
+  .button-49:after {
+    width: {{maxButtonSize}}px;
+  }
+}
+</style>  
+
+{{#if this.header}}
+  <div class=".flexbox-container">
+    <div class="flexbox-item">
+        <img width="28" height="28" src="{{{this.icon}}}"/>
+        <span class="flexbox-header">{{{this.labelText}}}</span>
+    </div>        
+  </div>
+{{else}}
+  <div class=".flexbox-container">
+    <div class="flexbox-item">
+        <img width="28" height="28" src="{{{this.icon}}}"/>
+        <span class="flexbox-macro button-49">{{{this.labelText}}}</span>
+    </div>        
+  </div>
+{{/if}}

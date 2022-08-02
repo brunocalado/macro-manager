@@ -13,6 +13,7 @@ This let one hotbar space be used for lots of macros or you can just use a keybo
 - You can create share a group of macros with your players.
 - You can create the macro dialog without need to change settings. Check **Custom Macro Manager**.
 - You can read macros from your compendiums. This avoid populate your world with macros. Useful if you use a macro compendium from one module which got updated, you just read the macro from there, you don't need to import again.
+- You can add journals, tables, etc with the module Drag Anything to Hotbar.
 
 # Features
 Check the module settings to configure Macro Manager.
@@ -26,6 +27,7 @@ Check the module settings to configure Macro Manager.
 - You can read macros from a compendium.
 - You can sort the list. There is an option in settings.
 - You can add headers to organize the macros.
+- Theme! You can change the theme of your macro manager!
 
 **Summary**
 <p align="center">
@@ -144,10 +146,10 @@ You also need to share with me the default name convention for your language. Th
 
 # TODO
 - improve settings menu
-- improve macro dialog, size change, columns
-- Subheaders: create a way to expand or open a submenu
 - send mm macros to hotbar
 - send macros in mm to hotbar 
+- improve macro dialog
+-- Be able to create another column if you reach a number. Example: "10" will drop the macros to another column
 
 # Community
 - Do you have something to improve this module? [Share it!](https://github.com/brunocalado/macro-manager/issues)
