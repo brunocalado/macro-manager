@@ -1,3 +1,6 @@
+0.1.6
+- transparent dialog background fix
+
 0.1.5
 - transparent dialog background
 
