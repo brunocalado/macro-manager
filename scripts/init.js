@@ -636,6 +636,17 @@ Hooks.once('i18nInit', () => {
     config: true,
     onChange: debouncedReload
   });  
+
+  // call this with: game.settings.get("macro-manager", "dialogtransparency")
+  game.settings.register(moduleName, 'dialogtransparency', {
+    name: game.i18n.format(`${moduleName}.settings.dialogtransparency.name`, {}),
+    hint: game.i18n.format(`${moduleName}.settings.dialogtransparency.hint`, {}),
+    scope: 'client',
+    config: true,
+    default: false,
+    type: Boolean,
+    onChange: debouncedReload
+  }); 
   
   // --------------------------------------------------
   // Keybinding

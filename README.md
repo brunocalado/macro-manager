@@ -28,6 +28,7 @@ Check the module settings to configure Macro Manager.
 - You can sort the list. There is an option in settings.
 - You can add headers to organize the macros.
 - Theme! You can change the theme of your macro manager!
+- You can make the dialog transparent.
 
 **Summary**
 <p align="center">

@@ -37,11 +37,15 @@
 			},
 			"theme": {
         "name": "Button Theme",
-				"hint": "Choose a theme for the button.",
+				"hint": "Choose a theme for the button. WARNING: THE WORLD WILL RELOAD!",
         "standard": "Standard",
 				"rainbow": "Rainbow",        
         "cyberpunk": "Cyberpunk"        
-			}             
+			},
+			"dialogtransparency": {
+        "name": "Dialog Transparency",
+				"hint": "This will make the dialog transparent. WARNING: THE WORLD WILL RELOAD!"
+			}      
     },
     
 		"keybindings": {

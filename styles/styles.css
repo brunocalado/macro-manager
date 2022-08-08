@@ -1,0 +1,12 @@
+.macro-manager-dialog .window-content, .macro-manager-dialog {
+  background: none;
+	box-shadow: none;
+}
+
+.macro-manager-dialog .window-title {
+  display: none;
+}
+
+.macro-manager-dialog .window-header {
+  border: none;
+}

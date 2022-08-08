@@ -1,3 +1,6 @@
+0.1.5
+- transparent dialog background
+
 0.1.4
 - minor fixes
 - improved dialog, add template for easier manipulation

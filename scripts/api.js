@@ -37,20 +37,20 @@ export class mm {
     const dialogWidth =  game.settings.get("macro-manager", "dialogwidth");
     const maxButtonSize = dialogWidth - 40;
     const myDialogOptions = {}; // Dialog Options
+    myDialogOptions.classes = [ "macro-manager-dialog" ]; 
     myDialogOptions['width'] = dialogWidth;
     //myDialogOptions['resizable'] = true;
-
-    const templateName = game.settings.get("macro-manager", "theme");
-    //const templateName = 'button_cyberpunk';
     
+    // styles
+    const templateName = game.settings.get("macro-manager", "theme");
+    //const templateName = 'button_cyberpunk'; // tests
+    const fontSize = game.settings.get("macro-manager", "fontsize");
     
     const macroList = this.stringListToArray( args.macroList );
 
-    const fontSize = game.settings.get("macro-manager", "fontsize");
-
     let macros = macroList;
     let buttons = {}, dialog, content = `<div sytle="width:100%;></div>`;
-    
+
     if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort(); // SORT
 
     for (const macroLabel of macros) {
@@ -82,7 +82,9 @@ export class mm {
 
         buttons[macroLabel] = {
           label : buttonTemplate,
-          callback : () => {
+          callback : (html) => {
+            html[0].closest(".dialog").classList.add("my-dialog");
+
             if (args.macros!==undefined) {
               this.macroRun(macro);
             } else {
@@ -93,7 +95,8 @@ export class mm {
         }; // END BUTTONS        
       }
     }; // END FOR OF
-    dialog = new Dialog({title : `${args.title}`, content, buttons}, myDialogOptions).render(true);
+    // DOCS: https://foundryvtt.com/api/v10/classes/client.Dialog.html
+    dialog = new Dialog({title : `${args.title}`, content: content, buttons: buttons}, myDialogOptions).render(true);
   } // END openMacroManager   
 
 /*  
