@@ -37,10 +37,8 @@ export class mm {
     const dialogWidth =  game.settings.get("macro-manager", "dialogwidth");
     const dialogTransparency = game.settings.get("macro-manager", "dialogtransparency");
     const maxButtonSize = dialogWidth - 40;
-    const myDialogOptions = {}; // Dialog Options
-    //myDialogOptions.classes = !dialogTransparency ? [] : [ "macro-manager-dialog" ]; 
-    //myDialogOptions.classes = [ "macro-manager-dialog" ]; 
-
+    let myDialogOptions = {}; // Dialog Options
+    myDialogOptions.classes = !dialogTransparency ? [] : [ "macro-manager-dialog" ]; 
     myDialogOptions['width'] = dialogWidth;
     //myDialogOptions['resizable'] = true;
     
@@ -86,7 +84,7 @@ export class mm {
         buttons[macroLabel] = {
           label : buttonTemplate,
           callback : (html) => {
-            html[0].closest(".dialog").classList.add("my-dialog");
+            //html[0].closest(".dialog").classList.add("my-dialog");
 
             if (args.macros!==undefined) {
               this.macroRun(macro);

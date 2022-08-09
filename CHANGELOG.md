@@ -1,3 +1,6 @@
+0.1.8
+- transparent dialog background, but working
+
 0.1.7
 - quick fix 
 
