@@ -673,7 +673,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 2 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "02player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
@@ -687,7 +687,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 3 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "03player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
@@ -701,7 +701,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 4 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "04player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
@@ -715,7 +715,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 5 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "05player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
@@ -729,7 +729,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 6 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "06player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });  
@@ -743,7 +743,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 7 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "07player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });  
@@ -757,7 +757,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 8 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "08player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });    
@@ -771,7 +771,7 @@ Hooks.once('i18nInit', () => {
       mm.openMacroManager( 9 );      
     },
     onUp: () => {},
-    restricted: true,  // Restrict this Keybinding to gamemaster only?
+    restricted: !game.settings.get("macro-manager", "09player"),  // Restrict this Keybinding to gamemaster only?
     reservedModifiers: [],
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });  

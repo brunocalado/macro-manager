@@ -6,22 +6,17 @@ export class mm {
     const macroList = game.settings.get("macro-manager", `0${managerID}macros`);  
     const compendiumList = game.settings.get("macro-manager", `0${managerID}sourcelist`);
     const sourceFlag = compendiumList.length>0; // false: world or true: compendium
+    const data = {
+      "macroList": macroList,
+      "title": title,
+      "persistent": persistent,
+    };  
 
     if (sourceFlag) {
-      const data = {
-        "macroList": macroList,
-        "title": title,
-        "persistent": persistent,
-        "compendiumList": compendiumList
-      };        
+      data["compendiumList"] = compendiumList;
       this.openCompendiumMacroManager( data );
     } else {
-      const data = {
-        "macroList": macroList,
-        "title": title,
-        "persistent": persistent
-      };      
-      this.openCustomMacroManager(  data );
+      this.openCustomMacroManager( data );
     }
   } // END openMacroManager   
 
@@ -30,15 +25,15 @@ export class mm {
       "macroList": "macro 1; macro 2",
       "title": "title",
       "persistent": false,
-      "macros": "[]",
+      "macros": "[]"
     }   
 */ 
   static async openCustomMacroManager( args ) {  
     const dialogWidth =  game.settings.get("macro-manager", "dialogwidth");
     const dialogTransparency = game.settings.get("macro-manager", "dialogtransparency");
     const maxButtonSize = dialogWidth - 40;
-    let myDialogOptions = {}; // Dialog Options
-    myDialogOptions.classes = !dialogTransparency ? [] : [ "macro-manager-dialog" ]; 
+    const myDialogOptions = {}; // Dialog Options
+    if (dialogTransparency) myDialogOptions.classes = [ "macro-manager-dialog" ];
     myDialogOptions['width'] = dialogWidth;
     //myDialogOptions['resizable'] = true;
     
@@ -47,9 +42,8 @@ export class mm {
     //const templateName = 'button_cyberpunk'; // tests
     const fontSize = game.settings.get("macro-manager", "fontsize");
     
-    const macroList = this.stringListToArray( args.macroList );
+    let macros = this.stringListToArray( args.macroList );
 
-    let macros = macroList;
     let buttons = {}, dialog, content = `<div sytle="width:100%;></div>`;
 
     if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort(); // SORT
@@ -57,45 +51,41 @@ export class mm {
     for (const macroLabel of macros) {
       let templateData;
       const headerFrag = macroLabel.includes("##");
-      
+
       let macro;
       if (args.macros!==undefined) {
         macro = args.macros.find(p=>p.name==macroLabel);
       } else {
         macro = game.macros.getName(macroLabel);
       }
-      if(!macro && !headerFrag ) return;
       
+      if(!macro && !headerFrag ) continue;
+
       if (headerFrag) {
         const headerImage = 'icons/sundries/books/book-red-exclamation.webp';
         const headerText = macroLabel.replace('##', '').replace('##', '');
         templateData = { icon: headerImage, labelText: headerText, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize }; 
         const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );                
         buttons[macroLabel] = {
-          label : buttonTemplate,
-          callback : () => {
+          label: buttonTemplate,
+          callback: () => {
             if (args.persistent) dialog.render(true);
           }
-        }; // END BUTTONS
+        }; // END BUTTON
       } else {
         templateData = { icon: macro.data.img, labelText: macroLabel, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize}; 
         const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );        
 
         buttons[macroLabel] = {
-          label : buttonTemplate,
-          callback : (html) => {
-            //html[0].closest(".dialog").classList.add("my-dialog");
-
-            if (args.macros!==undefined) {
-              this.macroRun(macro);
-            } else {
-              game.macros.getName(macroLabel).execute();
-            }
+          label: buttonTemplate,
+          callback: () => {
+            this.macroRun(macro);
             if (args.persistent) dialog.render(true);
           }
-        }; // END BUTTONS        
+        // END BUTTON      
+        }; 
       }
-    }; // END FOR OF
+    }; // END FOR OF 
     // DOCS: https://foundryvtt.com/api/v10/classes/client.Dialog.html
     dialog = new Dialog({title : `${args.title}`, content: content, buttons: buttons}, myDialogOptions).render(true);
   } // END openMacroManager   
@@ -115,8 +105,10 @@ export class mm {
     // Get all macros from all compendiums
     for (const compendiumLabel of compendiums) {      
       const compendium = game.packs.find(p=>p.metadata.label==compendiumLabel);
-      //if (!compendium) { ui.notifications.error("Macro Manager: (" + compendiumLabel + "): couldn't be found."); return; }
-      if (!compendium) { ui.notifications.error(game.i18n.format(`macro-manager.messages.compendiumNotFound`, { message: compendiumLabel })); return; }
+      if (!compendium) { 
+        ui.notifications.error(game.i18n.format(`macro-manager.messages.compendiumNotFound`, { message: compendiumLabel })); 
+        return; 
+      }
       const compendiumMacros = await compendium.getDocuments();
       for (const compendiumMacro of compendiumMacros) {
         macros.push(compendiumMacro); // get it with:  macros.find(p=>p.name=='Macro Manager 1')
@@ -130,7 +122,7 @@ export class mm {
       "macros": macros
     };   
     this.openCustomMacroManager(data);    
-    
+
   } // END openMacroManager   
   
   // ---------------------------------------------------------------

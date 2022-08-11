@@ -1,3 +1,11 @@
+0.2.0
+- tools macro fix
+- macros in the world will run even if the player don't have permission to execute that macro
+- keybind for players fixed 1-9
+
+0.1.9
+- small refactor
+
 0.1.8
 - transparent dialog background, but working
 
