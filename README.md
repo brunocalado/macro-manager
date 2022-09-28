@@ -125,6 +125,9 @@ You can change these keybindings in **controls settings**.
 # Instalation
 You can install this module using the manifest: https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json
 
+## WARNING - v9
+This module is updated to v10. If you need the v9 version download in this [link](https://github.com/brunocalado/macro-manager/raw/main/docs/macro-manager.7z) and install manually.
+
 # Localization
 If you want to translate this module [DOWNLOAD THIS FILE](https://raw.githubusercontent.com/brunocalado/macro-manager/main/lang/en.json) and translate it. After that open an [issue](https://github.com/brunocalado/macro-manager/issues) sharing your translation. 
 

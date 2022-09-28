@@ -1,11 +1,19 @@
 {   
-  "name": "macro-manager",   
+  "id": "macro-manager",   
   "title": "Macro Manager",
   "description": "Open a dialog with your favorite macros.",   
-  "author": "Mestre Digital",
-  "version": "0.2.0",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion":"10",
+  "authors": [
+    {
+      "name": "Mestre Digital",
+      "url": "https://www.youtube.com/c/MestreDigital",
+      "flags": {}
+    }
+  ],
+  "version": "0.2.2",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
   
   "scripts": [],  
 	"esmodules": ["./scripts/init.js"],
@@ -16,7 +24,7 @@
       "type": "Macro",
       "name": "macro-manager",
       "path": "packs/macro-manager.db",
-      "entity": "Macro",
+      "type": "Macro",
       "private": false
     }  
   ],
@@ -33,8 +41,6 @@
   
   "url": "https://github.com/brunocalado/macro-manager",
   "manifest": "https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json",  
-  "download": "https://codeload.github.com/brunocalado/macro-manager/zip/main",
-
-  "flags": {}  
+  "download": "https://codeload.github.com/brunocalado/macro-manager/zip/main"
   
 }

@@ -73,7 +73,7 @@ export class mm {
           }
         }; // END BUTTON
       } else {
-        templateData = { icon: macro.data.img, labelText: macroLabel, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize}; 
+        templateData = { icon: macro.img, labelText: macroLabel, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize}; 
         const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );        
 
         buttons[macroLabel] = {
@@ -185,7 +185,7 @@ export class mm {
           callback: async (html) => {
             let compendium = html.find("#compendium")[0].value;
             const allMacros = await game.packs.find(p=>p.metadata.name==compendium).getDocuments();
-            const macros = allMacros.filter(p=>p.data.type=='script');
+            const macros = allMacros.filter(p=>p.type=='script');
             let template = '';
             for (const macro of macros) {
               template += `${macro.name};`
@@ -253,7 +253,7 @@ export class mm {
     // Get the data from the macro in the compendium in a JS object form
     let macro_data = macro.toObject();
     let temp_macro = new Macro(macro_data);
-    temp_macro.data.permission.default = 3;
+    temp_macro.permission.default = 3;
     await temp_macro.execute();
   }
   

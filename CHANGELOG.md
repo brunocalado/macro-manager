@@ -1,3 +1,8 @@
+0.2.1
+- v10 fix
+## WARNING - v9
+This module is updated to v10. If you need the v9 version download in this [link](https://github.com/brunocalado/macro-manager/raw/main/docs/macro-manager.7z) and install manually.
+
 0.2.0
 - tools macro fix
 - macros in the world will run even if the player don't have permission to execute that macro
