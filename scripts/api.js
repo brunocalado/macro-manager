@@ -9,7 +9,7 @@ export class mm {
     const data = {
       "macroList": macroList,
       "title": title,
-      "persistent": persistent,
+      "persistent": persistent
     };  
 
     if (sourceFlag) {
@@ -20,14 +20,14 @@ export class mm {
     }
   } // END openMacroManager   
 
-/*  
+  /*  
     const data = {
-      "macroList": "macro 1; macro 2",
-      "title": "title",
-      "persistent": false,
-      "macros": "[]"
+    "macroList": "macro 1; macro 2",
+    "title": "title",
+    "persistent": false,
+    "macros": "[]"
     }   
-*/ 
+  */ 
   static async openCustomMacroManager( args ) {  
     const dialogWidth =  game.settings.get("macro-manager", "dialogwidth");
     const dialogTransparency = game.settings.get("macro-manager", "dialogtransparency");
@@ -56,10 +56,10 @@ export class mm {
       if (args.macros!==undefined) {
         macro = args.macros.find(p=>p.name==macroLabel);
       } else {
-        macro = game.macros.getName(macroLabel);
+        macro = game.macros.getName(macroLabel); // Macro in the world
       }
       
-      if(!macro && !headerFrag ) continue;
+      if( !macro && !headerFrag ) continue;
 
       if (headerFrag) {
         const headerImage = 'icons/sundries/books/book-red-exclamation.webp';
@@ -78,7 +78,7 @@ export class mm {
 
         buttons[macroLabel] = {
           label: buttonTemplate,
-          callback: () => {
+          callback: () => {            
             this.macroRun(macro);
             if (args.persistent) dialog.render(true);
           }
@@ -253,7 +253,7 @@ export class mm {
     // Get the data from the macro in the compendium in a JS object form
     let macro_data = macro.toObject();
     let temp_macro = new Macro(macro_data);
-    temp_macro.permission.default = 3;
+    temp_macro.ownership.default = 3;
     await temp_macro.execute();
   }
   
