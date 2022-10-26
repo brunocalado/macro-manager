@@ -31,6 +31,7 @@ export class mm {
   static async openCustomMacroManager( args ) {  
     const dialogWidth =  game.settings.get("macro-manager", "dialogwidth");
     const dialogTransparency = game.settings.get("macro-manager", "dialogtransparency");
+    const headerColor = game.settings.get("macro-manager", "headercolor");    
     const maxButtonSize = dialogWidth - 40;
     const myDialogOptions = {}; // Dialog Options
     if (dialogTransparency) myDialogOptions.classes = [ "macro-manager-dialog" ];
@@ -64,7 +65,7 @@ export class mm {
       if (headerFrag) {
         const headerImage = 'icons/sundries/books/book-red-exclamation.webp';
         const headerText = macroLabel.replace('##', '').replace('##', '');
-        templateData = { icon: headerImage, labelText: headerText, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize }; 
+        templateData = { icon: headerImage, labelText: headerText, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize, headerColor: headerColor }; 
         const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );                
         buttons[macroLabel] = {
           label: buttonTemplate,

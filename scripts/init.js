@@ -647,6 +647,17 @@ Hooks.once('i18nInit', () => {
     type: Boolean,
     onChange: debouncedReload
   }); 
+
+  // call this with: game.settings.get("macro-manager", "headercolor")
+  game.settings.register(moduleName, 'headercolor', {
+    name: game.i18n.localize("macro-manager.settings.headercolor.name"), 
+    hint: game.i18n.localize("macro-manager.settings.headercolor.hint"),
+    scope: "client",
+    type: String,
+    default: "#000000",
+    config: true,
+    onChange: debouncedReload
+  });  
   
   // --------------------------------------------------
   // Keybinding
