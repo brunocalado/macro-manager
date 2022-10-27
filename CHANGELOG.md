@@ -1,3 +1,6 @@
+0.2.5
+- setting to change header background color
+
 0.2.4
 - setting to change header color
 

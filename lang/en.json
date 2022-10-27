@@ -48,7 +48,11 @@
 			},
 			"headercolor": {
         "name": "Header Color",
-				"hint": "This will change the color of the header. You must use the format #000000. WARNING: THE WORLD WILL RELOAD!"
+				"hint": "This will change the text color of the header. You must use the format #000000. WARNING: THE WORLD WILL RELOAD!"
+			},
+			"backgroundheadercolor": {
+        "name": "Background Header Color",
+				"hint": "This will change the background color of the header. You must use the format #000000. WARNING: THE WORLD WILL RELOAD!"
 			}        
     },
     
