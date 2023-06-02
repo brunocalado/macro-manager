@@ -73,7 +73,6 @@ Hooks.once('i18nInit', () => {
 
   // --------------------------------------------------
   // SETTINGS
-  const debouncedReload = debounce(() => location.reload(), 1000); // RELOAD AFTER CHANGE
   let currentNumber;
 
   // 1 --------------------------------------------------------------
@@ -87,7 +86,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "01title")
@@ -98,7 +97,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
 
   // call this with: game.settings.get("macro-manager", "01macros")
@@ -129,7 +128,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // 2 --------------------------------------------------------------
@@ -143,7 +142,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "02title")
@@ -154,7 +153,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "02macros")
@@ -185,7 +184,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // 3 --------------------------------------------------------------  
@@ -199,7 +198,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });  
   
   // call this with: game.settings.get("macro-manager", "03title")
@@ -210,7 +209,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "03macros")
@@ -241,7 +240,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // 4 --------------------------------------------------------------
@@ -255,7 +254,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   }); 
   
   // call this with: game.settings.get("macro-manager", "04title")
@@ -266,7 +265,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "04macros")
@@ -297,7 +296,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
 
   // 5 --------------------------------------------------------------
@@ -311,7 +310,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   }); 
   
   // call this with: game.settings.get("macro-manager", "05title")  
@@ -322,7 +321,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "05macros")
@@ -353,7 +352,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // 6 --------------------------------------------------------------
@@ -367,7 +366,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   }); 
   
   // call this with: game.settings.get("macro-manager", "06title")
@@ -378,7 +377,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "06macros")
@@ -409,7 +408,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
 
   // 7 --------------------------------------------------------------
@@ -423,7 +422,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   }); 
   
   // call this with: game.settings.get("macro-manager", "07title")
@@ -434,7 +433,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "07macros")
@@ -465,7 +464,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
 
   // 8 --------------------------------------------------------------
@@ -479,7 +478,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });   
   
   // call this with: game.settings.get("macro-manager", "08title")
@@ -490,7 +489,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "08macros")
@@ -521,7 +520,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
 
   // 9 --------------------------------------------------------------
@@ -535,7 +534,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: '',
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });   
   
   // call this with: game.settings.get("macro-manager", "09title")  
@@ -546,7 +545,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: 'Macro Manager ' + currentNumber,
     type: String,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // call this with: game.settings.get("macro-manager", "09macros")
@@ -577,7 +576,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // COMMON OPTIONS ------------------------------------
@@ -634,7 +633,7 @@ Hooks.once('i18nInit', () => {
     },
     default: "button_standard",
     config: true,
-    onChange: debouncedReload
+    requiresReload: true
   });  
 
   // call this with: game.settings.get("macro-manager", "dialogtransparency")
@@ -645,7 +644,7 @@ Hooks.once('i18nInit', () => {
     config: true,
     default: false,
     type: Boolean,
-    onChange: debouncedReload
+    requiresReload: true
   }); 
 
   // call this with: game.settings.get("macro-manager", "headercolor")
@@ -656,7 +655,7 @@ Hooks.once('i18nInit', () => {
     type: String,
     default: "#000000",
     config: true,
-    onChange: debouncedReload
+    requiresReload: true
   });  
 
   // call this with: game.settings.get("macro-manager", "backgroundheadercolor")
@@ -667,7 +666,7 @@ Hooks.once('i18nInit', () => {
     type: String,
     default: "#ffffff",
     config: true,
-    onChange: debouncedReload
+    requiresReload: true
   });
   
   // --------------------------------------------------

@@ -1,3 +1,10 @@
+0.2.7
+- v11
+- small fix
+
+0.2.6
+- small improvement, update to fvtt reload
+
 0.2.5
 - setting to change header background color
 

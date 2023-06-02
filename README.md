@@ -168,3 +168,6 @@ You can see changes at [CHANGELOG](CHANGELOG.md).
 # License and Assets
 - Code license at [LICENSE](LICENSE).
 - Icons: https://game-icons.net/
+
+# Mestre Digital
+About this module creator: https://sites.google.com/view/mestredigitalmodules
