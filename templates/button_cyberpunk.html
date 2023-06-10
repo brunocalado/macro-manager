@@ -1,9 +1,6 @@
 <style>   
   .flexbox-container {
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    align-items:left;    
+   
   }
   .flexbox-item {
     display: flex;
@@ -118,14 +115,14 @@
 </style>  
 
 {{#if this.header}}
-  <div class=".flexbox-container">
+  <div class="flexbox-container">
     <div class="flexbox-item">
         <img width="28" height="28" src="{{{this.icon}}}"/>
         <span class="flexbox-header">{{{this.labelText}}}</span>
     </div>        
   </div>
 {{else}}
-  <div class=".flexbox-container">
+  <div class="flexbox-container">
     <div class="flexbox-item">
         <img width="28" height="28" src="{{{this.icon}}}"/>
         <span class="flexbox-macro button-49">{{{this.labelText}}}</span>
