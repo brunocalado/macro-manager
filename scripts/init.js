@@ -1,6 +1,14 @@
 const moduleName = 'macro-manager';
 import { mm } from './api.js'
 
+Hooks.on('init', () => {
+  EntityFlags.registerScope('macro-manager', {
+    name: 'Macro Manager',
+    key: 'macro-manager',
+    restricted: false
+  });
+})
+
 Hooks.on("renderSettingsConfig", (app, [html]) => {
   const setting = "macro-manager.01macros";
   const input = html.querySelector(`[name='${setting}']`);

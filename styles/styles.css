@@ -1,12 +1,17 @@
-.macro-manager-dialog .window-content, .macro-manager-dialog {
+.macro-manager-dialog-transparent .window-content, .macro-manager-dialog-transparent {
   background: none;
 	box-shadow: none;
 }
 
-.macro-manager-dialog .window-title {
+.macro-manager-dialog-transparent .window-title {
   display: none;
 }
 
-.macro-manager-dialog .window-header {
+.macro-manager-dialog-transparent .window-header {
   border: none;
+}
+
+.macro-manager-dialog button.selected {
+  outline-style: outset;
+  outline-color: black
 }
