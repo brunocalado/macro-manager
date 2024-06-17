@@ -1,3 +1,6 @@
+0.2.8
+- small fix 
+
 0.2.7
 - v11
 - small fix
