@@ -1,3 +1,20 @@
+// DOCS: https://foundryvtt.com/api/v10/classes/client.Dialog.html
+class MacroManagerDialog extends Dialog {
+  constructor(arg1, arg2, clickHandlers) {
+    super(arg1, arg2)
+    this.clickHandlers = clickHandlers;
+  }
+
+  /** @override */
+  activateListeners(html) {
+    super.activateListeners(html);
+    Object.keys(this.clickHandlers).forEach(selector => {
+      const button = html.find(selector);
+      button.on('click', this.clickHandlers[selector]);
+    })
+  }
+}
+
 export class mm {
 
   static async openMacroManager( managerID ) {
@@ -34,8 +51,8 @@ export class mm {
     const headerColor = game.settings.get("macro-manager", "headercolor");    
     const backgroundHeaderColor = game.settings.get("macro-manager", "backgroundheadercolor");        
     const maxButtonSize = dialogWidth - 40;
-    const myDialogOptions = {}; // Dialog Options
-    if (dialogTransparency) myDialogOptions.classes = [ "macro-manager-dialog" ];
+    const myDialogOptions = {classes: [ "macro-manager-dialog" ]}; // Dialog Options
+    if (dialogTransparency) myDialogOptions.classes.push("macro-manager-dialog-transparent") ;
     myDialogOptions['width'] = dialogWidth;
     //myDialogOptions['resizable'] = true;
     
@@ -46,7 +63,7 @@ export class mm {
     
     let macros = this.stringListToArray( args.macroList );
 
-    let buttons = {}, dialog, content = `<div sytle="width:100%;></div>`;
+    let buttons = [], dialog;
 
     if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort(); // SORT
 
@@ -63,33 +80,52 @@ export class mm {
       
       if( !macro && !headerFrag ) continue;
 
+      const buttonClass = macroLabel.replaceAll(' ', "_").toLowerCase()
+      const classList = [buttonClass];
+
+      if(macro.flags['macro-manager']?.selected) {
+        classList.push("selected")
+      }
+
+      const selector = `button.${buttonClass}`
+
       if (headerFrag) {
         const headerImage = 'icons/sundries/books/book-red-exclamation.webp';
         const headerText = macroLabel.replace('##', '').replace('##', '');
         templateData = { icon: headerImage, labelText: headerText, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize, headerColor: headerColor, backgroundHeaderColor: backgroundHeaderColor }; 
         const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );                
-        buttons[macroLabel] = {
-          label: buttonTemplate,
+        buttons.push({
+          selector,
+          classList,
+          content: buttonTemplate,
           callback: () => {
-            if (args.persistent) dialog.render(true);
+            if (!args.persistent) dialog.close()
           }
-        }; // END BUTTON
+        });
       } else {
-        templateData = { icon: macro.img, labelText: macroLabel, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize}; 
+        templateData = { icon: macro.img, labelText: macroLabel, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize }; 
         const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );        
-
-        buttons[macroLabel] = {
-          label: buttonTemplate,
-          callback: () => {            
+        buttons.push({
+          selector,
+          classList,
+          content: buttonTemplate,
+          callback: () => {    
             this.macroRun(macro);
-            if (args.persistent) dialog.render(true);
+            if (!args.persistent) dialog.close()
           }
-        // END BUTTON      
-        }; 
+        }); 
       }
     }; // END FOR OF 
-    // DOCS: https://foundryvtt.com/api/v10/classes/client.Dialog.html
-    dialog = new Dialog({title : `${args.title}`, content: content, buttons: buttons}, myDialogOptions).render(true);
+    dialog = new MacroManagerDialog({
+        title: `${args.title}`, 
+        buttons: {},
+        content: `<div>${buttons.map(button => `<button class="${button.classList.join(" ")}">${button.content}</button>`).join('')}</div>`
+      }, 
+      myDialogOptions, 
+      buttons.reduce((handlers, button)=> {
+        handlers[button.selector] = button.callback
+        return handlers;
+      }, {})).render(true);
   } // END openMacroManager   
 
 /*  
