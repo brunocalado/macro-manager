@@ -1,72 +1,64 @@
 {
-  
-	"macro-manager": {
-    
-		"settings": {
-			"sourcelist": {
-        "name": "Compendium List: {number}",
-				"hint": "If you add the label of a compendium this Macro Manager will search the compendium instead the world. You must add ; after each label. Leave it blank to search macros in the world."
-			},      
-			"title": {
-        "name": "Title for Macro Manager: {number}",
-				"hint": "This is the title of the Macro Manager: {number}."
-			},
-			"macros": {
-        "name": "Macro List for Macro Manager: {number}",
-				"hint": "Add the names of the macros you want to show on this field. You must add ; after each macro name. You must put exactly the macro name. The macro must be in the world."
-			},
-			"persistent": {
-        "name": "Persistent for Macro Manager: {number}",
-				"hint": "Check this to keep the Macro Dialog in the screen after click in one macro."
-			},
-			"player": {
-        "name": "Enable Player Shortcut: {number}",
-				"hint": "This will let your players trigger the shortcuts."
-			},
-			"fontsize": {
+  "macro-manager": {
+    "settings": {
+      "sourcelist": {
+        "name": "Manager {number} - Compendium List",
+        "hint": "List of compendiums separated by ; (e.g., 'My Pack; Other Pack'). Leave empty for World Macros."
+      },
+      "title": {
+        "name": "Manager {number} - Title",
+        "hint": "Window title for this manager."
+      },
+      "macros": {
+        "name": "Manager {number} - Macro List",
+        "hint": "List of macro names separated by ;"
+      },
+      "persistent": {
+        "name": "Manager {number} - Persistent",
+        "hint": "Keep window open after clicking a macro?"
+      },
+      "player": {
+        "name": "Manager {number} - Player Access",
+        "hint": "Allow players to use the keybinding for this manager?"
+      },
+      "fontsize": {
         "name": "Font Size",
-				"hint": "This will change the font size for the macro label."
-			},
-			"dialogwidth": {
+        "hint": "Size of the text in buttons."
+      },
+      "dialogwidth": {
         "name": "Dialog Width",
-				"hint": "This will change the Dialog Width. The Foundry VTT default is 400."
-			},
-			"sortmacros": {
+        "hint": "Width of the Macro Manager window."
+      },
+      "sortmacros": {
         "name": "Sort Macros",
-				"hint": "This will sort the macros."
-			},
-			"theme": {
-        "name": "Button Theme",
-				"hint": "Choose a theme for the button. WARNING: THE WORLD WILL RELOAD!",
+        "hint": "Alphabetically sort macros in the list."
+      },
+      "theme": {
+        "name": "Theme",
+        "hint": "Visual style of the buttons.",
         "standard": "Standard",
-				"rainbow": "Rainbow",        
-        "cyberpunk": "Cyberpunk"        
-			},
-			"dialogtransparency": {
-        "name": "Dialog Transparency",
-				"hint": "This will make the dialog transparent. WARNING: THE WORLD WILL RELOAD!"
-			},
-			"headercolor": {
-        "name": "Header Color",
-				"hint": "This will change the text color of the header. You must use the format #000000. WARNING: THE WORLD WILL RELOAD!"
-			},
-			"backgroundheadercolor": {
-        "name": "Background Header Color",
-				"hint": "This will change the background color of the header. You must use the format #000000. WARNING: THE WORLD WILL RELOAD!"
-			}        
+        "cyberpunk": "Cyberpunk",
+        "rainbow": "Rainbow"
+      },
+      "dialogtransparency": {
+        "name": "Transparent Background",
+        "hint": "Remove window background."
+      },
+      "headercolor": {
+        "name": "Header Text Color",
+        "hint": "Color of the header text."
+      },
+      "backgroundheadercolor": {
+        "name": "Header Background Color",
+        "hint": "Color of the header background."
+      }
     },
-    
-		"keybindings": {
-      "name": "Macro Manager: {message}",
-      "hint": "This will trigger the Macro Manager: {message}.",
-      "summaryname": "Tools",
-      "summaryhint": "This will trigger the Tools with offers Multiple useful functions."
+    "keybindings": {
+      "summaryname": "Macro Manager Tools",
+      "summaryhint": "Open tools and summary (Shift+0)."
     },
-
-		"messages": {
-      "compendiumNotFound": "Macro Manager: ( {message} ): couldn't be found."
-    }  
-    
+    "messages": {
+      "compendiumNotFound": "Compendium '{message}' not found!"
+    }
   }
-  
 }

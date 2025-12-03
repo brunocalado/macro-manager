@@ -1,7 +1,7 @@
-{   
-  "id": "macro-manager",   
+{
+  "id": "macro-manager",
   "title": "Macro Manager",
-  "description": "Open a dialog with your favorite macros.",   
+  "description": "Open a dialog with your favorite macros.",
   "authors": [
     {
       "name": "Mestre Digital",
@@ -9,39 +9,32 @@
       "flags": {}
     }
   ],
-  
-  "version": "0.2.9",
+  "version": "1.0.0",
   "compatibility": {
-    "minimum": "11",
-    "verified": "12"
+    "minimum": "13",
+    "verified": "13"
   },
-  
-  "scripts": [],  
-	"esmodules": ["./scripts/init.js"],
-
+  "scripts": [],
+  "esmodules": ["scripts/init.js"],
+  "styles": ["styles/styles.css"],
   "packs": [
     {
       "label": "Macro Manager",
       "type": "Macro",
       "name": "macro-manager",
       "path": "packs/macro-manager.db",
-      "type": "Macro",
+      "system": "any",
       "private": false
-    }  
+    }
   ],
-
-  "styles": ["styles/styles.css"],
-
   "languages": [
     {
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
-    }       
+    }
   ],
-  
   "url": "https://github.com/brunocalado/macro-manager",
-  "manifest": "https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json",  
+  "manifest": "https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json",
   "download": "https://codeload.github.com/brunocalado/macro-manager/zip/main"
-  
 }

@@ -1,6 +1,6 @@
 .macro-manager-dialog .window-content, .macro-manager-dialog {
-  background: none;
-	box-shadow: none;
+  background: none !important;
+  box-shadow: none !important;
 }
 
 .macro-manager-dialog .window-title {
@@ -9,4 +9,8 @@
 
 .macro-manager-dialog .window-header {
   border: none;
+}
+
+.macro-manager-dialog .dialog-buttons {
+    flex-direction: column;
 }

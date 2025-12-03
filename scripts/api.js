@@ -1,262 +1,285 @@
-export class mm {
+/**
+ * Classe principal do Macro Manager
+ * Responsável pela lógica de exibição e execução das macros.
+ */
+export class MacroManagerAPI {
 
-  static async openMacroManager( managerID ) {
-    const persistent = game.settings.get("macro-manager", `0${managerID}persistent`);
-    const title = game.settings.get("macro-manager", `0${managerID}title`);
-    const macroList = game.settings.get("macro-manager", `0${managerID}macros`);  
-    const compendiumList = game.settings.get("macro-manager", `0${managerID}sourcelist`);
-    const sourceFlag = compendiumList.length>0; // false: world or true: compendium
+  /**
+   * Abre o gerenciador de macros baseado no ID (1 a 9).
+   * @param {number} managerID - O número do slot do gerenciador.
+   */
+  static async openMacroManager(managerID) {
+    // Garante formato 01, 02, etc.
+    const idString = managerID.toString().padStart(2, '0');
+    
+    const persistent = game.settings.get("macro-manager", `${idString}persistent`);
+    const title = game.settings.get("macro-manager", `${idString}title`);
+    const macroListRaw = game.settings.get("macro-manager", `${idString}macros`);
+    const compendiumListRaw = game.settings.get("macro-manager", `${idString}sourcelist`);
+    
+    // Verifica se há lista de compêndios
+    const compendiumList = this.stringListToArray(compendiumListRaw);
+    const sourceFlag = compendiumList.length > 0;
+
     const data = {
-      "macroList": macroList,
-      "title": title,
-      "persistent": persistent
-    };  
+      macroList: macroListRaw,
+      title: title,
+      persistent: persistent
+    };
 
     if (sourceFlag) {
-      data["compendiumList"] = compendiumList;
-      this.openCompendiumMacroManager( data );
+      data.compendiumList = compendiumListRaw;
+      await this.openCompendiumMacroManager(data);
     } else {
-      this.openCustomMacroManager( data );
+      await this.openCustomMacroManager(data);
     }
-  } // END openMacroManager   
-
-  /*  
-    const data = {
-    "macroList": "macro 1; macro 2",
-    "title": "title",
-    "persistent": false,
-    "macros": "[]"
-    }   
-  */ 
-  static async openCustomMacroManager( args ) {  
-    const dialogWidth =  game.settings.get("macro-manager", "dialogwidth");
-    const dialogTransparency = game.settings.get("macro-manager", "dialogtransparency");
-    const headerColor = game.settings.get("macro-manager", "headercolor");    
-    const backgroundHeaderColor = game.settings.get("macro-manager", "backgroundheadercolor");        
-    const maxButtonSize = dialogWidth - 40;
-    const myDialogOptions = {}; // Dialog Options
-    if (dialogTransparency) myDialogOptions.classes = [ "macro-manager-dialog" ];
-    myDialogOptions['width'] = dialogWidth;
-    //myDialogOptions['resizable'] = true;
-    
-    // styles
-    const templateName = game.settings.get("macro-manager", "theme");
-    //const templateName = 'button_cyberpunk'; // tests
-    const fontSize = game.settings.get("macro-manager", "fontsize");
-    
-    let macros = this.stringListToArray( args.macroList );
-
-    let buttons = {}, dialog, content = `<div sytle="width:100%;></div>`;
-
-    if ( game.settings.get("macro-manager", "sortmacros") ) macros = macros.sort(); // SORT
-
-    for (const macroLabel of macros) {
-      let templateData;
-      const headerFrag = macroLabel.includes("##");
-
-      let macro;
-      if (args.macros!==undefined) {
-        macro = args.macros.find(p=>p.name==macroLabel);
-      } else {
-        macro = game.macros.getName(macroLabel); // Macro in the world
-      }
-      
-      if( !macro && !headerFrag ) continue;
-
-      if (headerFrag) {
-        const headerImage = 'icons/sundries/books/book-red-exclamation.webp';
-        const headerText = macroLabel.replace('##', '').replace('##', '');
-        templateData = { icon: headerImage, labelText: headerText, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize, headerColor: headerColor, backgroundHeaderColor: backgroundHeaderColor }; 
-        const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );                
-        buttons[macroLabel] = {
-          label: buttonTemplate,
-          callback: () => {
-            if (args.persistent) dialog.render(true);
-          }
-        }; // END BUTTON
-      } else {
-        templateData = { icon: macro.img, labelText: macroLabel, labelFontSize: fontSize, header: headerFrag, maxButtonSize: maxButtonSize}; 
-        const buttonTemplate = await renderTemplate( `modules/macro-manager/templates/${templateName}.html`, templateData );        
-
-        buttons[macroLabel] = {
-          label: buttonTemplate,
-          callback: () => {            
-            this.macroRun(macro);
-            if (args.persistent) dialog.render(true);
-          }
-        // END BUTTON      
-        }; 
-      }
-    }; // END FOR OF 
-    // DOCS: https://foundryvtt.com/api/v10/classes/client.Dialog.html
-    dialog = new Dialog({title : `${args.title}`, content: content, buttons: buttons}, myDialogOptions).render(true);
-  } // END openMacroManager   
-
-/*  
-    const data = {
-      "macroList": "macro 1; macro 2",
-      "title": "title",
-      "persistent": false,
-      "compendiumList": "macro 1; macro 2",
-    }   
-*/   
-  static async openCompendiumMacroManager( args ) {
-    // Compendium    
-    const compendiums = this.stringListToArray(args.compendiumList);
-    let macros = [];
-    // Get all macros from all compendiums
-    for (const compendiumLabel of compendiums) {      
-      const compendium = game.packs.find(p=>p.metadata.label==compendiumLabel);
-      if (!compendium) { 
-        ui.notifications.error(game.i18n.format(`macro-manager.messages.compendiumNotFound`, { message: compendiumLabel })); 
-        return; 
-      }
-      const compendiumMacros = await compendium.getDocuments();
-      for (const compendiumMacro of compendiumMacros) {
-        macros.push(compendiumMacro); // get it with:  macros.find(p=>p.name=='Macro Manager 1')
-      }
-    }    
-    //game.i18n.format(`${moduleName}.messages.compendiumNotFound`, { message: compendiumLabel })
-    const data = {
-      "macroList": args.macroList,
-      "title": args.title,
-      "persistent": args.persistent,
-      "macros": macros
-    };   
-    this.openCustomMacroManager(data);    
-
-  } // END openMacroManager   
-  
-  // ---------------------------------------------------------------
-  // Tools
-  static showSummary() {
-    let titleContent = `<h2><img style="border: 0;vertical-align:middle;" src="icons/sundries/documents/document-sealed-signatures-red.webp" width="28" height="28"> Macro Manager Summary</h2>`;
-    let message = ``;
-  
-    let numbers = ['01', '02', '03', '04', '05', '06', '07', '08', '09'];
-    for ( const currentNumber of numbers ) {
-      const title = game.settings.get("macro-manager", currentNumber + `title`);
-      const macroList = this.stringListToArray(game.settings.get("macro-manager", currentNumber + `macros`));
-      if ( game.settings.get("macro-manager", currentNumber + `macros`).length>0 ) {        
-        message += `<details>`;            
-        message += `<summary>${title} (click to expand)</summary>`;      
-
-        message += `<ul>`;      
-        for ( const item of macroList ) {
-          message += `<li>${item}</li>`;
-        }      
-        message += `</ul>`;      
-        
-        message += `</details>`;
-      } // END IF
-    }
-
-    let chatData = {
-      speaker: null,
-      whisper : ChatMessage.getWhisperRecipients("GM"),
-      content: `
-      ${titleContent}
-      ${message}
-      `};
-    ChatMessage.create(chatData, {});    
   }
-  
-  static async getAllMacroLabelsFromCompendium() {
-    const compendiums = await game.packs.filter(p=>p.metadata.type=='Macro');
-    let compendiumsList = '';
-    for (const compendium of compendiums) {
-      compendiumsList += `<option value="${compendium.metadata.name}">${compendium.metadata.label}</option>`
-    }    
 
-    let template = `  
-      <h2 style="font-align: center;">Get All Macros Labels!</h2>
-      <div>
-        <b>Compendium (Choose):</b> 
-        <select id="compendium" type="text">
-          ${compendiumsList}
-        </select>  
-      </div>
-      </br>
-    `;
-    new Dialog({
-      title: "Get All Macros Names",
-      content: template,
-      buttons: {
-        ok: {
-          label: "Generate",
-          callback: async (html) => {
-            let compendium = html.find("#compendium")[0].value;
-            const allMacros = await game.packs.find(p=>p.metadata.name==compendium).getDocuments();
-            const macros = allMacros.filter(p=>p.type=='script');
-            let template = '';
-            for (const macro of macros) {
-              template += `${macro.name};`
-            }               
+  /**
+   * Abre o diálogo com macros customizadas.
+   * @param {Object} args - Argumentos de configuração.
+   */
+  static async openCustomMacroManager(args) {
+    // Configurações Visuais
+    const settings = {
+      width: game.settings.get("macro-manager", "dialogwidth"),
+      transparency: game.settings.get("macro-manager", "dialogtransparency"),
+      headerColor: game.settings.get("macro-manager", "headercolor"),
+      bgHeaderColor: game.settings.get("macro-manager", "backgroundheadercolor"),
+      template: game.settings.get("macro-manager", "theme"),
+      fontSize: game.settings.get("macro-manager", "fontsize"),
+      sort: game.settings.get("macro-manager", "sortmacros")
+    };
 
-            /* view */
-            let form = `
-              <label>Copy this to Settings</label>
-              <textarea id="moduleTextArea" rows="5" cols="33">${template}</textarea>
-            `;
+    const maxButtonSize = settings.width - 40;
+    
+    // Opções do Dialog
+    const dialogOptions = {
+      width: settings.width,
+      classes: settings.transparency ? ["macro-manager-dialog"] : []
+    };
 
-            let dialog = new Dialog({
-              title: "Macros",
-              content: form,
-              buttons: {
-                use: {
-                  label: "Copy to Clipboard",
-                  callback: () => {
-                    let copyText = document.getElementById("moduleTextArea"); /* Get the text field */  
-                    copyText.select(); /* Select the text field */  
-                    document.execCommand("copy"); /* Copy the text inside the text field */  
-                    ui.notifications.notify(`Saved on Clipboard`); /* Alert the copied text */
-                  }
-                }
-              }
-            }).render(true); 
-      
-          } // END CALLBACK
+    // Processa lista de macros
+    let macroLabels = this.stringListToArray(args.macroList);
+    if (settings.sort) macroLabels.sort();
+
+    let buttons = {};
+    // Correção: Typo "sytle" corrigido para "style"
+    const content = `<div style="width:100%;"></div>`;
+    let dialogInstance;
+
+    for (const label of macroLabels) {
+      const isHeader = label.includes("##");
+      let macro = null;
+
+      // Busca a macro na lista passada ou no mundo
+      if (!isHeader) {
+        if (args.macros) {
+          macro = args.macros.find(m => m.name === label);
+        } else {
+          macro = game.macros.getName(label);
         }
       }
-    }).render(true);    
 
-  }
-  
-  static tools(stringList) {
-    const macroList = "Summary; Get All Macro Names From Compendium;Documentation";
-    const compendiumList = "Macro Manager";
-    const data = {
-      "macroList": macroList,
-      "title": "Tools for Macro Manager",
-      "persistent": false,
-      "compendiumList" : compendiumList
+      // Se não achou macro e não é cabeçalho, pula
+      if (!macro && !isHeader) continue;
+
+      // Dados para o template
+      let templateData = {
+        labelFontSize: settings.fontSize,
+        maxButtonSize: maxButtonSize,
+        header: isHeader
+      };
+
+      if (isHeader) {
+        const cleanText = label.replace(/##/g, '').trim();
+        templateData = {
+          ...templateData,
+          icon: 'icons/sundries/books/book-red-exclamation.webp',
+          labelText: cleanText,
+          headerColor: settings.headerColor,
+          backgroundHeaderColor: settings.bgHeaderColor
+        };
+      } else {
+        templateData = {
+          ...templateData,
+          icon: macro.img,
+          labelText: label
+        };
+      }
+
+      // Renderiza o botão HTML
+      // V13: renderTemplate é global
+      const html = await renderTemplate(`modules/macro-manager/templates/${settings.template}.html`, templateData);
+
+      // Adiciona à estrutura de botões do Dialog
+      buttons[label] = {
+        label: html,
+        callback: async () => {
+          if (!isHeader && macro) {
+             await this.macroRun(macro);
+          }
+          if (args.persistent && dialogInstance) {
+            dialogInstance.render(true);
+          }
+        }
+      };
     }
-    this.openCompendiumMacroManager( data );  
+
+    // Cria e renderiza o Dialog
+    dialogInstance = new Dialog({
+      title: args.title,
+      content: content,
+      buttons: buttons
+    }, dialogOptions).render(true);
   }
-  
-  // ---------------------------------------------------------------
-  // Helpers stringListToArray 
-  static stringListToArray(stringList) {
-    stringList = stringList.split(';'); 
-    const arrayList = stringList.map(element => {
-      return element.trim();
-    });        
-    return arrayList.filter(n => n.length>0); // remove empty
+
+  /**
+   * Abre macros vindas de Compêndios.
+   */
+  static async openCompendiumMacroManager(args) {
+    const compendiums = this.stringListToArray(args.compendiumList);
+    let allMacros = [];
+
+    for (const packLabel of compendiums) {
+      // V13: game.packs.find é seguro
+      const pack = game.packs.find(p => p.metadata.label === packLabel);
+      
+      if (!pack) {
+        ui.notifications.error(game.i18n.format(`macro-manager.messages.compendiumNotFound`, { message: packLabel }));
+        continue;
+      }
+
+      const docs = await pack.getDocuments();
+      allMacros.push(...docs);
+    }
+
+    const data = {
+      ...args,
+      macros: allMacros
+    };
+
+    await this.openCustomMacroManager(data);
   }
 
   // ---------------------------------------------------------------
-  // Macros
-  static async macroRun(macro) {  
-    /* CHECK
-      const pack = game.packs.get("mymodule.mypack");
-      const macro = pack.getDocument(documentId);
-      await macro.execute();
-    */
-    // Get the data from the macro in the compendium in a JS object form
-    let macro_data = macro.toObject();
-    let temp_macro = new Macro(macro_data);
-    temp_macro.ownership.default = 3;
-    await temp_macro.execute();
+  // Tools & Helpers
+  // ---------------------------------------------------------------
+
+  static showSummary() {
+    let message = ``;
+    
+    for (let i = 1; i <= 9; i++) {
+      const num = i.toString().padStart(2, '0');
+      const title = game.settings.get("macro-manager", `${num}title`);
+      const rawMacros = game.settings.get("macro-manager", `${num}macros`);
+      const macroList = this.stringListToArray(rawMacros);
+
+      if (macroList.length > 0) {
+        message += `
+          <details>
+            <summary><strong>${title}</strong> (${num})</summary>
+            <ul>${macroList.map(m => `<li>${m}</li>`).join('')}</ul>
+          </details>`;
+      }
+    }
+
+    const content = `
+      <h2><img style="border:0;vertical-align:middle;" src="icons/sundries/documents/document-sealed-signatures-red.webp" width="28" height="28"> Macro Manager Summary</h2>
+      ${message}
+    `;
+
+    ChatMessage.create({
+      content: content,
+      whisper: ChatMessage.getWhisperRecipients("GM")
+    });
   }
-  
-} // END CLASS
+
+  static async getAllMacroLabelsFromCompendium() {
+    // V13: Filtragem de packs
+    const packs = game.packs.filter(p => p.metadata.type === 'Macro');
+    
+    let options = packs.map(p => `<option value="${p.metadata.id}">${p.metadata.label}</option>`).join('');
+
+    const content = `
+      <div style="margin-bottom: 10px;">
+        <p><strong>Choose Compendium:</strong></p>
+        <select id="compendium-select" style="width: 100%;">${options}</select>
+      </div>
+    `;
+
+    new Dialog({
+      title: "Get All Macros Names",
+      content: content,
+      buttons: {
+        generate: {
+          label: "Generate List",
+          icon: '<i class="fas fa-cogs"></i>',
+          callback: async (html) => {
+            const packId = html.find("#compendium-select").val();
+            const pack = game.packs.get(packId);
+            if (!pack) return;
+
+            const docs = await pack.getDocuments();
+            // Filtra apenas scripts se necessário, ou pega tudo
+            const names = docs.map(d => d.name).join('; ');
+
+            this.showCopyDialog(names);
+          }
+        }
+      },
+      default: "generate"
+    }).render(true);
+  }
+
+  static showCopyDialog(text) {
+     const content = `
+       <p>Copy this to your settings:</p>
+       <textarea id="copy-text" rows="8" style="width:100%">${text}</textarea>
+     `;
+     
+     new Dialog({
+       title: "Macro List",
+       content: content,
+       buttons: {
+         copy: {
+           label: "Copy to Clipboard",
+           icon: '<i class="fas fa-copy"></i>',
+           callback: () => {
+             // V13 Modern Clipboard API
+             game.clipboard.copyPlainText(text);
+             ui.notifications.info("Copied to clipboard!");
+           }
+         }
+       }
+     }).render(true);
+  }
+
+  static tools() {
+    const data = {
+      macroList: "Summary; Get All Macro Names From Compendium; Documentation",
+      title: "Tools for Macro Manager",
+      persistent: false,
+      compendiumList: "Macro Manager" // Assumes a pack named "Macro Manager" exists with these tool macros
+    };
+    this.openCompendiumMacroManager(data);
+  }
+
+  static stringListToArray(stringList) {
+    if (!stringList) return [];
+    return stringList.split(';')
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
+  }
+
+  static async macroRun(macro) {
+    if (!macro) return;
+    // Executa a macro. Na V11+ execute() é suficiente e lida com permissões se for GM.
+    try {
+      await macro.execute();
+    } catch (err) {
+      ui.notifications.error(`Error running macro ${macro.name}: ${err.message}`);
+      console.error(err);
+    }
+  }
+}
