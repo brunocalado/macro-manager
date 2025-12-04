@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
@@ -23,7 +23,6 @@
       "type": "Macro",
       "name": "macro-manager",
       "path": "packs/macro-manager.db",
-      "system": "any",
       "private": false
     }
   ],
