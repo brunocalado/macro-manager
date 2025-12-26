@@ -1,3 +1,6 @@
+# 1.0.2
+the module was remade to be very simple.
+
 0.3.0
 - v13
 
