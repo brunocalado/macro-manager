@@ -1,0 +1,30 @@
+<div class="mm-content-wrapper">
+    {{!-- Barra de Busca --}}
+    <div class="mm-search-container">
+        <input type="text" name="search" class="mm-search-input" 
+               placeholder="Search..." 
+               value="{{searchValue}}" 
+               autocomplete="off">
+    </div>
+
+    {{!-- Lista de Macros --}}
+    <div class="mm-buttons-list">
+        {{#each buttons}}
+            <button type="button" 
+                    class="mm-macro-btn {{#if this.isHeader}}mm-header{{/if}}" 
+                    data-action="clickMacro" 
+                    data-label="{{this.label}}"
+                    style="{{#if this.hidden}}display:none;{{/if}} 
+                           {{#if this.headerColor}}color:{{this.headerColor}};{{/if}}
+                           {{#if this.backgroundHeaderColor}}background-color:{{this.backgroundHeaderColor}};{{/if}}">
+                
+                {{#if this.isHeader}}
+                    <span>{{this.label}}</span>
+                {{else}}
+                    <img src="{{this.icon}}" alt="{{this.label}}"/>
+                    <span>{{this.label}}</span>
+                {{/if}}
+            </button>
+        {{/each}}
+    </div>
+</div>

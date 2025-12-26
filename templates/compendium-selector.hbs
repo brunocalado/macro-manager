@@ -1,0 +1,12 @@
+<div style="padding: 10px; display: flex; flex-direction: column; gap: 10px;">
+    <p><strong>Choose Compendium:</strong></p>
+    <select name="packId" style="width: 100%; padding: 5px;">
+        {{#each packs}}
+            <option value="{{this.id}}">{{this.label}}</option>
+        {{/each}}
+    </select>
+    
+    <button type="submit">
+        <i class="fas fa-cogs"></i> Generate List
+    </button>
+</div>

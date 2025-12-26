@@ -1,16 +1,144 @@
-.macro-manager-dialog .window-content, .macro-manager-dialog {
-  background: none !important;
-  box-shadow: none !important;
+/* Base styles for ApplicationV2 */
+
+/* --- WINDOW AND SCROLL --- */
+.macro-manager-window .window-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding: 0 !important;
 }
 
-.macro-manager-dialog .window-title {
-  display: none;
+/* Transparent Mode */
+.macro-manager-transparent {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
-.macro-manager-dialog .window-header {
-  border: none;
+.macro-manager-transparent .window-header {
+    display: none !important;
+    border: none !important;
 }
 
-.macro-manager-dialog .dialog-buttons {
+.macro-manager-transparent .window-content {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-radius: 8px;
+    padding: 4px !important;
+    backdrop-filter: blur(2px);
+}
+
+/* --- LIST --- */
+.mm-buttons-list {
+    display: flex;
     flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+}
+
+/* --- MACRO BUTTON --- */
+.mm-macro-btn {
+    display: flex;
+    align-items: center; /* Vertically align the icon */
+    justify-content: flex-start; /* Align everything to the left */
+    width: 100%;
+    
+    padding: 8px 12px;
+    gap: 12px;
+    min-height: 48px;
+    
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    color: #e0e0e0;
+    
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.2;
+    text-align: left; /* Ensure text alignment */
+    
+    background-color: rgba(30, 40, 50, 0.7);
+    transition: all 0.2s ease;
+}
+
+/* Button Text */
+.mm-macro-btn span {
+    flex: 1; /* Occupy remaining space */
+    text-align: left;
+}
+
+/* Red Hover */
+.mm-macro-btn:not(.mm-header):hover {
+    background-color: #c62828 !important;
+    border-color: #ff6400;
+    color: white;
+    transform: translateX(2px);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+/* --- ICON --- */
+.mm-macro-btn img {
+    display: block;
+    width: 32px; 
+    height: 32px;
+    border: none;
+    flex-shrink: 0;
+    object-fit: contain;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    margin: 0;
+}
+
+/* --- HEADER --- */
+.mm-macro-btn.mm-header {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    cursor: default;
+    
+    margin-top: 10px;
+    padding: 10px 4px 4px 4px;
+    
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffd43b;
+    justify-content: center; /* Centralized Headers */
+    text-align: center;
+}
+
+.mm-macro-btn.mm-header span {
+    text-align: center;
+    flex: none; /* In headers, do not force expansion */
+}
+
+.mm-macro-btn.mm-header:hover {
+    background: transparent !important;
+    transform: none;
+    box-shadow: none;
+}
+
+/* --- SEARCH --- */
+.mm-search-container {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 8px;
+    background: inherit;
+}
+
+.mm-search-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #555;
+    color: #fff;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.mm-search-input:focus {
+    outline: none;
+    border-color: #ff6400;
+    box-shadow: 0 0 5px rgba(255, 100, 0, 0.5);
 }

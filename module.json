@@ -9,14 +9,17 @@
       "flags": {}
     }
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
   },
+  
   "scripts": [],
+  
   "esmodules": ["scripts/init.js"],
   "styles": ["styles/styles.css"],
+  
   "packs": [
     {
       "label": "Macro Manager",
@@ -26,13 +29,9 @@
       "private": false
     }
   ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
-  ],
+  
+  "languages": [],
+  
   "url": "https://github.com/brunocalado/macro-manager",
   "manifest": "https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json",
   "download": "https://codeload.github.com/brunocalado/macro-manager/zip/main"
