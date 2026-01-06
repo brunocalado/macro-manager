@@ -7,8 +7,8 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(options = {}) {
     super(options);
     this.selectedPackIds = new Set();
-    this.selectedMacroUuids = new Set(); // Armazena macros selecionadas de forma persistente
-    this.targetMode = 'world'; // Estado padrão
+    this.selectedMacroUuids = new Set(); 
+    this.targetMode = 'world'; 
   }
 
   static DEFAULT_OPTIONS = {
@@ -24,39 +24,31 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     form: { template: "modules/macro-manager/templates/builder.hbs" }
   };
 
-  // Helper para obter nome amigável do pacote
   _getPackageTitle(pack) {
       if (!pack) return "World";
       const packageName = pack.metadata.packageName;
-      
       const module = game.modules.get(packageName);
       if (module) return module.title;
-      
       if (game.system.id === packageName) return game.system.title;
-      
       if (packageName === 'world') return "World";
-      
-      return packageName;
+      return packageName; 
   }
 
   async _prepareContext(options) {
     const sources = [];
     let macros = [];
     
-    // Lógica: Tratamento de Modos
     if (this.targetMode === 'world') {
-        // MODO WORLD
         macros = game.macros.map(m => ({
             uuid: m.uuid, 
             id: m.id,     
             name: m.name,
             img: m.img,
             packLabel: "",
-            checked: this.selectedMacroUuids.has(m.uuid) // Verifica persistência
+            checked: this.selectedMacroUuids.has(m.uuid)
         }));
 
     } else {
-        // MODO COMPENDIUM
         const packs = game.packs.filter(p => p.metadata.type === 'Macro').map(p => {
             const packageTitle = this._getPackageTitle(p);
             return {
@@ -70,7 +62,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         packs.sort((a, b) => a.label.localeCompare(b.label));
         sources.push(...packs);
 
-        // Busca macros dos compêndios SELECIONADOS
         for (const source of sources) {
             if (source.checked) {
                 const pack = game.packs.get(source.id);
@@ -83,14 +74,13 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
                         name: d.name,
                         img: d.img,
                         packLabel: friendlyPackLabel,
-                        checked: this.selectedMacroUuids.has(d.uuid) // Verifica persistência
+                        checked: this.selectedMacroUuids.has(d.uuid)
                     })));
                 }
             }
         }
     }
 
-    // Ordena macros por nome
     macros.sort((a, b) => a.name.localeCompare(b.name));
 
     return { 
@@ -98,20 +88,18 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         macros,
         isWorldMode: this.targetMode === 'world',
         isCompendiumMode: this.targetMode === 'compendium',
-        selectedCount: this.selectedMacroUuids.size // Pass count to template
+        selectedCount: this.selectedMacroUuids.size
     };
   }
 
   _onRender(context, options) {
     super._onRender(context, options);
 
-    // --- Helper to Update Count Display ---
     const updateCount = () => {
         const countEl = this.element.querySelector('.mm-count-val');
         if (countEl) countEl.textContent = this.selectedMacroUuids.size;
     };
 
-    // --- Lógica de Abas ---
     const tabLinks = this.element.querySelectorAll('.mm-tab-link');
     const tabContents = this.element.querySelectorAll('.mm-tab-content');
 
@@ -129,7 +117,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         });
     });
 
-    // Toggle Packs
     const packCheckboxes = this.element.querySelectorAll('input[data-action="togglePack"]');
     packCheckboxes.forEach(cb => {
         cb.addEventListener('change', (ev) => {
@@ -142,7 +129,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         });
     });
 
-    // Toggle Target Mode
     const modeRadios = this.element.querySelectorAll('input[data-action="switchMode"]');
     modeRadios.forEach(radio => {
         radio.addEventListener('change', (ev) => {
@@ -153,18 +139,16 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         });
     });
 
-    // Lógica de Seleção de Macro (Atualização em Tempo Real)
     const macroCheckboxes = this.element.querySelectorAll('input[name="macroData"]');
     macroCheckboxes.forEach(cb => {
         cb.addEventListener('change', (ev) => {
             const val = ev.target.value;
             if (ev.target.checked) this.selectedMacroUuids.add(val);
             else this.selectedMacroUuids.delete(val);
-            updateCount(); // Update Visual Counter
+            updateCount(); 
         });
     });
 
-    // Select All/None
     const btnAll = this.element.querySelector('[data-action="selectAll"]');
     const btnNone = this.element.querySelector('[data-action="deselectAll"]');
 
@@ -174,7 +158,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
                 c.checked = true;
                 this.selectedMacroUuids.add(c.value);
             });
-            updateCount(); // Update Visual Counter
+            updateCount();
         });
     }
     
@@ -184,11 +168,10 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
                 c.checked = false;
                 this.selectedMacroUuids.delete(c.value);
             });
-            updateCount(); // Update Visual Counter
+            updateCount();
         });
     }
 
-    // Preview Macro
     const previewBtns = this.element.querySelectorAll('[data-action="previewMacro"]');
     previewBtns.forEach(btn => {
         btn.addEventListener('click', async (ev) => {
@@ -209,7 +192,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     });
   }
 
-  // Handler Estático
   static async formHandler(event, form, formData) {
     let selectedUuids = Array.from(this.selectedMacroUuids);
     selectedUuids = selectedUuids.filter(u => typeof u === 'string' && u.length > 0);
@@ -217,7 +199,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const macroName = formData.object.macroName || "Custom Manager";
     const macroTitle = formData.object.macroTitle || macroName;
 
-    // Extrai Configurações
     const config = {
         persistent: formData.object.confPersistent === "true" || formData.object.confPersistent === true,
         settings: {
@@ -232,7 +213,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return;
     }
 
-    // Cria a macro
     const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids, config, macroTitle);
     if (createdMacro) {
         ui.notifications.info(`Macro "${createdMacro.name}" created successfully!`);
@@ -262,7 +242,7 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
     tag: "div",
-    id: "macro-manager-app", // ID padrão
+    id: "macro-manager-app", 
     classes: ["macro-manager-window"],
     window: { resizable: true, title: "Macro Manager", controls: [] },
     position: { width: 400, height: "auto" }
@@ -278,63 +258,100 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     
-    const items = MacroManagerAPI.stringListToArray(this.macroListRaw);
+    // Parse the raw string into an array
+    const rawItems = MacroManagerAPI.stringListToArray(this.macroListRaw);
     
-    const promises = items.map(async (item) => {
-        // Headers
-        if (item.startsWith("##")) {
-            return {
-                label: item.replace(/##/g, '').trim(),
-                isHeader: true,
-                raw: item
-            };
-        }
+    // Data Structures
+    const folders = [];
+    const looseMacros = [];
+    let currentFolder = null;
 
-        // UUID Handling
+    // Helper to resolve macro
+    const resolveMacro = async (item) => {
         try {
             let macro = await fromUuid(item);
             if (!macro && !item.includes('.')) macro = game.macros.get(item);
-            
             if (macro) {
                 return {
                     label: macro.name,
-                    isHeader: false,
                     icon: macro.img,
-                    uuid: macro.uuid
+                    uuid: macro.uuid,
+                    isMacro: true
                 };
             }
         } catch (e) {
-            console.warn(`MacroManager | Failed to resolve UUID: ${item}`);
+             // console.warn(`MacroManager | Failed: ${item}`);
         }
         return null;
-    });
+    };
 
-    let resolvedButtons = (await Promise.all(promises)).filter(b => b !== null);
+    // 1. Structural Parsing
+    for (const item of rawItems) {
+        if (item.startsWith("##")) {
+            // It's a Folder
+            const folderName = item.replace(/##/g, '').trim();
+            currentFolder = {
+                label: folderName,
+                isFolder: true,
+                items: [],
+                id: `folder-${foundry.utils.randomID()}` // Unique ID for toggle
+            };
+            folders.push(currentFolder);
+        } else {
+            // It's a Macro
+            const macroData = await resolveMacro(item);
+            if (macroData) {
+                if (currentFolder) {
+                    currentFolder.items.push(macroData);
+                } else {
+                    looseMacros.push(macroData);
+                }
+            }
+        }
+    }
+
+    // 2. Sorting (if enabled)
+    if (this.settings.sort) {
+        // Sort folder labels
+        folders.sort((a, b) => a.label.localeCompare(b.label));
+        // Sort macros inside folders
+        folders.forEach(f => f.items.sort((a, b) => a.label.localeCompare(b.label)));
+        // Sort loose macros
+        looseMacros.sort((a, b) => a.label.localeCompare(b.label));
+    }
+
+    // 3. Search Filtering
+    let filteredFolders = folders;
+    let filteredLoose = looseMacros;
 
     if (this.searchValue) {
         const query = this.searchValue.toLowerCase();
-        resolvedButtons = resolvedButtons.map(b => {
-            const hidden = !b.label.toLowerCase().includes(query);
-            return { ...b, hidden };
-        });
+        
+        // Filter loose
+        filteredLoose = looseMacros.filter(m => m.label.toLowerCase().includes(query));
+
+        // Filter folders: Keep folder if Name matches OR if it contains matching macros
+        filteredFolders = folders.map(f => {
+            const nameMatch = f.label.toLowerCase().includes(query);
+            const matchingItems = f.items.filter(m => m.label.toLowerCase().includes(query));
+            
+            if (nameMatch || matchingItems.length > 0) {
+                return {
+                    ...f,
+                    items: nameMatch ? f.items : matchingItems, // If folder matches, show all. If only items match, show only those.
+                    forceOpen: true // Auto open on search
+                };
+            }
+            return null;
+        }).filter(f => f !== null);
     }
 
-    if (this.settings.sort) {
-        const hasHeaders = resolvedButtons.some(b => b.isHeader);
-        if (!hasHeaders) {
-            resolvedButtons.sort((a, b) => a.label.localeCompare(b.label));
-        }
-    }
-
-    context.buttons = resolvedButtons.map(b => ({
-        ...b,
-        headerColor: b.isHeader ? this.settings.headerColor : null,
-        backgroundHeaderColor: b.isHeader ? this.settings.bgHeaderColor : null
-    }));
-    
-    context.searchValue = this.searchValue;
-    context.fontSize = this.settings.fontSize;
-    return context;
+    return { 
+        folders: filteredFolders,
+        looseMacros: filteredLoose,
+        searchValue: this.searchValue,
+        fontSize: this.settings.fontSize
+    };
   }
 
   _onRender(context, options) {
@@ -357,30 +374,53 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
       searchInput.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') ev.preventDefault(); });
     }
 
+    // --- Folder Toggling ---
+    const folderHeaders = this.element.querySelectorAll('.mm-folder-header');
+    folderHeaders.forEach(header => {
+        header.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            const folderId = header.dataset.folderId;
+            const content = this.element.querySelector(`#${folderId}`);
+            const icon = header.querySelector('.mm-folder-icon');
+
+            if (content) {
+                const isHidden = content.style.display === 'none';
+                if (isHidden) {
+                    content.style.display = 'flex'; // Show
+                    icon.classList.remove('fa-folder');
+                    icon.classList.add('fa-folder-open');
+                } else {
+                    content.style.display = 'none'; // Hide
+                    icon.classList.remove('fa-folder-open');
+                    icon.classList.add('fa-folder');
+                }
+            }
+        });
+    });
+
+    // --- Macro Clicking ---
     const buttons = this.element.querySelectorAll('.mm-macro-btn');
     buttons.forEach(btn => {
       btn.addEventListener('click', async (ev) => {
-        const target = ev.currentTarget; 
-        const isHeader = target.classList.contains('mm-header');
+        const uuid = ev.currentTarget.dataset.uuid;
+        
+        // Prevent clicking the folder header from triggering this if classes overlap
+        if (!uuid) return; 
 
-        if (!isHeader) {
-          const uuid = target.dataset.uuid;
-          let macro;
+        let macro;
+        if (uuid) {
+            macro = await fromUuid(uuid);
+            if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
+        }
 
-          if (uuid) {
-              macro = await fromUuid(uuid);
-              if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
-          }
+        if (macro) {
+          await MacroManagerAPI.macroRun(macro);
+        } else {
+           ui.notifications.warn("Macro not found or deleted.");
+        }
 
-          if (macro) {
-            await MacroManagerAPI.macroRun(macro);
-          } else {
-             ui.notifications.warn("Macro not found or deleted.");
-          }
-
-          if (!this.persistent) {
-            this.close();
-          }
+        if (!this.persistent) {
+          this.close();
         }
       });
     });
@@ -400,7 +440,6 @@ export class MacroManagerAPI {
     new MacroBuilderApp().render(true);
   }
 
-  // --- Creator Logic V2 ---
   static async createManagerMacroV2(name, macroUuids, config = {}, title = null) {
     const folderName = "🤖 Manager Macros";
     let folder = game.folders.getName(folderName);
@@ -413,19 +452,15 @@ export class MacroManagerAPI {
         });
     }
 
-    // Unique Name Logic
     let finalName = name;
     let counter = 1;
-    
     const existingMacros = folder.contents;
-    
     while (existingMacros.some(m => m.name === finalName)) {
         finalName = `${name} ${counter}`;
         counter++;
     }
 
     const macroListStr = macroUuids.join(";");
-    
     const persistent = config.persistent !== undefined ? config.persistent : true;
     const settings = config.settings || { width: 400, fontSize: 16, sort: true };
     const displayTitle = title || finalName;
@@ -451,7 +486,6 @@ MacroManager.Open({
     const defaultSettings = { width: 400, fontSize: 16, sort: true };
     const settings = { ...defaultSettings, ...(args.settings || {}) };
     
-    // GERAÇÃO DE ID ÚNICO
     const uniqueId = args.id || `macro-manager-${foundry.utils.randomID()}`;
 
     new MacroManagerApp({

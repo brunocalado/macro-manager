@@ -2,6 +2,7 @@
 - You can adds from the world and from the compendium to a macro.
 - You can pick the macro title name
 - You can open how many macros you want
+- You can add folders to macro manager.
 
 # 1.0.4
 You create macro managers with a macro builder. Very easy. Only accept UUID now.

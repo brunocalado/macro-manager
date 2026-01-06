@@ -7,26 +7,45 @@
                autocomplete="off">
     </div>
 
-    {{!-- Lista de Macros --}}
     <div class="mm-buttons-list">
-        {{#each buttons}}
+        
+        {{!-- 1. FOLDERS --}}
+        {{#each folders}}
+            <div class="mm-folder-wrapper">
+                {{!-- Folder Header --}}
+                <button type="button" class="mm-folder-header" data-folder-id="{{this.id}}">
+                    <i class="fas {{#if this.forceOpen}}fa-folder-open{{else}}fa-folder{{/if}} mm-folder-icon"></i>
+                    <span class="mm-folder-label">{{this.label}}</span>
+                    <i class="fas fa-chevron-down mm-chevron"></i>
+                </button>
+
+                {{!-- Folder Content (Macros) --}}
+                <div id="{{this.id}}" class="mm-folder-content" style="{{#unless this.forceOpen}}display: none;{{/unless}}">
+                    {{#each this.items}}
+                        <button type="button" 
+                                class="mm-macro-btn mm-nested-btn" 
+                                data-action="clickMacro" 
+                                data-uuid="{{this.uuid}}"
+                                style="font-size: {{../../fontSize}}px;">
+                            <img src="{{this.icon}}" alt="{{this.label}}"/>
+                            <span>{{this.label}}</span>
+                        </button>
+                    {{/each}}
+                </div>
+            </div>
+        {{/each}}
+
+        {{!-- 2. LOOSE MACROS (Root Level) --}}
+        {{#each looseMacros}}
             <button type="button" 
-                    class="mm-macro-btn {{#if this.isHeader}}mm-header{{/if}}" 
+                    class="mm-macro-btn" 
                     data-action="clickMacro" 
-                    data-label="{{this.label}}"
                     data-uuid="{{this.uuid}}"
-                    style="{{#if this.hidden}}display:none;{{/if}} 
-                           {{#if this.headerColor}}color:{{this.headerColor}};{{/if}}
-                           {{#if this.backgroundHeaderColor}}background-color:{{this.backgroundHeaderColor}};{{/if}}
-                           font-size: {{../fontSize}}px;">
-                
-                {{#if this.isHeader}}
-                    <span>{{this.label}}</span>
-                {{else}}
-                    <img src="{{this.icon}}" alt="{{this.label}}"/>
-                    <span>{{this.label}}</span>
-                {{/if}}
+                    style="font-size: {{../fontSize}}px;">
+                <img src="{{this.icon}}" alt="{{this.label}}"/>
+                <span>{{this.label}}</span>
             </button>
         {{/each}}
+        
     </div>
 </div>
