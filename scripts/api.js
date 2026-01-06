@@ -17,7 +17,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     classes: ["macro-manager-window"], 
     window: { title: "Macro Manager Builder", resizable: true },
     position: { width: 900, height: 600 },
-    // CORREÇÃO: Passando a referência da função estática, não uma string
     form: { handler: MacroBuilderApp.formHandler, submitOnChange: false, closeOnSubmit: false }
   };
 
@@ -142,7 +141,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         radio.addEventListener('change', (ev) => {
             if (ev.target.checked) {
                 this.targetMode = ev.target.value;
-                // NOTA: Não limpamos mais o selectedPackIds para manter estado se voltar
                 this.render();
             }
         });
@@ -201,14 +199,13 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     });
   }
 
-  // Handler Estático - O Foundry chama isso com 'this' vinculado à instância da Application
+  // Handler Estático
   static async formHandler(event, form, formData) {
-    // Pega os UUIDs do nosso Set persistente
     let selectedUuids = Array.from(this.selectedMacroUuids);
-    
     selectedUuids = selectedUuids.filter(u => typeof u === 'string' && u.length > 0);
 
     const macroName = formData.object.macroName || "Custom Manager";
+    const macroTitle = formData.object.macroTitle || macroName; // Pega o Título da Janela
 
     // Extrai Configurações
     const config = {
@@ -225,8 +222,8 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return;
     }
 
-    // Cria a macro usando a API
-    const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids, config);
+    // Cria a macro passando o Título opcional
+    const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids, config, macroTitle);
     if (createdMacro) {
         ui.notifications.info(`Macro "${createdMacro.name}" created successfully!`);
         this.close(); 
@@ -255,7 +252,7 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
     tag: "div",
-    id: "macro-manager-app",
+    id: "macro-manager-app", // ID padrão (será sobrescrito para múltiplas janelas)
     classes: ["macro-manager-window"],
     window: { resizable: true, title: "Macro Manager", controls: [] },
     position: { width: 400, height: "auto" }
@@ -274,7 +271,7 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const items = MacroManagerAPI.stringListToArray(this.macroListRaw);
     
     const promises = items.map(async (item) => {
-        // Headers (Keep them)
+        // Headers
         if (item.startsWith("##")) {
             return {
                 label: item.replace(/##/g, '').trim(),
@@ -283,10 +280,9 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
             };
         }
 
-        // UUID Handling ONLY
+        // UUID Handling
         try {
             let macro = await fromUuid(item);
-            // Fallback for simple IDs (e.g., from World) if fromUuid fails or input is just ID
             if (!macro && !item.includes('.')) macro = game.macros.get(item);
             
             if (macro) {
@@ -361,7 +357,6 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
           const uuid = target.dataset.uuid;
           let macro;
 
-          // Resolve on click (using UUID logic)
           if (uuid) {
               macro = await fromUuid(uuid);
               if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
@@ -396,7 +391,7 @@ export class MacroManagerAPI {
   }
 
   // --- Creator Logic V2 ---
-  static async createManagerMacroV2(name, macroUuids, config = {}) {
+  static async createManagerMacroV2(name, macroUuids, config = {}, title = null) {
     const folderName = "🤖 Manager Macros";
     let folder = game.folders.getName(folderName);
     
@@ -423,10 +418,11 @@ export class MacroManagerAPI {
     
     const persistent = config.persistent !== undefined ? config.persistent : true;
     const settings = config.settings || { width: 400, fontSize: 16, sort: true };
+    const displayTitle = title || finalName; // Usa o título escolhido ou o nome da macro
 
     const scriptContent = `// Macro Manager: ${finalName}
 MacroManager.Open({
-    title: "${finalName}",
+    title: "${displayTitle}",
     macroList: "${macroListStr}",
     persistent: ${persistent},
     settings: ${JSON.stringify(settings, null, 4)}
@@ -444,10 +440,14 @@ MacroManager.Open({
   static async openCustomMacroManager(args) {
     const defaultSettings = { width: 400, fontSize: 16, sort: true };
     const settings = { ...defaultSettings, ...(args.settings || {}) };
-    const classes = ["macro-manager-window"];
+    
+    // GERAÇÃO DE ID ÚNICO: Permite abrir múltiplas janelas
+    // Se não for passado um ID específico, gera um aleatório
+    const uniqueId = args.id || `macro-manager-${foundry.utils.randomID()}`;
 
     new MacroManagerApp({
-        classes: classes, 
+        id: uniqueId, // Sobrescreve o ID padrão
+        classes: ["macro-manager-window"], 
         macroList: args.macroList, 
         settings: settings,
         persistent: args.persistent, 

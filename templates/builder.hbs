@@ -54,7 +54,6 @@
                         {{#each macros}}
                         <label class="mm-checkbox-row">
                             <div class="mm-checkbox-wrap">
-                                {{!-- Added checked state here --}}
                                 <input type="checkbox" name="macroData" value="{{this.uuid}}" {{#if this.checked}}checked{{/if}}>
                             </div>
                             <img src="{{this.img}}" width="24" height="24"/>
@@ -106,7 +105,11 @@
     <div class="mm-footer">
         <div class="mm-input-group">
             <label>Name:</label>
-            <input type="text" name="macroName" value="My Custom Manager" required>
+            <input type="text" name="macroName" value="My Custom Manager" required placeholder="Macro Name">
+        </div>
+        <div class="mm-input-group">
+            <label>Title:</label>
+            <input type="text" name="macroTitle" value="" placeholder="Window Title (Optional)">
         </div>
         <button type="submit" class="mm-save-btn">
             <i class="fas fa-hammer"></i> Build
