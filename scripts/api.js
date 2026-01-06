@@ -202,8 +202,11 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return;
     }
 
-    await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids, config);
-    ui.notifications.info(`Macro "${macroName}" created successfully!`);
+    // UPDATED: Capture created macro to get the correct name
+    const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids, config);
+    if (createdMacro) {
+        ui.notifications.info(`Macro "${createdMacro.name}" created successfully!`);
+    }
   }
 }
 
@@ -405,7 +408,8 @@ MacroManager.Open({
     settings: ${JSON.stringify(settings, null, 4)}
 });`;
 
-    await Macro.create({
+    // UPDATED: Return the created document
+    return await Macro.create({
         name: finalName,
         type: "script",
         img: "icons/sundries/books/book-red-exclamation.webp",
