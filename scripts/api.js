@@ -84,8 +84,6 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.settings = {
         width: 400,
         fontSize: 16,
-        headerColor: "#ffd43b",
-        bgHeaderColor: "#ffffff",
         sort: true,
         ...options.settings // Allows override if passed via code
     };
@@ -226,17 +224,13 @@ export class MacroManagerAPI {
     const defaultSettings = {
       width: 400,
       fontSize: 16,
-      headerColor: "#ffd43b",
-      bgHeaderColor: "#ffffff",
       sort: true
     };
 
     const settings = { ...defaultSettings, ...(args.settings || {}) };
 
+    // UPDATED: Removed logic for transparent parameter
     const classes = ["macro-manager-window"];
-    if (args.transparent) {
-        classes.push("macro-manager-transparent");
-    }
 
     new MacroManagerApp({
         classes: classes, 
