@@ -4,7 +4,7 @@
 
 <p align="center"><img width="300" src="docs/preview.webp"></p>
 
-<p align="center"><img width="300" src="docs/builder.webp"></p>
+<p align="center"><img width="900" src="docs/builder.webp"></p>
 
 Forget cluttered hotbars and complex configurations. Macro Manager provides a clean, API-driven solution to organize your world and compendium macros effortlessly.
 
