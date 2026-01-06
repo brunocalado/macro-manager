@@ -35,7 +35,7 @@
     padding: 8px;
 }
 
-/* --- MACRO BUTTON (Generic) --- */
+/* --- MACRO BUTTON --- */
 .mm-macro-btn {
     display: flex;
     align-items: center; 
@@ -65,7 +65,7 @@
     text-align: left;
 }
 
-.mm-macro-btn:hover {
+.mm-macro-btn:not(.mm-header):hover {
     background-color: #c62828 !important;
     border-color: #ff6400;
     color: white;
@@ -86,70 +86,67 @@
     margin: 0;
 }
 
-/* --- FOLDER STYLES --- */
-
-.mm-folder-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-bottom: 4px;
-}
-
-/* Folder Header Bar */
+/* --- HEADER (Folder Header) --- */
 .mm-folder-header {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 8px 12px;
-    gap: 10px;
-    min-height: 40px;
-    
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
     cursor: pointer;
-    color: #ffd43b; /* Foundry Yellow for Folders */
+    
+    margin-top: 10px;
+    padding: 10px 4px 4px 4px;
+    
+    font-size: 18px;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 14px;
-    transition: background 0.2s;
+    color: #ffd43b;
+    
+    display: flex;
+    justify-content: flex-start; /* UPDATED: Aligned Left */
+    align-items: center;
+    text-align: left; /* UPDATED: Text align Left */
+    gap: 10px;
+    transition: color 0.2s;
 }
 
 .mm-folder-header:hover {
-    background: rgba(255, 255, 255, 0.1);
     color: #fff;
-}
-
-.mm-folder-icon {
-    width: 20px;
-    text-align: center;
+    border-bottom-color: rgba(255, 255, 255, 0.5);
 }
 
 .mm-folder-label {
-    flex: 1;
-    text-align: left;
+    flex: 1; /* Takes remaining space */
 }
 
-.mm-chevron {
-    font-size: 10px;
-    opacity: 0.7;
+.mm-folder-icon, .mm-chevron {
+    font-size: 14px;
+    opacity: 0.8;
 }
 
-/* Nested Content Container */
+/* --- FOLDER CONTENT --- */
+.mm-folder-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
 .mm-folder-content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding-left: 15px; /* Indentation */
-    margin-top: 2px;
-    border-left: 2px solid rgba(255, 255, 255, 0.1); /* Visual Guide line */
+    gap: 6px;
+    
+    /* UPDATED: Indentation added */
+    padding-left: 20px; 
+    margin-top: 6px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1); /* Optional subtle guide line */
 }
 
-/* Nested Buttons */
+/* --- NESTED BTN --- */
 .mm-nested-btn {
-    background-color: rgba(30, 40, 50, 0.5); /* Slightly darker */
-    min-height: 40px; /* Slightly smaller than root */
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: rgba(30, 40, 50, 0.7);
+    min-height: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* --- SEARCH --- */
@@ -409,6 +406,27 @@
 .mm-checkbox-row input[type="checkbox"]::before {
     display: none;
     content: none;
+}
+
+/* --- NEW: FOLDER INPUT STYLING --- */
+.mm-folder-input {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    color: #aaa;
+    font-size: 11px;
+    padding: 2px 4px;
+    width: 80px; /* Largura fixa para não quebrar layout */
+    margin-right: 5px;
+    transition: all 0.2s;
+}
+
+.mm-folder-input:focus {
+    outline: none;
+    border-color: #ffd43b;
+    color: #fff;
+    background: rgba(0,0,0,0.5);
+    width: 100px; /* Expande levemente ao focar */
 }
 
 /* --- END CUSTOM CHECKBOX --- */

@@ -23,7 +23,7 @@
                 </label>
             </div>
             
-            {{!-- NEW: Macro Selection Counter --}}
+            {{!-- Macro Selection Counter --}}
             <div class="mm-selection-count">
                 <span style="color: #aaa; font-size: 12px; margin-right: 5px;">Selected:</span>
                 <span class="mm-count-val" style="color: #ffd43b; font-weight: bold;">{{selectedCount}}</span>
@@ -62,7 +62,18 @@
                             <div class="mm-checkbox-wrap">
                                 <input type="checkbox" name="macroData" value="{{this.uuid}}" {{#if this.checked}}checked{{/if}}>
                             </div>
+                            
                             <img src="{{this.img}}" width="24" height="24"/>
+                            
+                            {{!-- Folder Input Box --}}
+                            <input type="text" class="mm-folder-input" 
+                                   placeholder="Folder..." 
+                                   value="{{this.folderName}}"
+                                   data-action="updateFolder"
+                                   data-uuid="{{this.uuid}}"
+                                   title="Assign to a Folder"
+                                   onclick="event.preventDefault(); event.stopPropagation();"> <!-- Stop click from toggling checkbox -->
+
                             <span class="mm-macro-name">{{this.name}}</span>
                             
                             <button type="button" class="mm-icon-btn" data-action="previewMacro" data-uuid="{{this.uuid}}" title="Preview Macro">
