@@ -254,15 +254,19 @@ export class MacroManagerAPI {
   }
 
   static async openCompendiumMacroManager(args) {
-    const compendiums = this.stringListToArray(args.compendiumList);
+    // UPDATED: Now expects IDs instead of Labels
+    const compendiumIds = this.stringListToArray(args.compendiumList);
     let allMacros = [];
 
-    for (const packLabel of compendiums) {
-      const pack = game.packs.find(p => p.metadata.label === packLabel);
+    for (const packId of compendiumIds) {
+      // UPDATED: Use get() to find by ID/Key (e.g., "dnd5e.spells")
+      const pack = game.packs.get(packId);
+      
       if (!pack) {
-        ui.notifications.error(`Compendium not found: ${packLabel}`);
+        ui.notifications.error(`Compendium not found with ID: ${packId}`);
         continue;
       }
+      
       const docs = await pack.getDocuments();
       allMacros.push(...docs);
     }
