@@ -53,7 +53,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
             id: m.id,     
             name: m.name,
             img: m.img,
-            packLabel: "World"
+            packLabel: "" 
         }));
 
     } else {
@@ -247,6 +247,7 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const items = MacroManagerAPI.stringListToArray(this.macroListRaw);
     
     const promises = items.map(async (item) => {
+        // Headers (Keep them)
         if (item.startsWith("##")) {
             return {
                 label: item.replace(/##/g, '').trim(),
@@ -255,8 +256,10 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
             };
         }
 
+        // UUID Handling ONLY
         try {
             let macro = await fromUuid(item);
+            // Fallback for simple IDs (e.g., from World) if fromUuid fails or input is just ID
             if (!macro && !item.includes('.')) macro = game.macros.get(item);
             
             if (macro) {
@@ -297,7 +300,6 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }));
     
     context.searchValue = this.searchValue;
-    // UPDATED: Pass fontSize to template context
     context.fontSize = this.settings.fontSize;
     return context;
   }
@@ -332,6 +334,7 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
           const uuid = target.dataset.uuid;
           let macro;
 
+          // Resolve on click (using UUID logic)
           if (uuid) {
               macro = await fromUuid(uuid);
               if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);

@@ -4,33 +4,35 @@
 
 <p align="center"><img width="300" src="docs/preview.webp"></p>
 
+<p align="center"><img width="300" src="docs/builder.webp"></p>
+
 Forget cluttered hotbars and complex configurations. Macro Manager provides a clean, API-driven solution to organize your world and compendium macros effortlessly.
 
 ## ✨ Features
 
+-   **🔨 Macro Builder:** Create your custom macro managers visually! Select macros from your World or Compendiums and generate the script automatically.
 -   **🔍 Searchable Interface:** Instantly find the macro you need with a built-in search bar.
--   **📚 Compendium Support:** Run macros directly from Compendiums without cluttering your world.
--   **🎨 Beautiful UI:** A modern, responsive interface that looks great on any system.
--   **🛠️ API-First:** Designed for power users. Control everything via `MacroManager.Open()`.
--   **📌 Persistent Windows:** Keep your tools open as long as you need them.
+-   **📚 Compendium Support:** Seamlessly integrate macros from any source (World, Modules, Systems).
+-   **🎨 Beautiful UI:** A modern, responsive interface with Dark Mode support.
 
 ## 📖 Usage & Documentation
+
+### ⚡ Quick Start (The Easy Way)
+
+1.  Open the browser console (F12) or create a script macro.
+2.  Run the command:
+    ```javascript
+    MacroManager.BuildMacro();
+    ```
+3.  Select the macros you want (from World or Compendiums).
+4.  Configure your window settings (Width, Font Size, Persistence).
+5.  Click **Build**. A new macro will be created in the "🤖 Manager Macros" folder!
+
+### 💻 Manual Usage (The Code Way)
 
 Detailed instructions, code examples, and API references are available on our Wiki:
 
 👉 **[View the Wiki](https://github.com/brunocalado/macro-manager/wiki)**
-
-### ⚡ Quick Start
-
-Open a custom window with your favorite macros instantly:
-
-```javascript
-MacroManager.Open({
-    title: "Combat Toolkit",
-    macroList: "Attack; Defend; ## Utility; Heal; Torch",
-    persistent: true
-});
-```
 
 ## 🤝 Community & Support
 
