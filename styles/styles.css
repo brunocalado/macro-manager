@@ -38,8 +38,8 @@
 /* --- MACRO BUTTON --- */
 .mm-macro-btn {
     display: flex;
-    align-items: center; /* Vertically align the icon */
-    justify-content: flex-start; /* Align everything to the left */
+    align-items: center; 
+    justify-content: flex-start;
     width: 100%;
     
     padding: 8px 12px;
@@ -54,19 +54,17 @@
     font-family: inherit;
     font-size: 16px;
     line-height: 1.2;
-    text-align: left; /* Ensure text alignment */
+    text-align: left;
     
     background-color: rgba(30, 40, 50, 0.7);
     transition: all 0.2s ease;
 }
 
-/* Button Text */
 .mm-macro-btn span {
-    flex: 1; /* Occupy remaining space */
+    flex: 1;
     text-align: left;
 }
 
-/* Red Hover */
 .mm-macro-btn:not(.mm-header):hover {
     background-color: #c62828 !important;
     border-color: #ff6400;
@@ -103,13 +101,13 @@
     font-weight: bold;
     text-transform: uppercase;
     color: #ffd43b;
-    justify-content: center; /* Centralized Headers */
+    justify-content: center;
     text-align: center;
 }
 
 .mm-macro-btn.mm-header span {
     text-align: center;
-    flex: none; /* In headers, do not force expansion */
+    flex: none;
 }
 
 .mm-macro-btn.mm-header:hover {
@@ -145,7 +143,6 @@
 
 /* --- BUILDER APP --- */
 
-/* Wrapper to satisfy single root element requirement and handle full height */
 .mm-builder-wrapper {
     display: flex;
     flex-direction: column;
@@ -154,16 +151,134 @@
     overflow: hidden;
 }
 
+/* Header & Tabs */
+.mm-builder-header {
+    flex: 0 0 auto;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 0; /* Adjusted padding */
+}
+
+/* Selection Header (New location for Target Mode) */
+.mm-selection-header {
+    flex: 0 0 auto;
+    padding: 10px;
+    background: rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.mm-header-top-row {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mm-options-group {
+    display: flex;
+    gap: 15px; 
+    align-items: center;
+}
+
+.mm-label-title {
+    font-weight: bold;
+    color: #ffd43b;
+    font-size: 13px;
+}
+
+.mm-radio-label {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.mm-tabs-nav {
+    display: flex;
+    gap: 0; /* Removed gap for cleaner tab look */
+}
+
+.mm-tab-link {
+    padding: 8px 16px;
+    background: rgba(0,0,0,0.2);
+    cursor: pointer;
+    color: #aaa;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+    text-decoration: none !important;
+    transition: all 0.2s;
+}
+
+.mm-tab-link:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    text-shadow: none;
+}
+
+.mm-tab-link.active {
+    background: rgba(255,255,255,0.15);
+    color: #ffd43b;
+    font-weight: bold;
+}
+
+/* Content Areas */
+.mm-tab-content {
+    display: none; 
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    flex-direction: column; /* Ensure flex flow */
+}
+
+.mm-tab-content.active {
+    display: flex; /* Changed from block to flex to support internal layout */
+}
+
+/* Selection Grid */
 .mm-builder-container {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 10px;
-    flex: 1; /* Takes all available height above footer */
-    min-height: 0; /* Necessary for nested scrolling */
+    flex: 1;
+    min-height: 0;
     padding: 8px;
     overflow: hidden;
 }
 
+/* Config Tab Styles */
+.mm-config-container {
+    padding: 20px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.mm-config-container h3 {
+    border-bottom: 2px solid #ff6400;
+    color: #ffd43b;
+    margin-bottom: 15px;
+}
+
+.mm-form-group {
+    margin-bottom: 15px;
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.mm-form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.mm-input-wrap .hint {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 4px;
+}
+
+/* Reused Column/Item Styles */
 .mm-builder-column {
     display: flex;
     flex-direction: column;
@@ -172,7 +287,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 5px;
     overflow: hidden;
-    height: 100%; /* Fill the grid cell */
+    height: 100%;
 }
 
 .mm-builder-column h3 {
@@ -200,7 +315,7 @@
     padding: 4px;
     cursor: pointer;
     border-radius: 3px;
-    flex-shrink: 0; /* Prevent squishing */
+    flex-shrink: 0;
 }
 
 .mm-checkbox-row:hover {
@@ -229,7 +344,6 @@
     flex: 1;
 }
 
-/* New: Icon Button */
 .mm-icon-btn {
     background: transparent;
     border: none;
@@ -239,7 +353,7 @@
     border-radius: 3px;
     transition: color 0.2s;
     line-height: 1;
-    width: auto; /* reset defaults */
+    width: auto; 
     height: auto;
 }
 
@@ -253,7 +367,7 @@
     text-align: center;
     color: #aaa;
     font-style: italic;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .mm-footer {
@@ -263,7 +377,7 @@
     align-items: center;
     gap: 10px;
     background: rgba(0,0,0,0.2);
-    flex: 0 0 auto; /* Don't shrink or grow */
+    flex: 0 0 auto;
 }
 
 .mm-input-group {
