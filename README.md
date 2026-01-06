@@ -19,14 +19,13 @@ Forget cluttered hotbars and complex configurations. Macro Manager provides a cl
 
 ### ⚡ Quick Start (The Easy Way)
 
-1.  Open the browser console (F12) or create a script macro.
-2.  Run the command:
+-  Create a script macro with 
     ```javascript
     MacroManager.BuildMacro();
     ```
-3.  Select the macros you want (from World or Compendiums).
-4.  Configure your window settings (Width, Font Size, Persistence).
-5.  Click **Build**. A new macro will be created in the "🤖 Manager Macros" folder!
+-  Select the macros you want (from World or Compendiums).
+-  Configure your window settings (Width, Font Size, Persistence).
+-  Click **Build**. A new macro will be created in the "🤖 Manager Macros" folder!
 
 ### 💻 Manual Usage (The Code Way)
 

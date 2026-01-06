@@ -54,7 +54,8 @@
                         {{#each macros}}
                         <label class="mm-checkbox-row">
                             <div class="mm-checkbox-wrap">
-                                <input type="checkbox" name="macroData" value="{{this.uuid}}">
+                                {{!-- Added checked state here --}}
+                                <input type="checkbox" name="macroData" value="{{this.uuid}}" {{#if this.checked}}checked{{/if}}>
                             </div>
                             <img src="{{this.img}}" width="24" height="24"/>
                             <span class="mm-macro-name">{{this.name}}</span>

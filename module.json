@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
@@ -26,11 +26,18 @@
       "type": "Macro",
       "name": "macro-manager",
       "path": "packs/macro-manager.db",
-      "private": false
+      "private": false,
+      "banner": "modules/macro-manager/assets/images/banner.webp"
     }
   ],
   
   "languages": [],
+
+  "media": [{
+    "type": "setup",
+    "url": "modules/macro-manager/assets/images/thumbnail.webp",
+    "thumbnail": "modules/macro-manager/assets/images/thumbnail.webp"
+  }], 
   
   "url": "https://github.com/brunocalado/macro-manager",
   "manifest": "https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json",

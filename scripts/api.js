@@ -7,7 +7,8 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(options = {}) {
     super(options);
     this.selectedPackIds = new Set();
-    this.targetMode = 'world'; // Default state
+    this.selectedMacroUuids = new Set(); // Armazena macros selecionadas de forma persistente
+    this.targetMode = 'world'; // Estado padrão
   }
 
   static DEFAULT_OPTIONS = {
@@ -16,53 +17,52 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     classes: ["macro-manager-window"], 
     window: { title: "Macro Manager Builder", resizable: true },
     position: { width: 900, height: 600 },
-    form: { handler: MacroBuilderApp.myFormHandler, submitOnChange: false, closeOnSubmit: false }
+    // CORREÇÃO: Passando a referência da função estática, não uma string
+    form: { handler: MacroBuilderApp.formHandler, submitOnChange: false, closeOnSubmit: false }
   };
 
   static PARTS = {
     form: { template: "modules/macro-manager/templates/builder.hbs" }
   };
 
-  // Helper to get friendly package name
+  // Helper para obter nome amigável do pacote
   _getPackageTitle(pack) {
       if (!pack) return "World";
       const packageName = pack.metadata.packageName;
       
-      // Check if it's a module
       const module = game.modules.get(packageName);
       if (module) return module.title;
       
-      // Check if it's the system
       if (game.system.id === packageName) return game.system.title;
       
-      // Check if it's 'world'
       if (packageName === 'world') return "World";
       
-      return packageName; // Fallback
+      return packageName;
   }
 
   async _prepareContext(options) {
     const sources = [];
     let macros = [];
     
-    // Logic: Mode Handling
+    // Lógica: Tratamento de Modos
     if (this.targetMode === 'world') {
-        // WORLD MODE
+        // MODO WORLD
         macros = game.macros.map(m => ({
             uuid: m.uuid, 
             id: m.id,     
             name: m.name,
             img: m.img,
-            packLabel: "" 
+            packLabel: "",
+            checked: this.selectedMacroUuids.has(m.uuid) // Verifica persistência
         }));
 
     } else {
-        // COMPENDIUM MODE
+        // MODO COMPENDIUM
         const packs = game.packs.filter(p => p.metadata.type === 'Macro').map(p => {
             const packageTitle = this._getPackageTitle(p);
             return {
                 id: p.metadata.id,
-                label: `${packageTitle}: ${p.metadata.label}`, // Friendly Label
+                label: `${packageTitle}: ${p.metadata.label}`,
                 type: "pack",
                 checked: this.selectedPackIds.has(p.metadata.id)
             };
@@ -71,7 +71,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         packs.sort((a, b) => a.label.localeCompare(b.label));
         sources.push(...packs);
 
-        // Fetch macros from SELECTED compendiums
+        // Busca macros dos compêndios SELECIONADOS
         for (const source of sources) {
             if (source.checked) {
                 const pack = game.packs.get(source.id);
@@ -83,14 +83,15 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
                         uuid: d.uuid,
                         name: d.name,
                         img: d.img,
-                        packLabel: friendlyPackLabel
+                        packLabel: friendlyPackLabel,
+                        checked: this.selectedMacroUuids.has(d.uuid) // Verifica persistência
                     })));
                 }
             }
         }
     }
 
-    // Sort macros by name
+    // Ordena macros por nome
     macros.sort((a, b) => a.name.localeCompare(b.name));
 
     return { 
@@ -104,7 +105,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     super._onRender(context, options);
 
-    // --- Tabs Logic ---
+    // --- Lógica de Abas ---
     const tabLinks = this.element.querySelectorAll('.mm-tab-link');
     const tabContents = this.element.querySelectorAll('.mm-tab-content');
 
@@ -113,11 +114,9 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
             ev.preventDefault();
             const targetId = ev.currentTarget.dataset.tab;
 
-            // Remove active class
             tabLinks.forEach(l => l.classList.remove('active'));
             tabContents.forEach(c => c.classList.remove('active'));
 
-            // Add active class
             ev.currentTarget.classList.add('active');
             const targetContent = this.element.querySelector(`.mm-tab-content[data-tab="${targetId}"]`);
             if (targetContent) targetContent.classList.add('active');
@@ -143,19 +142,43 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         radio.addEventListener('change', (ev) => {
             if (ev.target.checked) {
                 this.targetMode = ev.target.value;
-                this.selectedPackIds.clear(); 
+                // NOTA: Não limpamos mais o selectedPackIds para manter estado se voltar
                 this.render();
             }
+        });
+    });
+
+    // Lógica de Seleção de Macro (Atualização em Tempo Real)
+    const macroCheckboxes = this.element.querySelectorAll('input[name="macroData"]');
+    macroCheckboxes.forEach(cb => {
+        cb.addEventListener('change', (ev) => {
+            const val = ev.target.value;
+            if (ev.target.checked) this.selectedMacroUuids.add(val);
+            else this.selectedMacroUuids.delete(val);
         });
     });
 
     // Select All/None
     const btnAll = this.element.querySelector('[data-action="selectAll"]');
     const btnNone = this.element.querySelector('[data-action="deselectAll"]');
-    const macroCheckboxes = this.element.querySelectorAll('input[name="macroData"]');
 
-    if (btnAll) btnAll.addEventListener('click', () => macroCheckboxes.forEach(c => c.checked = true));
-    if (btnNone) btnNone.addEventListener('click', () => macroCheckboxes.forEach(c => c.checked = false));
+    if (btnAll) {
+        btnAll.addEventListener('click', () => {
+            macroCheckboxes.forEach(c => {
+                c.checked = true;
+                this.selectedMacroUuids.add(c.value);
+            });
+        });
+    }
+    
+    if (btnNone) {
+        btnNone.addEventListener('click', () => {
+            macroCheckboxes.forEach(c => {
+                c.checked = false;
+                this.selectedMacroUuids.delete(c.value);
+            });
+        });
+    }
 
     // Preview Macro
     const previewBtns = this.element.querySelectorAll('[data-action="previewMacro"]');
@@ -178,16 +201,16 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     });
   }
 
-  static async myFormHandler(event, form, formData) {
-    let selectedUuids = formData.object.macroData;
+  // Handler Estático - O Foundry chama isso com 'this' vinculado à instância da Application
+  static async formHandler(event, form, formData) {
+    // Pega os UUIDs do nosso Set persistente
+    let selectedUuids = Array.from(this.selectedMacroUuids);
     
-    if (!selectedUuids) selectedUuids = [];
-    if (!Array.isArray(selectedUuids)) selectedUuids = [selectedUuids];
     selectedUuids = selectedUuids.filter(u => typeof u === 'string' && u.length > 0);
 
     const macroName = formData.object.macroName || "Custom Manager";
 
-    // Extract Config Settings
+    // Extrai Configurações
     const config = {
         persistent: formData.object.confPersistent === "true" || formData.object.confPersistent === true,
         settings: {
@@ -202,10 +225,11 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return;
     }
 
-    // UPDATED: Capture created macro to get the correct name
+    // Cria a macro usando a API
     const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids, config);
     if (createdMacro) {
         ui.notifications.info(`Macro "${createdMacro.name}" created successfully!`);
+        this.close(); 
     }
   }
 }
@@ -408,7 +432,6 @@ MacroManager.Open({
     settings: ${JSON.stringify(settings, null, 4)}
 });`;
 
-    // UPDATED: Return the created document
     return await Macro.create({
         name: finalName,
         type: "script",
