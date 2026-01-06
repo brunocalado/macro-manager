@@ -159,12 +159,15 @@
     padding: 0; 
 }
 
-/* Selection Header */
+/* Selection Header - UPDATED */
 .mm-selection-header {
     flex: 0 0 auto;
     padding: 10px;
     background: rgba(0,0,0,0.1);
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex; /* Added for layout */
+    justify-content: space-between; /* Push items to edges */
+    align-items: center; /* Center vertically */
 }
 
 .mm-header-top-row {

@@ -97,12 +97,19 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         packs: sources, 
         macros,
         isWorldMode: this.targetMode === 'world',
-        isCompendiumMode: this.targetMode === 'compendium'
+        isCompendiumMode: this.targetMode === 'compendium',
+        selectedCount: this.selectedMacroUuids.size // Pass count to template
     };
   }
 
   _onRender(context, options) {
     super._onRender(context, options);
+
+    // --- Helper to Update Count Display ---
+    const updateCount = () => {
+        const countEl = this.element.querySelector('.mm-count-val');
+        if (countEl) countEl.textContent = this.selectedMacroUuids.size;
+    };
 
     // --- Lógica de Abas ---
     const tabLinks = this.element.querySelectorAll('.mm-tab-link');
@@ -153,6 +160,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
             const val = ev.target.value;
             if (ev.target.checked) this.selectedMacroUuids.add(val);
             else this.selectedMacroUuids.delete(val);
+            updateCount(); // Update Visual Counter
         });
     });
 
@@ -166,6 +174,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
                 c.checked = true;
                 this.selectedMacroUuids.add(c.value);
             });
+            updateCount(); // Update Visual Counter
         });
     }
     
@@ -175,6 +184,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
                 c.checked = false;
                 this.selectedMacroUuids.delete(c.value);
             });
+            updateCount(); // Update Visual Counter
         });
     }
 
@@ -205,7 +215,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     selectedUuids = selectedUuids.filter(u => typeof u === 'string' && u.length > 0);
 
     const macroName = formData.object.macroName || "Custom Manager";
-    const macroTitle = formData.object.macroTitle || macroName; // Pega o Título da Janela
+    const macroTitle = formData.object.macroTitle || macroName;
 
     // Extrai Configurações
     const config = {
@@ -222,7 +232,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return;
     }
 
-    // Cria a macro passando o Título opcional
+    // Cria a macro
     const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids, config, macroTitle);
     if (createdMacro) {
         ui.notifications.info(`Macro "${createdMacro.name}" created successfully!`);
@@ -252,7 +262,7 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
     tag: "div",
-    id: "macro-manager-app", // ID padrão (será sobrescrito para múltiplas janelas)
+    id: "macro-manager-app", // ID padrão
     classes: ["macro-manager-window"],
     window: { resizable: true, title: "Macro Manager", controls: [] },
     position: { width: 400, height: "auto" }
@@ -418,7 +428,7 @@ export class MacroManagerAPI {
     
     const persistent = config.persistent !== undefined ? config.persistent : true;
     const settings = config.settings || { width: 400, fontSize: 16, sort: true };
-    const displayTitle = title || finalName; // Usa o título escolhido ou o nome da macro
+    const displayTitle = title || finalName;
 
     const scriptContent = `// Macro Manager: ${finalName}
 MacroManager.Open({
@@ -441,12 +451,11 @@ MacroManager.Open({
     const defaultSettings = { width: 400, fontSize: 16, sort: true };
     const settings = { ...defaultSettings, ...(args.settings || {}) };
     
-    // GERAÇÃO DE ID ÚNICO: Permite abrir múltiplas janelas
-    // Se não for passado um ID específico, gera um aleatório
+    // GERAÇÃO DE ID ÚNICO
     const uniqueId = args.id || `macro-manager-${foundry.utils.randomID()}`;
 
     new MacroManagerApp({
-        id: uniqueId, // Sobrescreve o ID padrão
+        id: uniqueId, 
         classes: ["macro-manager-window"], 
         macroList: args.macroList, 
         settings: settings,

@@ -22,6 +22,12 @@
                     <input type="radio" name="targetMode" value="compendium" data-action="switchMode" {{#if isCompendiumMode}}checked{{/if}}> Compendium
                 </label>
             </div>
+            
+            {{!-- NEW: Macro Selection Counter --}}
+            <div class="mm-selection-count">
+                <span style="color: #aaa; font-size: 12px; margin-right: 5px;">Selected:</span>
+                <span class="mm-count-val" style="color: #ffd43b; font-weight: bold;">{{selectedCount}}</span>
+            </div>
         </div>
 
         <div class="mm-builder-container">
