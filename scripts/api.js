@@ -229,8 +229,13 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     for (const uuid of selectedUuids) {
         if (this.macroFolders.has(uuid)) {
             const fName = this.macroFolders.get(uuid);
-            if (!folderGroups.has(fName)) folderGroups.set(fName, []);
-            folderGroups.get(fName).push(uuid);
+            // Ensure we don't accidentally treat empty strings as folders
+            if (fName && fName.trim().length > 0) {
+                if (!folderGroups.has(fName)) folderGroups.set(fName, []);
+                folderGroups.get(fName).push(uuid);
+            } else {
+                looseList.push(uuid);
+            }
         } else {
             looseList.push(uuid);
         }
@@ -242,15 +247,15 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     // Construct List Array
     const finalList = [];
 
-    // Add Folders
+    // IMPORTANT: Add Loose Macros FIRST to avoid them falling into the last folder
+    finalList.push(...looseList);
+
+    // Add Folders and their macros
     for (const fName of sortedFolderNames) {
         finalList.push(`## ${fName}`);
         // Add macros in this folder
         finalList.push(...folderGroups.get(fName));
     }
-
-    // Add Loose Macros (at the end or beginning? Let's put at the end)
-    finalList.push(...looseList);
 
     // Create
     const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, finalList, config, macroTitle);
