@@ -1,3 +1,6 @@
+# 1.0.4
+You create macro managers with a macro builder. Very easy. Only accept UUID now.
+
 # 1.0.2
 the module was remade to be very simple.
 
