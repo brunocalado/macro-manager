@@ -14,9 +14,10 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     tag: "form",
     id: "macro-builder",
     classes: ["macro-manager-window"], 
+    // UPDATED: Width increased to 900, closeOnSubmit set to false for persistence
     window: { title: "Macro Manager Builder", resizable: true },
-    position: { width: 750, height: 550 },
-    form: { handler: MacroBuilderApp.myFormHandler, submitOnChange: false, closeOnSubmit: true }
+    position: { width: 900, height: 600 },
+    form: { handler: MacroBuilderApp.myFormHandler, submitOnChange: false, closeOnSubmit: false }
   };
 
   static PARTS = {
@@ -40,12 +41,37 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     } else {
         // COMPENDIUM MODE
-        const packs = game.packs.filter(p => p.metadata.type === 'Macro').map(p => ({
-            id: p.metadata.id,
-            label: p.metadata.label,
-            type: "pack",
-            checked: this.selectedPackIds.has(p.metadata.id)
-        }));
+        const packs = game.packs.filter(p => p.metadata.type === 'Macro').map(p => {
+            // UPDATED: Resolve Package Title (Module/System Name)
+            const packageName = p.metadata.packageName;
+            let packageTitle = packageName; // Fallback to ID
+            
+            // Check if it's a module
+            const module = game.modules.get(packageName);
+            if (module) {
+                packageTitle = module.title;
+            } 
+            // Check if it's the system
+            else if (game.system.id === packageName) {
+                packageTitle = game.system.title;
+            }
+            // Check if it's 'world' (unlikely for packs, but possible)
+            else if (packageName === 'world') {
+                packageTitle = "World";
+            }
+
+            return {
+                id: p.metadata.id,
+                // UPDATED: Format "Package Name: Pack Label"
+                label: `${packageTitle}: ${p.metadata.label}`,
+                type: "pack",
+                checked: this.selectedPackIds.has(p.metadata.id)
+            };
+        });
+        
+        // Sort packs alphabetically for easier finding
+        packs.sort((a, b) => a.label.localeCompare(b.label));
+        
         sources.push(...packs);
 
         // Fetch macros from SELECTED compendiums
@@ -111,6 +137,32 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     if (btnAll) btnAll.addEventListener('click', () => macroCheckboxes.forEach(c => c.checked = true));
     if (btnNone) btnNone.addEventListener('click', () => macroCheckboxes.forEach(c => c.checked = false));
+
+    // UPDATED: Preview Macro Listener
+    const previewBtns = this.element.querySelectorAll('[data-action="previewMacro"]');
+    previewBtns.forEach(btn => {
+        btn.addEventListener('click', async (ev) => {
+            // Prevent the click from toggling the checkbox (propagation)
+            ev.stopPropagation(); 
+            ev.preventDefault();
+
+            const uuid = ev.currentTarget.dataset.uuid;
+            try {
+                let doc = await fromUuid(uuid);
+                // Fallback logic similar to form handler
+                if (!doc && !uuid.includes('.')) doc = game.macros.get(uuid);
+                
+                if (doc) {
+                    doc.sheet.render(true);
+                } else {
+                    ui.notifications.warn("Could not find macro to preview.");
+                }
+            } catch (err) {
+                console.error(err);
+                ui.notifications.error("Error previewing macro.");
+            }
+        });
+    });
   }
 
   static async myFormHandler(event, form, formData) {

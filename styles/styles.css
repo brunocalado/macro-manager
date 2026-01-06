@@ -207,6 +207,11 @@
     background: rgba(255, 255, 255, 0.05);
 }
 
+.mm-checkbox-wrap {
+    display: flex;
+    align-items: center;
+}
+
 .mm-pack-tag {
     font-size: 10px;
     background: rgba(0,0,0,0.4);
@@ -214,12 +219,34 @@
     border-radius: 3px;
     margin-left: auto;
     color: #aaa;
+    white-space: nowrap;
 }
 
 .mm-macro-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1;
+}
+
+/* New: Icon Button */
+.mm-icon-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 3px;
+    transition: color 0.2s;
+    line-height: 1;
+    width: auto; /* reset defaults */
+    height: auto;
+}
+
+.mm-icon-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
 }
 
 .mm-help-text {

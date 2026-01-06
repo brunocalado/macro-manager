@@ -28,10 +28,17 @@
                     </div>
                     {{#each macros}}
                     <label class="mm-checkbox-row">
-                        {{!-- Store UUID --}}
-                        <input type="checkbox" name="macroData" value="{{this.uuid}}">
+                        <div class="mm-checkbox-wrap">
+                             <input type="checkbox" name="macroData" value="{{this.uuid}}">
+                        </div>
                         <img src="{{this.img}}" width="24" height="24"/>
                         <span class="mm-macro-name">{{this.name}}</span>
+                        
+                        {{!-- Preview Button --}}
+                        <button type="button" class="mm-icon-btn" data-action="previewMacro" data-uuid="{{this.uuid}}" title="Preview Macro">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        
                         <span class="mm-pack-tag">{{this.packLabel}}</span>
                     </label>
                     {{/each}}
