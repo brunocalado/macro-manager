@@ -11,7 +11,7 @@
     {{!-- CONTENT: Selection Tab --}}
     <div class="mm-tab-content active" data-tab="selection">
         
-        {{!-- Target Mode Selection (Moved inside Selection Tab) --}}
+        {{!-- Target Mode Selection --}}
         <div class="mm-selection-header">
             <div class="mm-options-group">
                 <span class="mm-label-title">Target Mode:</span>
@@ -77,36 +77,26 @@
     {{!-- CONTENT: Configuration Tab --}}
     <div class="mm-tab-content" data-tab="configuration">
         <div class="mm-config-container">
-            <h3>Macro Settings</h3>
             <p class="mm-help-text">These settings will be embedded into the created macro.</p>
             
-            <div class="mm-form-group">
+            <div class="mm-form-row">
                 <label>Persistent Window</label>
-                <div class="mm-input-wrap">
-                     <input type="checkbox" name="confPersistent" checked>
-                     <p class="hint">If checked, the Macro Manager window stays open after clicking a macro.</p>
-                </div>
+                <input type="checkbox" name="confPersistent" checked>
             </div>
 
-            <div class="mm-form-group">
+            <div class="mm-form-row">
                 <label>Window Width (px)</label>
-                <div class="mm-input-wrap">
-                    <input type="number" name="confWidth" value="400">
-                </div>
+                <input type="number" name="confWidth" value="400" style="width: 80px; flex: 0;">
             </div>
 
-            <div class="mm-form-group">
+            <div class="mm-form-row">
                 <label>Font Size (px)</label>
-                <div class="mm-input-wrap">
-                    <input type="number" name="confFontSize" value="16">
-                </div>
+                <input type="number" name="confFontSize" value="16" style="width: 80px; flex: 0;">
             </div>
 
-            <div class="mm-form-group">
+            <div class="mm-form-row">
                 <label>Sort Macros Alphabetically</label>
-                <div class="mm-input-wrap">
-                    <input type="checkbox" name="confSort" checked>
-                </div>
+                <input type="checkbox" name="confSort" checked>
             </div>
         </div>
     </div>

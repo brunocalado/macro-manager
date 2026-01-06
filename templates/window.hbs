@@ -17,7 +17,8 @@
                     data-uuid="{{this.uuid}}"
                     style="{{#if this.hidden}}display:none;{{/if}} 
                            {{#if this.headerColor}}color:{{this.headerColor}};{{/if}}
-                           {{#if this.backgroundHeaderColor}}background-color:{{this.backgroundHeaderColor}};{{/if}}">
+                           {{#if this.backgroundHeaderColor}}background-color:{{this.backgroundHeaderColor}};{{/if}}
+                           font-size: {{../fontSize}}px;">
                 
                 {{#if this.isHeader}}
                     <span>{{this.label}}</span>

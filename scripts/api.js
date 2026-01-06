@@ -297,6 +297,8 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }));
     
     context.searchValue = this.searchValue;
+    // UPDATED: Pass fontSize to template context
+    context.fontSize = this.settings.fontSize;
     return context;
   }
 
@@ -380,11 +382,8 @@ export class MacroManagerAPI {
     let finalName = name;
     let counter = 1;
     
-    // Check for duplicates in the specific folder
-    // Note: folder.contents gives us the Documents (Macros) inside that folder
     const existingMacros = folder.contents;
     
-    // Simple check: if exact name exists, try "Name 1", "Name 2"...
     while (existingMacros.some(m => m.name === finalName)) {
         finalName = `${name} ${counter}`;
         counter++;

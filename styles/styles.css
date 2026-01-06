@@ -156,10 +156,10 @@
     flex: 0 0 auto;
     background: rgba(0,0,0,0.2);
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding: 0; /* Adjusted padding */
+    padding: 0; 
 }
 
-/* Selection Header (New location for Target Mode) */
+/* Selection Header */
 .mm-selection-header {
     flex: 0 0 auto;
     padding: 10px;
@@ -196,7 +196,7 @@
 
 .mm-tabs-nav {
     display: flex;
-    gap: 0; /* Removed gap for cleaner tab look */
+    gap: 0; 
 }
 
 .mm-tab-link {
@@ -228,11 +228,11 @@
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    flex-direction: column; /* Ensure flex flow */
+    flex-direction: column; 
 }
 
 .mm-tab-content.active {
-    display: flex; /* Changed from block to flex to support internal layout */
+    display: flex; 
 }
 
 /* Selection Grid */
@@ -253,29 +253,22 @@
     height: 100%;
 }
 
-.mm-config-container h3 {
-    border-bottom: 2px solid #ff6400;
-    color: #ffd43b;
-    margin-bottom: 15px;
-}
-
-.mm-form-group {
-    margin-bottom: 15px;
+/* New: Form Rows for Config */
+.mm-form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
     background: rgba(0,0,0,0.2);
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
-.mm-form-group label {
-    display: block;
+.mm-form-row label {
     font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.mm-input-wrap .hint {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 4px;
+    color: #eee;
+    flex: 1;
 }
 
 /* Reused Column/Item Styles */
