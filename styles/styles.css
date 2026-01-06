@@ -142,3 +142,130 @@
     border-color: #ff6400;
     box-shadow: 0 0 5px rgba(255, 100, 0, 0.5);
 }
+
+/* --- BUILDER APP --- */
+
+/* Wrapper to satisfy single root element requirement and handle full height */
+.mm-builder-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.mm-builder-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 10px;
+    flex: 1; /* Takes all available height above footer */
+    min-height: 0; /* Necessary for nested scrolling */
+    padding: 8px;
+    overflow: hidden;
+}
+
+.mm-builder-column {
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    overflow: hidden;
+    height: 100%; /* Fill the grid cell */
+}
+
+.mm-builder-column h3 {
+    margin: 0 0 5px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    text-align: center;
+    color: #ffd43b;
+    flex: 0 0 auto;
+}
+
+.mm-scroll-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mm-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    flex-shrink: 0; /* Prevent squishing */
+}
+
+.mm-checkbox-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.mm-pack-tag {
+    font-size: 10px;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 4px;
+    border-radius: 3px;
+    margin-left: auto;
+    color: #aaa;
+}
+
+.mm-macro-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mm-help-text {
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+.mm-footer {
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.2);
+    flex: 0 0 auto; /* Don't shrink or grow */
+}
+
+.mm-input-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.mm-input-group input {
+    flex: 1;
+}
+
+.mm-save-btn {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0 20px;
+}
+
+.mm-tools {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+    flex: 0 0 auto;
+}
+
+.mm-small-btn {
+    padding: 2px 8px;
+    font-size: 12px;
+    line-height: normal;
+    height: auto;
+}

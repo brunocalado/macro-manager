@@ -1,0 +1,64 @@
+<div class="mm-builder-wrapper">
+    <div class="mm-builder-container">
+        {{!-- Left Column: Sources --}}
+        <div class="mm-builder-column">
+            <h3>Available Sources</h3>
+            <div class="mm-scroll-list">
+                {{#if isWorldMode}}
+                    <p class="mm-help-text" style="margin-top: 10px;">Listing all World Macros.</p>
+                {{else}}
+                    {{#each packs}}
+                    <label class="mm-checkbox-row mm-source-row" data-type="{{this.type}}">
+                        <input type="checkbox" name="packIds" value="{{this.id}}" {{#if this.checked}}checked{{/if}} data-action="togglePack">
+                        <span>{{this.label}}</span>
+                    </label>
+                    {{/each}}
+                {{/if}}
+            </div>
+        </div>
+
+        {{!-- Right Column: Macros --}}
+        <div class="mm-builder-column">
+            <h3>Select Macros</h3>
+            <div class="mm-scroll-list">
+                {{#if macros.length}}
+                    <div class="mm-tools">
+                        <button type="button" data-action="selectAll" class="mm-small-btn">All</button>
+                        <button type="button" data-action="deselectAll" class="mm-small-btn">None</button>
+                    </div>
+                    {{#each macros}}
+                    <label class="mm-checkbox-row">
+                        {{!-- Store UUID --}}
+                        <input type="checkbox" name="macroData" value="{{this.uuid}}">
+                        <img src="{{this.img}}" width="24" height="24"/>
+                        <span class="mm-macro-name">{{this.name}}</span>
+                        <span class="mm-pack-tag">{{this.packLabel}}</span>
+                    </label>
+                    {{/each}}
+                {{else}}
+                    <p class="mm-help-text">Select a source on the left to view macros.</p>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+
+    <div class="mm-footer">
+        <div class="mm-options-group" style="display: flex; gap: 15px; align-items: center; margin-right: 15px; border-right: 1px solid rgba(255,255,255,0.2); padding-right: 15px;">
+            <span style="font-weight: bold; color: #ffd43b; font-size: 12px;">Target Mode:</span>
+            <label style="font-size: 12px; display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                <input type="radio" name="targetMode" value="world" data-action="switchMode" {{#if isWorldMode}}checked{{/if}}> World
+            </label>
+            <label style="font-size: 12px; display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                <input type="radio" name="targetMode" value="compendium" data-action="switchMode" {{#if isCompendiumMode}}checked{{/if}}> Compendium
+            </label>
+        </div>
+
+        <div class="mm-input-group">
+            <label>Name:</label>
+            <input type="text" name="macroName" value="My Custom Manager" required>
+        </div>
+        <button type="submit" class="mm-save-btn">
+            <i class="fas fa-hammer"></i> Build
+        </button>
+    </div>
+</div>
