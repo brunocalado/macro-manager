@@ -31,15 +31,15 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (this.targetMode === 'world') {
         // WORLD MODE: Auto-load all world macros
         macros = game.macros.map(m => ({
-            uuid: m.uuid, // Standard UUID (Macro.ID)
-            id: m.id,     // Fallback ID
+            uuid: m.uuid, 
+            id: m.id,     
             name: m.name,
             img: m.img,
             packLabel: "World"
         }));
 
     } else {
-        // COMPENDIUM MODE: Show packs on left, macros on right based on selection
+        // COMPENDIUM MODE
         const packs = game.packs.filter(p => p.metadata.type === 'Macro').map(p => ({
             id: p.metadata.id,
             label: p.metadata.label,
@@ -79,7 +79,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     super._onRender(context, options);
 
-    // Toggle Packs Checkbox (Only relevant in Compendium Mode)
+    // Toggle Packs
     const packCheckboxes = this.element.querySelectorAll('input[data-action="togglePack"]');
     packCheckboxes.forEach(cb => {
         cb.addEventListener('change', (ev) => {
@@ -92,13 +92,13 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
         });
     });
 
-    // Toggle Target Mode (Radio Buttons)
+    // Toggle Target Mode
     const modeRadios = this.element.querySelectorAll('input[data-action="switchMode"]');
     modeRadios.forEach(radio => {
         radio.addEventListener('change', (ev) => {
             if (ev.target.checked) {
                 this.targetMode = ev.target.value;
-                this.selectedPackIds.clear(); // Reset selections when switching
+                this.selectedPackIds.clear(); 
                 this.render();
             }
         });
@@ -114,68 +114,30 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async myFormHandler(event, form, formData) {
-    // Get all checked checkboxes with name="macroData"
     let selectedUuids = formData.object.macroData;
     
     // Ensure it's an array
     if (!selectedUuids) selectedUuids = [];
     if (!Array.isArray(selectedUuids)) selectedUuids = [selectedUuids];
 
-    // FIX: Filter out null/undefined/non-string values to prevent "includes" error
+    // Filter valid strings
     selectedUuids = selectedUuids.filter(u => typeof u === 'string' && u.length > 0);
 
     const macroName = formData.object.macroName || "Custom Manager";
-    const targetMode = formData.object.targetMode; 
 
     if (selectedUuids.length === 0) {
         ui.notifications.warn("Please select at least one macro.");
         return;
     }
 
-    // Resolve Names
-    const selectedMacroNames = [];
-    const involvedPackIds = new Set();
-
-    for (const uuid of selectedUuids) {
-        // Try resolving by UUID first (Works for Compendium & World if UUID is correct)
-        let doc;
-        try {
-            doc = await fromUuid(uuid);
-        } catch (e) {
-            console.warn(`MacroManager | fromUuid failed for ${uuid}`, e);
-        }
-
-        // Fallback: If fromUuid failed (common with local macros sometimes), try getting from game.macros directly
-        if (!doc && !uuid.includes('.')) {
-             const id = uuid.split('.').pop();
-             doc = game.macros.get(id);
-        } else if (!doc && uuid.startsWith("Macro.")) {
-             const id = uuid.split('.')[1];
-             doc = game.macros.get(id);
-        }
-
-        if (doc) {
-            selectedMacroNames.push(doc.name);
-            if (doc.pack) {
-                involvedPackIds.add(doc.pack);
-            }
-        } else {
-            console.warn(`MacroManager Builder | Could not resolve UUID: ${uuid}`);
-        }
-    }
-
-    if (selectedMacroNames.length === 0) {
-         ui.notifications.error("Could not retrieve names. Check console for details.");
-         return;
-    }
-
-    await MacroManagerAPI.createManagerMacroV2(macroName, selectedMacroNames, Array.from(involvedPackIds), targetMode);
+    // Create Macro with UUID list
+    await MacroManagerAPI.createManagerMacroV2(macroName, selectedUuids);
     ui.notifications.info(`Macro "${macroName}" created successfully!`);
   }
 }
 
 /**
- * Auxiliary Apps (Compendium Selector & Copy Text)
+ * Auxiliary Apps
  */
 class CompendiumSelectorApp extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
@@ -248,7 +210,7 @@ class CopyTextApp extends HandlebarsApplicationMixin(ApplicationV2) {
 class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(options = {}) {
     super(options);
-    this.macros = options.macros || [];
+    // macroListRaw now contains UUIDs separated by ;
     this.macroListRaw = options.macroList || "";
     
     this.settings = {
@@ -280,38 +242,67 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     
-    let macroLabels = MacroManagerAPI.stringListToArray(this.macroListRaw);
-    if (this.settings.sort) macroLabels.sort();
-
-    const buttons = [];
-
-    for (const label of macroLabels) {
-      const isHeader = label.includes("##");
-      let macro = null;
-
-      if (!isHeader) {
-        if (this.macros.length > 0) {
-          macro = this.macros.find(m => m.name === label);
-        } else {
-          macro = game.macros.getName(label);
+    const items = MacroManagerAPI.stringListToArray(this.macroListRaw);
+    
+    // Resolve Macros from UUIDs (Async)
+    const promises = items.map(async (item) => {
+        // Header Handling
+        if (item.startsWith("##")) {
+            return {
+                label: item.replace(/##/g, '').trim(),
+                isHeader: true,
+                raw: item
+            };
         }
-      }
 
-      if (!macro && !isHeader) continue;
+        // UUID Handling
+        try {
+            let macro = await fromUuid(item);
+            // Fallback for simple IDs or legacy formats
+            if (!macro && !item.includes('.')) macro = game.macros.get(item);
+            
+            if (macro) {
+                return {
+                    label: macro.name,
+                    isHeader: false,
+                    icon: macro.img,
+                    uuid: macro.uuid
+                };
+            }
+        } catch (e) {
+            console.warn(`MacroManager | Failed to resolve UUID: ${item}`);
+        }
+        return null;
+    });
 
-      const btnData = {
-        label: isHeader ? label.replace(/##/g, '').trim() : label,
-        isHeader: isHeader,
-        icon: (!isHeader && macro) ? macro.img : null,
-        headerColor: isHeader ? this.settings.headerColor : null,
-        backgroundHeaderColor: isHeader ? this.settings.bgHeaderColor : null,
-        hidden: this.searchValue && !label.toLowerCase().includes(this.searchValue.toLowerCase())
-      };
+    let resolvedButtons = (await Promise.all(promises)).filter(b => b !== null);
 
-      buttons.push(btnData);
+    // Filter by search
+    if (this.searchValue) {
+        const query = this.searchValue.toLowerCase();
+        resolvedButtons = resolvedButtons.map(b => {
+            const hidden = !b.label.toLowerCase().includes(query);
+            return { ...b, hidden };
+        });
     }
 
-    context.buttons = buttons;
+    // Sort Logic: Only sort if not using headers (or if sort is forced)
+    // Sorting with headers typically breaks the layout, but we keep the setting logic
+    if (this.settings.sort) {
+        // We only sort if we don't detect headers to avoid mixing sections
+        const hasHeaders = resolvedButtons.some(b => b.isHeader);
+        if (!hasHeaders) {
+            resolvedButtons.sort((a, b) => a.label.localeCompare(b.label));
+        }
+    }
+
+    // Add styles from settings
+    context.buttons = resolvedButtons.map(b => ({
+        ...b,
+        headerColor: b.isHeader ? this.settings.headerColor : null,
+        backgroundHeaderColor: b.isHeader ? this.settings.bgHeaderColor : null
+    }));
+    
     context.searchValue = this.searchValue;
     return context;
   }
@@ -332,14 +323,7 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
       searchInput.addEventListener('input', (event) => {
         const query = event.target.value.toLowerCase().trim();
         this.searchValue = query;
-        const buttons = this.element.querySelectorAll('.mm-macro-btn');
-        buttons.forEach(btn => {
-          const label = btn.dataset.label;
-          if (label) {
-            const match = label.toLowerCase().includes(query);
-            btn.style.display = match ? "" : "none";
-          }
-        });
+        this.render(); // Re-render to handle filtering properly
       });
       searchInput.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') ev.preventDefault(); });
     }
@@ -349,19 +333,21 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     buttons.forEach(btn => {
       btn.addEventListener('click', async (ev) => {
         const target = ev.currentTarget; 
-        const label = target.dataset.label;
         const isHeader = target.classList.contains('mm-header');
 
         if (!isHeader) {
+          const uuid = target.dataset.uuid;
           let macro;
-          if (this.macros.length > 0) {
-            macro = this.macros.find(m => m.name === label);
-          } else {
-            macro = game.macros.getName(label);
+
+          if (uuid) {
+              macro = await fromUuid(uuid);
+              if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
           }
 
           if (macro) {
             await MacroManagerAPI.macroRun(macro);
+          } else {
+             ui.notifications.warn("Macro not found or deleted.");
           }
 
           if (!this.persistent) {
@@ -379,11 +365,8 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
 export class MacroManagerAPI {
 
   static async Open(data) {
-    if (data.compendiumList) {
-      return this.openCompendiumMacroManager(data);
-    } else {
-      return this.openCustomMacroManager(data);
-    }
+    // Unified Open: Always expects macroList (UUIDs) or handles custom logic
+    return this.openCustomMacroManager(data);
   }
 
   // --- Builder Function ---
@@ -392,7 +375,7 @@ export class MacroManagerAPI {
   }
 
   // --- Creator Logic V2 ---
-  static async createManagerMacroV2(name, macroNames, packIds, targetMode) {
+  static async createManagerMacroV2(name, macroUuids) {
     const folderName = "🤖 Manager Macros";
     let folder = game.folders.getName(folderName);
     
@@ -400,30 +383,19 @@ export class MacroManagerAPI {
         folder = await Folder.create({
             name: folderName,
             type: "Macro",
-            color: "#07195f" // Updated Color
+            color: "#07195f" 
         });
     }
 
-    // Format Lists
-    const macroListStr = macroNames.join("; ");
-    const compendiumListStr = packIds.join("; ");
+    // Format List (UUIDs)
+    const macroListStr = macroUuids.join(";");
 
-    // Generate Script Content
-    let scriptContent = `// Macro Manager: ${name}\n`;
-    
-    if (targetMode === 'compendium' && packIds.length > 0) {
-        scriptContent += `MacroManager.Open({
-    title: "${name}",
-    compendiumList: "${compendiumListStr}",
-    macroList: "${macroListStr}"
-});`;
-    } else {
-        // World Mode (No compendiumList param)
-        scriptContent += `MacroManager.Open({
+    // Generate Script Content (UUID based)
+    const scriptContent = `// Macro Manager: ${name}
+MacroManager.Open({
     title: "${name}",
     macroList: "${macroListStr}"
 });`;
-    }
 
     await Macro.create({
         name: name,
@@ -441,31 +413,12 @@ export class MacroManagerAPI {
 
     new MacroManagerApp({
         classes: classes, 
-        macros: args.macros || [], 
         macroList: args.macroList, 
         settings: settings,
         persistent: args.persistent, 
         window: { title: args.title || "Macro Manager" },
         position: { width: settings.width }
     }).render(true);
-  }
-
-  static async openCompendiumMacroManager(args) {
-    const compendiumIds = this.stringListToArray(args.compendiumList);
-    let allMacros = [];
-
-    for (const packId of compendiumIds) {
-      const pack = game.packs.get(packId);
-      if (!pack) {
-        ui.notifications.error(`Compendium not found with ID: ${packId}`);
-        continue;
-      }
-      const docs = await pack.getDocuments();
-      allMacros.push(...docs);
-    }
-
-    const data = { ...args, macros: allMacros };
-    await this.openCustomMacroManager(data);
   }
 
   // --- Helpers ---
