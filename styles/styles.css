@@ -159,15 +159,15 @@
     padding: 0; 
 }
 
-/* Selection Header - UPDATED */
+/* Selection Header */
 .mm-selection-header {
     flex: 0 0 auto;
     padding: 10px;
     background: rgba(0,0,0,0.1);
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    display: flex; /* Added for layout */
-    justify-content: space-between; /* Push items to edges */
-    align-items: center; /* Center vertically */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .mm-header-top-row {
@@ -304,24 +304,78 @@
     gap: 2px;
 }
 
+/* --- CUSTOM CHECKBOX STYLING --- */
+
 .mm-checkbox-row {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 4px;
+    padding: 6px;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 4px;
     flex-shrink: 0;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
 }
 
 .mm-checkbox-row:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Highlight row when checked - Very subtle */
+.mm-checkbox-row:has(input:checked) {
     background: rgba(255, 255, 255, 0.05);
 }
 
+/* Ensure wrapper aligns correctly */
 .mm-checkbox-wrap {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
 }
+
+/* The actual Checkbox Input */
+.mm-checkbox-row input[type="checkbox"] {
+    /* Remove default styling */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    
+    /* Unchecked Style: Visible border on dark background */
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #777; /* Neutral Grey Border */
+    border-radius: 4px;
+    cursor: pointer;
+    
+    transition: all 0.2s;
+}
+
+.mm-checkbox-row input[type="checkbox"]:hover {
+    border-color: #ccc;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Checked Style - SOLID FILL COLOR ONLY */
+.mm-checkbox-row input[type="checkbox"]:checked {
+    /* "Paint it" - Solid fill */
+    background-color: #bf4900; /* Rust/Burnt Orange - Visible but not neon */
+    border-color: #bf4900;
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.3); /* Slight depth */
+}
+
+/* REMOVED ALL INNER SYMBOLS (No Tick, No Square) */
+.mm-checkbox-row input[type="checkbox"]::before {
+    display: none;
+    content: none;
+}
+
+/* --- END CUSTOM CHECKBOX --- */
 
 .mm-pack-tag {
     font-size: 10px;
