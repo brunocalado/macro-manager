@@ -1,3 +1,5 @@
+import { MODULE_ID, TEMPLATE_BUILDER, TEMPLATE_WINDOW } from './constants.js';
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -26,7 +28,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
   };
 
   static PARTS = {
-    form: { template: "modules/macro-manager/templates/builder.hbs" }
+    form: { template: TEMPLATE_BUILDER }
   };
 
   _getPackageTitle(pack) {
@@ -194,7 +196,9 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
                 let doc = await fromUuid(uuid);
                 if (!doc && !uuid.includes('.')) doc = game.macros.get(uuid);
                 if (doc) doc.sheet.render(true);
-            } catch (err) {}
+            } catch (err) {
+                console.warn(`${MODULE_ID} | Failed to preview macro "${uuid}":`, err);
+            }
         });
     });
   }
@@ -208,11 +212,11 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const macroTitle = formData.object.macroTitle || macroName;
 
     const config = {
-        persistent: formData.object.confPersistent === "true" || formData.object.confPersistent === true,
+        persistent: !!formData.object.confPersistent,
         settings: {
             width: Number(formData.object.confWidth) || 400,
             fontSize: Number(formData.object.confFontSize) || 16,
-            sort: formData.object.confSort === "true" || formData.object.confSort === true
+            sort: !!formData.object.confSort
         }
     };
 
@@ -294,9 +298,9 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
   };
 
   static PARTS = {
-    form: { 
-      template: "modules/macro-manager/templates/window.hbs", 
-      scrollable: [".mm-buttons-list"] 
+    form: {
+      template: TEMPLATE_WINDOW,
+      scrollable: [".mm-buttons-list"]
     }
   };
 
@@ -315,7 +319,9 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
             if (macro) {
                 return { label: macro.name, icon: macro.img, uuid: macro.uuid, isMacro: true };
             }
-        } catch (e) {}
+        } catch (e) {
+            console.warn(`${MODULE_ID} | Failed to resolve macro "${item}":`, e);
+        }
         return null;
     };
 
@@ -415,12 +421,9 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     buttons.forEach(btn => {
       btn.addEventListener('click', async (ev) => {
         const uuid = ev.currentTarget.dataset.uuid;
-        if (!uuid) return; 
-        let macro;
-        if (uuid) {
-            macro = await fromUuid(uuid);
-            if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
-        }
+        if (!uuid) return;
+        let macro = await fromUuid(uuid);
+        if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
         if (macro) await MacroManagerAPI.macroRun(macro);
         else ui.notifications.warn("Macro not found or deleted.");
         if (!this.persistent) this.close();
@@ -469,8 +472,8 @@ export class MacroManagerAPI {
 
     const scriptContent = `// Macro Manager: ${finalName}
 MacroManager.Open({
-    title: "${displayTitle}",
-    macroList: "${macroListStr}",
+    title: ${JSON.stringify(displayTitle)},
+    macroList: ${JSON.stringify(macroListStr)},
     persistent: ${persistent},
     settings: ${JSON.stringify(settings, null, 4)}
 });`;

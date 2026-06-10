@@ -66,13 +66,12 @@
                             <img src="{{this.img}}" width="24" height="24"/>
                             
                             {{!-- Folder Input Box --}}
-                            <input type="text" class="mm-folder-input" 
-                                   placeholder="Folder..." 
+                            <input type="text" class="mm-folder-input"
+                                   placeholder="Folder..."
                                    value="{{this.folderName}}"
                                    data-action="updateFolder"
                                    data-uuid="{{this.uuid}}"
-                                   title="Assign to a Folder"
-                                   onclick="event.preventDefault(); event.stopPropagation();"> <!-- Stop click from toggling checkbox -->
+                                   title="Assign to a Folder">
 
                             <span class="mm-macro-name">{{this.name}}</span>
                             

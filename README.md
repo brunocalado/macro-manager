@@ -8,6 +8,8 @@
 
 Forget cluttered hotbars and complex configurations. Macro Manager provides a clean, API-driven solution to organize your world and compendium macros effortlessly.
 
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-red?style=for-the-badge&logo=buy-me-a-coffee)](https://buymeacoffee.com/mestredigital)
+
 ## ✨ Features
 
 -   **🔨 Macro Builder:** Create your custom macro managers visually! Select macros from your World or Compendiums and generate the script automatically.

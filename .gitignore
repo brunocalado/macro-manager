@@ -1,2 +1,5 @@
 macro-manager.lock
 WORKSPACE/
+.gitattributes
+CLAUDE.md
+.claudeignore

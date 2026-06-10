@@ -2,17 +2,19 @@
   "id": "macro-manager",
   "title": "Macro Manager",
   "description": "Open a dialog with your favorite macros.",
+  
   "authors": [
     {
       "name": "Mestre Digital",
-      "url": "https://www.youtube.com/c/MestreDigital",
+      "url": "http://youtube.com/@mestredigital",
       "flags": {}
     }
   ],
-  "version": "1.0.5",
+  
+  "version": "1.1.0",
   "compatibility": {
-    "minimum": "13",
-    "verified": "13"
+    "minimum": "14",
+    "verified": "14"
   },
   
   "scripts": [],

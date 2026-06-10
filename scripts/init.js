@@ -1,6 +1,5 @@
 import { MacroManagerAPI } from './api.js';
-
-const MODULE_ID = 'macro-manager';
+import { MODULE_ID } from './constants.js';
 
 Hooks.once('init', () => {
   // 1. Expose API in the module structure

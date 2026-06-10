@@ -1,3 +1,11 @@
+# 1.1.0
+- [Fixed] Macro names containing quotes no longer break the generated macro script.
+- [Fixed] Folder input in the builder no longer suppresses focus via incorrect inline event handler.
+- [Fixed] Removed redundant double `if (uuid)` check in macro click handler.
+- [Fixed] Checkbox values for Persistent and Sort settings now use correct boolean coercion.
+- [Changed] `MODULE_ID` and template paths centralized in `scripts/constants.js`.
+- [Changed] Failed macro preview and resolution now emit a console warning instead of silently failing.
+
 # 1.0.5
 - You can adds from the world and from the compendium to a macro.
 - You can pick the macro title name
