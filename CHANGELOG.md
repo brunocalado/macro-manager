@@ -1,4 +1,9 @@
+# 1.1.1
+
+- [Added] "Build Macro Manager" button in the Macro Directory sidebar (GM only) that opens the builder directly.
+
 # 1.1.0
+
 - [Fixed] Macro names containing quotes no longer break the generated macro script.
 - [Fixed] Folder input in the builder no longer suppresses focus via incorrect inline event handler.
 - [Fixed] Removed redundant double `if (uuid)` check in macro click handler.
