@@ -1,3 +1,12 @@
+# 1.1.2
+
+- [Fixed] "Build Macro Manager" button no longer stacks up duplicates when the Macro Directory sidebar re-renders (macro CRUD, tab switch).
+- [Changed] All stylesheet rules are now scoped under a `.macro-manager` class (native CSS nesting) so they can't leak into core UI or other modules.
+- [Changed] Builder buttons (Select All / None, Preview) and viewer macro buttons now use the ApplicationV2 `actions` map instead of manual listeners; the form submit handler moved to `DEFAULT_OPTIONS`.
+- [Changed] Added the GPLv3 license header to every `.js` and `.css` file; translated remaining non-English code comments.
+- [Changed] Internal cleanup: viewer render part renamed `form` → `content`, `createManagerMacroV2` → `createManagerMacro`, Font Awesome class usage standardized.
+- Verified in a live Foundry v14.367 world: builder selection/folders/preview/mode-switch/build and the generated manager's macro-run and folder-collapse all working.
+
 # 1.1.1
 
 - [Added] "Build Macro Manager" button in the Macro Directory sidebar (GM only) that opens the builder directly.

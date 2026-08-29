@@ -1,3 +1,11 @@
+/*!
+ * Macro Manager
+ * Copyright (c) 2022 https://github.com/brunocalado
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3.
+ */
+
 import { MODULE_ID, TEMPLATE_BUILDER, TEMPLATE_WINDOW } from './constants.js';
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -11,20 +19,21 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.selectedPackIds = new Set();
     this.selectedMacroUuids = new Set(); // Stores persistent selection
     this.macroFolders = new Map(); // Stores folder assignments: UUID -> FolderName
-    this.targetMode = 'world'; 
-
-    // Bind form handler to instance to access this.macroFolders
-    this.options.form.handler = this._onSubmit.bind(this);
+    this.targetMode = 'world';
   }
 
   static DEFAULT_OPTIONS = {
     tag: "form",
     id: "macro-builder",
-    classes: ["macro-manager-window"], 
+    classes: ["macro-manager", "macro-manager-window"],
     window: { title: "Macro Manager Builder", resizable: true },
     position: { width: 900, height: 600 },
-    // Handler is overridden in constructor to be an instance method
-    form: { handler: "none", submitOnChange: false, closeOnSubmit: false }
+    actions: {
+      selectAll: MacroBuilderApp.#onSelectAll,
+      deselectAll: MacroBuilderApp.#onDeselectAll,
+      previewMacro: MacroBuilderApp.#onPreviewMacro
+    },
+    form: { handler: MacroBuilderApp.#onSubmit, submitOnChange: false, closeOnSubmit: false }
   };
 
   static PARTS = {
@@ -104,11 +113,6 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     super._onRender(context, options);
 
-    const updateCount = () => {
-        const countEl = this.element.querySelector('.mm-count-val');
-        if (countEl) countEl.textContent = this.selectedMacroUuids.size;
-    };
-
     // --- Tab Logic ---
     const tabLinks = this.element.querySelectorAll('.mm-tab-link');
     const tabContents = this.element.querySelectorAll('.mm-tab-content');
@@ -127,7 +131,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // --- Folder Input Logic ---
     // Update map when user types
-    const folderInputs = this.element.querySelectorAll('input[data-action="updateFolder"]');
+    const folderInputs = this.element.querySelectorAll('input.mm-folder-input');
     folderInputs.forEach(input => {
         input.addEventListener('input', (ev) => {
             const uuid = ev.currentTarget.dataset.uuid;
@@ -143,7 +147,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     });
 
     // --- Pack Toggles ---
-    const packCheckboxes = this.element.querySelectorAll('input[data-action="togglePack"]');
+    const packCheckboxes = this.element.querySelectorAll('input[name="packIds"]');
     packCheckboxes.forEach(cb => {
         cb.addEventListener('change', (ev) => {
             if (ev.target.checked) this.selectedPackIds.add(ev.target.value);
@@ -153,7 +157,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     });
 
     // --- Mode Switch ---
-    const modeRadios = this.element.querySelectorAll('input[data-action="switchMode"]');
+    const modeRadios = this.element.querySelectorAll('input[name="targetMode"]');
     modeRadios.forEach(radio => {
         radio.addEventListener('change', (ev) => {
             if (ev.target.checked) {
@@ -170,41 +174,49 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
             const val = ev.target.value;
             if (ev.target.checked) this.selectedMacroUuids.add(val);
             else this.selectedMacroUuids.delete(val);
-            updateCount(); 
-        });
-    });
-
-    // --- All/None ---
-    const btnAll = this.element.querySelector('[data-action="selectAll"]');
-    const btnNone = this.element.querySelector('[data-action="deselectAll"]');
-    if (btnAll) btnAll.addEventListener('click', () => {
-        macroCheckboxes.forEach(c => { c.checked = true; this.selectedMacroUuids.add(c.value); });
-        updateCount();
-    });
-    if (btnNone) btnNone.addEventListener('click', () => {
-        macroCheckboxes.forEach(c => { c.checked = false; this.selectedMacroUuids.delete(c.value); });
-        updateCount();
-    });
-
-    // --- Preview ---
-    const previewBtns = this.element.querySelectorAll('[data-action="previewMacro"]');
-    previewBtns.forEach(btn => {
-        btn.addEventListener('click', async (ev) => {
-            ev.stopPropagation(); ev.preventDefault();
-            const uuid = ev.currentTarget.dataset.uuid;
-            try {
-                let doc = await fromUuid(uuid);
-                if (!doc && !uuid.includes('.')) doc = game.macros.get(uuid);
-                if (doc) doc.sheet.render(true);
-            } catch (err) {
-                console.warn(`${MODULE_ID} | Failed to preview macro "${uuid}":`, err);
-            }
+            this.#updateSelectedCount();
         });
     });
   }
 
-  // Instance Method for Submit (Accesses this.macroFolders)
-  async _onSubmit(event, form, formData) {
+  #updateSelectedCount() {
+    const countEl = this.element.querySelector('.mm-count-val');
+    if (countEl) countEl.textContent = this.selectedMacroUuids.size;
+  }
+
+  static #onSelectAll(event, target) {
+    this.element.querySelectorAll('input[name="macroData"]').forEach(cb => {
+        cb.checked = true;
+        this.selectedMacroUuids.add(cb.value);
+    });
+    this.#updateSelectedCount();
+  }
+
+  static #onDeselectAll(event, target) {
+    this.element.querySelectorAll('input[name="macroData"]').forEach(cb => {
+        cb.checked = false;
+        this.selectedMacroUuids.delete(cb.value);
+    });
+    this.#updateSelectedCount();
+  }
+
+  static async #onPreviewMacro(event, target) {
+    // The preview button sits inside a <label> row; cancel the default so the click
+    // doesn't toggle that row's checkbox.
+    event.preventDefault();
+    const uuid = target.dataset.uuid;
+    try {
+        let doc = await fromUuid(uuid);
+        if (!doc && !uuid.includes('.')) doc = game.macros.get(uuid);
+        if (doc) doc.sheet.render(true);
+    } catch (err) {
+        console.warn(`${MODULE_ID} | Failed to preview macro "${uuid}":`, err);
+    }
+  }
+
+  // Form submit handler. ApplicationV2 invokes it with `this` bound to the instance,
+  // so instance state (this.selectedMacroUuids, this.macroFolders) is available here.
+  static async #onSubmit(event, form, formData) {
     let selectedUuids = Array.from(this.selectedMacroUuids);
     selectedUuids = selectedUuids.filter(u => typeof u === 'string' && u.length > 0);
 
@@ -262,7 +274,7 @@ class MacroBuilderApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     // Create
-    const createdMacro = await MacroManagerAPI.createManagerMacroV2(macroName, finalList, config, macroTitle);
+    const createdMacro = await MacroManagerAPI.createManagerMacro(macroName, finalList, config, macroTitle);
     if (createdMacro) {
         ui.notifications.info(`Macro "${createdMacro.name}" created successfully!`);
         this.close(); 
@@ -291,14 +303,17 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
     tag: "div",
-    id: "macro-manager-app", 
-    classes: ["macro-manager-window"],
+    id: "macro-manager-app",
+    classes: ["macro-manager", "macro-manager-window"],
     window: { resizable: true, title: "Macro Manager", controls: [] },
-    position: { width: 400, height: "auto" }
+    position: { width: 400, height: "auto" },
+    actions: {
+      clickMacro: MacroManagerApp.#onClickMacro
+    }
   };
 
   static PARTS = {
-    form: {
+    content: {
       template: TEMPLATE_WINDOW,
       scrollable: [".mm-buttons-list"]
     }
@@ -417,18 +432,16 @@ class MacroManagerApp extends HandlebarsApplicationMixin(ApplicationV2) {
         });
     });
 
-    const buttons = this.element.querySelectorAll('.mm-macro-btn');
-    buttons.forEach(btn => {
-      btn.addEventListener('click', async (ev) => {
-        const uuid = ev.currentTarget.dataset.uuid;
-        if (!uuid) return;
-        let macro = await fromUuid(uuid);
-        if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
-        if (macro) await MacroManagerAPI.macroRun(macro);
-        else ui.notifications.warn("Macro not found or deleted.");
-        if (!this.persistent) this.close();
-      });
-    });
+  }
+
+  static async #onClickMacro(event, target) {
+    const uuid = target.dataset.uuid;
+    if (!uuid) return;
+    let macro = await fromUuid(uuid);
+    if (!macro && !uuid.includes('.')) macro = game.macros.get(uuid);
+    if (macro) await MacroManagerAPI.macroRun(macro);
+    else ui.notifications.warn("Macro not found or deleted.");
+    if (!this.persistent) this.close();
   }
 }
 
@@ -445,7 +458,7 @@ export class MacroManagerAPI {
     new MacroBuilderApp().render(true);
   }
 
-  static async createManagerMacroV2(name, macroUuids, config = {}, title = null) {
+  static async createManagerMacro(name, macroUuids, config = {}, title = null) {
     const folderName = "🤖 Manager Macros";
     let folder = game.folders.getName(folderName);
     
@@ -493,9 +506,9 @@ MacroManager.Open({
     const uniqueId = args.id || `macro-manager-${foundry.utils.randomID()}`;
 
     new MacroManagerApp({
-        id: uniqueId, 
-        classes: ["macro-manager-window"], 
-        macroList: args.macroList, 
+        id: uniqueId,
+        classes: ["macro-manager", "macro-manager-window"],
+        macroList: args.macroList,
         settings: settings,
         persistent: args.persistent, 
         window: { title: args.title || "Macro Manager" },

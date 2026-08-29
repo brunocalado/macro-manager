@@ -16,10 +16,10 @@
             <div class="mm-options-group">
                 <span class="mm-label-title">Target Mode:</span>
                 <label class="mm-radio-label">
-                    <input type="radio" name="targetMode" value="world" data-action="switchMode" {{#if isWorldMode}}checked{{/if}}> World
+                    <input type="radio" name="targetMode" value="world" {{#if isWorldMode}}checked{{/if}}> World
                 </label>
                 <label class="mm-radio-label">
-                    <input type="radio" name="targetMode" value="compendium" data-action="switchMode" {{#if isCompendiumMode}}checked{{/if}}> Compendium
+                    <input type="radio" name="targetMode" value="compendium" {{#if isCompendiumMode}}checked{{/if}}> Compendium
                 </label>
             </div>
             
@@ -40,7 +40,7 @@
                     {{else}}
                         {{#each packs}}
                         <label class="mm-checkbox-row mm-source-row" data-type="{{this.type}}">
-                            <input type="checkbox" name="packIds" value="{{this.id}}" {{#if this.checked}}checked{{/if}} data-action="togglePack">
+                            <input type="checkbox" name="packIds" value="{{this.id}}" {{#if this.checked}}checked{{/if}}>
                             <span>{{this.label}}</span>
                         </label>
                         {{/each}}
@@ -69,7 +69,6 @@
                             <input type="text" class="mm-folder-input"
                                    placeholder="Folder..."
                                    value="{{this.folderName}}"
-                                   data-action="updateFolder"
                                    data-uuid="{{this.uuid}}"
                                    title="Assign to a Folder">
 

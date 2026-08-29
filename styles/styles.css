@@ -1,3 +1,11 @@
+/*!
+ * Macro Manager
+ * Copyright (c) 2022 https://github.com/brunocalado
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3.
+ */
+
 /* Base styles for ApplicationV2 */
 
 /* --- WINDOW AND SCROLL --- */
@@ -26,6 +34,9 @@
     padding: 4px !important;
     backdrop-filter: blur(2px);
 }
+
+/* Everything below is scoped under the module id via native CSS nesting (CLAUDE.md / foundry-appv2). */
+.macro-manager {
 
 /* --- LIST --- */
 .mm-buttons-list {
@@ -416,7 +427,7 @@
     color: #aaa;
     font-size: 11px;
     padding: 2px 4px;
-    width: 80px; /* Largura fixa para não quebrar layout */
+    width: 80px; /* Fixed width so the row layout doesn't break */
     margin-right: 5px;
     transition: all 0.2s;
 }
@@ -426,7 +437,7 @@
     border-color: #ffd43b;
     color: #fff;
     background: rgba(0,0,0,0.5);
-    width: 100px; /* Expande levemente ao focar */
+    width: 100px; /* Expands slightly on focus */
 }
 
 /* --- END CUSTOM CHECKBOX --- */
@@ -514,3 +525,5 @@
     line-height: normal;
     height: auto;
 }
+
+} /* .macro-manager */

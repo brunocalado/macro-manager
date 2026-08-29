@@ -1,3 +1,11 @@
+/*!
+ * Macro Manager
+ * Copyright (c) 2022 https://github.com/brunocalado
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3.
+ */
+
 import { MacroManagerAPI } from './api.js';
 import { MODULE_ID } from './constants.js';
 
@@ -23,9 +31,13 @@ Hooks.on('renderMacroDirectory', (app, html) => {
   const actionButtons = element.querySelector('.header-actions');
   if (!actionButtons) return;
 
+  // The directory re-renders on every macro CRUD and tab switch; bail if the button is already there.
+  if (actionButtons.querySelector('.mm-build-btn')) return;
+
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Build Macro Manager`;
+  btn.classList.add('mm-build-btn');
+  btn.innerHTML = `<i class="fas fa-wand-magic-sparkles"></i> Build Macro Manager`;
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     MacroManagerAPI.BuildMacro();

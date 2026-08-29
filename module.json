@@ -2,7 +2,6 @@
   "id": "macro-manager",
   "title": "Macro Manager",
   "description": "Open a dialog with your favorite macros.",
-  
   "authors": [
     {
       "name": "Mestre Digital",
@@ -10,38 +9,46 @@
       "flags": {}
     }
   ],
-  
-  "version": "1.1.1",
+  "version": "1.1.2",
   "compatibility": {
     "minimum": "14",
-    "verified": "14"
+    "verified": "14",
+    "maximum": "14"
   },
-  
-  "scripts": [],
-  
-  "esmodules": ["scripts/init.js"],
-  "styles": ["styles/styles.css"],
-  
+  "esmodules": [
+    "scripts/init.js"
+  ],
+  "styles": [
+    {
+      "src": "styles/styles.css"
+    }
+  ],
   "packs": [
     {
       "label": "Macro Manager",
       "type": "Macro",
       "name": "macro-manager",
-      "path": "packs/macro-manager.db",
+      "path": "packs/macro-manager",
       "private": false,
-      "banner": "modules/macro-manager/assets/images/banner.webp"
+      "banner": "modules/macro-manager/assets/images/banner.webp",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
   ],
-  
-  "languages": [],
-
-  "media": [{
-    "type": "setup",
-    "url": "modules/macro-manager/assets/images/thumbnail.webp",
-    "thumbnail": "modules/macro-manager/assets/images/thumbnail.webp"
-  }], 
-  
+  "media": [
+    {
+      "type": "setup",
+      "url": "modules/macro-manager/assets/images/thumbnail.webp",
+      "thumbnail": "modules/macro-manager/assets/images/thumbnail.webp",
+      "loop": false,
+      "flags": {}
+    }
+  ],
   "url": "https://github.com/brunocalado/macro-manager",
   "manifest": "https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json",
-  "download": "https://codeload.github.com/brunocalado/macro-manager/zip/main"
+  "download": "https://codeload.github.com/brunocalado/macro-manager/zip/main",
+  "flags": {}
 }
