@@ -31,6 +31,12 @@ Forget cluttered hotbars and complex configurations. Macro Manager provides a cl
 4.  **Configure:** Set your Window Title, Width, Font Size, and Persistence preferences.
 5.  **Build:** Click **Build**. A new macro will be created in the "🤖 Manager Macros" folder!
 
+### Manual Instalation
+
+```
+https://raw.githubusercontent.com/brunocalado/macro-manager/main/module.json
+```
+
 ### 💻 Manual Usage (The Code Way)
 
 You can manually construct a Macro Manager.
